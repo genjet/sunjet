@@ -18,17 +18,23 @@
 		<version>2.0.5.RELEASE</version>
 		<relativePath />
 	</parent>
+	<properties>
+		<project.build.sourceencoding>UTF-8</project.build.sourceencoding>
+		<java.version>1.8</java.version>
+	</properties>
 	<dependencies>
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.sunjet.app</groupId> -->
-<!-- 			<artifactId>sunjet-common</artifactId> -->
-<!-- 			<version>${project.version}</version> -->
-<!-- 		</dependency> -->
-		
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.sunjet.app</groupId> -->
-<!-- 			<artifactId>sunjet-front</artifactId> -->
-<!-- 			<version>${project.version}</version> -->
-<!-- 		</dependency> -->
+	
+
+		<!-- <dependency> -->
+		<!-- <groupId>com.sunjet.app</groupId> -->
+		<!-- <artifactId>sunjet-common</artifactId> -->
+		<!-- <version>${project.version}</version> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>com.sunjet.app</groupId> -->
+		<!-- <artifactId>sunjet-front</artifactId> -->
+		<!-- <version>${project.version}</version> -->
+		<!-- </dependency> -->
 	</dependencies>
 </project>

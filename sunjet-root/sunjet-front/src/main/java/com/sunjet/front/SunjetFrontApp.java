@@ -1,4 +1,4 @@
-package sunjet.front;
+package com.sunjet.front;
 
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootConfiguration
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 public class SunjetFrontApp {
 
 	public static void main(String[] args) throws Exception {
