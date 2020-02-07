@@ -8,49 +8,34 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "sj_user")
-public class SjUser {
+@Table(name = "sj_role")
+public class SjRole {
 	@Id
 	@Column(name = "oid")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "jpa-uuid")
 	private String oid;
-	@Column(name = "name")
-	private String name;
-	@Column(name = "id")
-	private String id;
-	@Column(name = "pwd")
-	private String pwd;
-
+	@Column(name = "sj_user")
+	private String sjUser;
+	@Column(name = "role_name")
+	private String roleName;
 	public String getOid() {
 		return oid;
 	}
-
 	public void setOid(String oid) {
 		this.oid = oid;
 	}
-
-	public String getName() {
-		return name;
+	public String getSjUser() {
+		return sjUser;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setSjUser(String sjUser) {
+		this.sjUser = sjUser;
 	}
-
-	public String getId() {
-		return id;
+	public String getRoleName() {
+		return roleName;
 	}
-
-	public void setId(String id) {
-		this.id = id;
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
-
-	public String getPwd() {
-		return pwd;
-	}
-
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
+	
 
 }

@@ -1,36 +1,45 @@
 package com.sunjet.front.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sunjet.front.services.TestService;
 
-@RestController
+@Controller
+// @RequestMapping("/user")
 public class TestController {
 	@Autowired
 	private TestService testService;
 
-//	@RequestMapping("/test")
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	@RequestMapping("/login")
+	public String index() {
+		return "login";
+	}
+
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String test() {
 		try {
-			testService.insertUser();
+			// testService.loadUserByUsername("username");
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
-		return "test";
+		return "index";
 	}
-	
-	 @GetMapping
-     public Map hello() {
-         Map map = new HashMap();
-         map.put("say1", "hello1");
-         return map;
-     }
+
+	@RequestMapping(value = "/hello", method = RequestMethod.POST)
+	public String sayHello(@RequestParam("name") String name, Model model) {
+		model.addAttribute("name", name);
+		return "hello";
+	}
+
+	@RequestMapping("/login-error")
+	public String loginError() {
+		return "login-error";
+
+	}
 }

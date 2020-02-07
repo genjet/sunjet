@@ -1,18 +1,16 @@
 package com.sunjet.front;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootConfiguration
 @SpringBootApplication
+//@EnableAutoConfiguration(exclude = {
+//		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+//})
 public class SunjetFrontApp {
 
 	public static void main(String[] args) throws Exception {
