@@ -9,27 +9,27 @@
 </head>
 <body>
 
-	<h4>登入頁面</h4>
+<!-- 	<h4>登入頁面</h4> -->
 	
-	<form action='<spring:url value="/loginAction"/>' method="post">
-<!-- <form  class="form-signin" action="/loginAction" method="post"> -->
-    <table>
-      <tr>
-        <td>Username</td>
-        <td><input type="text" name="username"></td>
-      </tr>
-      <tr>
-        <td>Password</td>
-        <td><input type="password" name="password"></td>
-      </tr>
-      <tr>
-        <td>
-        <button type="submit">Login${1+1}</button>
-<%--         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
-        </td>
-      </tr>
-    </table>
-  </form>
-  <br/>
+<%-- 	<form action='<spring:url value="/loginAction"/>' method="post"> --%>
+<!-- <!-- <form  class="form-signin" action="/loginAction" method="post"> --> -->
+<!--     <table> -->
+<!--       <tr> -->
+<!--         <td>Username</td> -->
+<!--         <td><input type="text" name="username"></td> -->
+<!--       </tr> -->
+<!--       <tr> -->
+<!--         <td>Password</td> -->
+<!--         <td><input type="password" name="password"></td> -->
+<!--       </tr> -->
+<!--       <tr> -->
+<!--         <td> -->
+<%--         <button type="submit">Login${1+1}</button> --%>
+<%-- <%--         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%> --%>
+<!--         </td> -->
+<!--       </tr> -->
+<!--     </table> -->
+<!--   </form> -->
+<!--   <br/> -->
 </body>
 </html>

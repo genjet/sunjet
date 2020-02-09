@@ -1,6 +1,18 @@
+server: 
+  port : 8080
+#  servlet:
+#    context-path : /sunjet
+
 spring:
   mvc:
     static-path-pattern : /resources/**
     view:
       prefix : /WEB-INF/views/
       suffix : .jsp
+      
+  thymeleaf:
+    cache : false
+    encoding : UTF-8
+    mode : HTML5
+    suffix : .html
+    prefix : classpath:/templates/
