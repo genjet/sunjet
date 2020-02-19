@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "sj_role")
-public class SjRole {
+public class SjRole extends GenericEntity{
 	@Id
 	@Column(name = "oid")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "jpa-uuid")
