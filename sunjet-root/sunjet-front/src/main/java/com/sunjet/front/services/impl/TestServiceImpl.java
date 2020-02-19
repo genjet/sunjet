@@ -1,11 +1,17 @@
 package com.sunjet.front.services.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sunjet.common.dao.SjLeaveRepository;
+import com.sunjet.common.dao.SjMenuRepository;
 import com.sunjet.common.dao.SjUserRepository;
+import com.sunjet.common.entity.SjLeave;
+import com.sunjet.common.entity.SjMenu;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.front.services.TestService;
 
@@ -15,6 +21,12 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private SjUserRepository sjUserRepository;
+	
+	@Autowired
+	private SjMenuRepository sjMenuRepository;
+	
+	@Autowired
+	private SjLeaveRepository sjLeaveRepository;
 
 	public int insertUser() {
 		SjUser sjUser = new SjUser();
@@ -25,6 +37,16 @@ public class TestServiceImpl implements TestService {
 		sjUserRepository.save(sjUser);
 		System.out.println("OKKKKKKK");
 		return 0;
+	}
+
+	@Override
+	public List<SjMenu> getAllMenu() {
+		return sjMenuRepository.findAll();
+	}
+
+	@Override
+	public List<SjLeave> getAllLeave() {
+		return sjLeaveRepository.findAll();
 	}
 
 //	@Override
