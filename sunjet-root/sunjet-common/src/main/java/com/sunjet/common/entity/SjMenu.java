@@ -18,6 +18,12 @@ public class SjMenu extends GenericEntity{
 	private String name;
 	@Column(name = "url")
 	private String url;
+	@Column(name = "ordinary")
+	private Integer ordinary;
+	@Column(name = "parent_menu")
+	private String parentMenu;
+	
+	
 
 	public String getOid() {
 		return oid;
@@ -42,6 +48,24 @@ public class SjMenu extends GenericEntity{
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public Integer getOrdinary() {
+		return ordinary;
+	}
+
+	public void setOrdinary(Integer ordinary) {
+		this.ordinary = ordinary;
+	}
+
+	public String getParentMenu() {
+		return parentMenu;
+	}
+
+	public void setParentMenu(String parentMenu) {
+		this.parentMenu = parentMenu;
+	}
+
+
 
 	
 

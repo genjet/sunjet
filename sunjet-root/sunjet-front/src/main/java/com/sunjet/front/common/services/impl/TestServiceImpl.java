@@ -1,4 +1,4 @@
-package com.sunjet.front.services.impl;
+package com.sunjet.front.common.services.impl;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjLeave;
 import com.sunjet.common.entity.SjMenu;
 import com.sunjet.common.entity.SjUser;
-import com.sunjet.front.services.TestService;
+import com.sunjet.front.common.services.TestService;
 
 @Service
 public class TestServiceImpl implements TestService {
@@ -31,7 +31,7 @@ public class TestServiceImpl implements TestService {
 	public int insertUser() {
 		SjUser sjUser = new SjUser();
 		// sjUser.setOid("1");
-		sjUser.setId("oo");
+		sjUser.setAccount("oo");
 		sjUser.setName("名");
 		sjUser.setPwd("dddd");
 		sjUserRepository.save(sjUser);

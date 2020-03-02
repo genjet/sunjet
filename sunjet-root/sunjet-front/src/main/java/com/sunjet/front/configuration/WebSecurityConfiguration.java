@@ -1,19 +1,32 @@
 package com.sunjet.front.configuration;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationProvider authenticationService;
+	@Autowired
+	private UserDetailsService defaultUserDetailsService;
 
 //	@Override
 //	public void configure(WebSecurity web) throws Exception {
@@ -23,9 +36,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.formLogin().loginPage("/login")//.loginProcessingUrl("/login")
+			.formLogin().loginPage("/login").loginProcessingUrl("/auth/login")
 			.failureUrl("/login?error")
-			.and().logout().logoutUrl("/logout").logoutSuccessUrl("/")
+			.and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 			//.and().rememberMe() // 开启记住密码功能
 			.and().authorizeRequests().antMatchers("/h2/**").hasRole("ADMIN")
 			.and().authorizeRequests().anyRequest().permitAll()
@@ -56,8 +69,38 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationService);
+		auth
+//		.authenticationProvider(authenticationService)
+		.userDetailsService(defaultUserDetailsService);
+		;
 
 	}
+	
+//	分层角色
+//	@Bean
+//    public RoleHierarchyVoter roleHierarchyVoter(){
+//        RoleHierarchyVoter voter = new RoleHierarchyVoter(roleHierarchy());
+//        return voter;
+//    }
 
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+//        roleHierarchy.setHierarchy(new String[]{
+//                SystemUser.Role.ROLE_ADMIN.includes(SystemUser.Role.ROLE_USER),
+//                SystemUser.Role.ROLE_MODERATOR.includes(SystemUser.Role.ROLE_USER)
+//        }));
+//        Collection<GrantedAuthority> roles = new ArrayList<>();
+//        roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+//        roles.add(new SimpleGrantedAuthority("QUERY"));
+//        Collection<GrantedAuthority> reachableGrantedAuthorities = roleHierarchy.getReachableGrantedAuthorities(roles);
+//        List<String> roleStrings = reachableGrantedAuthorities.
+//                stream().
+//                map(GrantedAuthority::getAuthority).
+//                collect(Collectors.toList());
+//        roleHierarchy.setHierarchy(roleStrings);
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
 }

@@ -1,4 +1,4 @@
-package com.sunjet.front.services;
+package com.sunjet.front.common.services;
 
 import java.util.List;
 

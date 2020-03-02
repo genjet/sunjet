@@ -17,12 +17,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class GenericEntity {
 	@Column(name = "create_id")
-	@NotNull
 	@CreatedBy
 	protected String createId;
 
 	@Column(name = "create_datetime")
-	@NotNull
 	@CreatedDate
 	protected LocalDateTime createDate;
 

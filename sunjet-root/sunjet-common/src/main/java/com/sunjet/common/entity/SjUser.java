@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 @Table(name = "sj_user")
 public class SjUser extends GenericEntity{
@@ -23,17 +25,25 @@ public class SjUser extends GenericEntity{
 	private String oid;
 	@Column(name = "name")
 	private String name;
-	@Column(name = "id")
-	private String id;
+	@Column(name = "account")
+	private String account;
 	@Column(name = "pwd")
 	private String pwd;
+	@Column(name = "enabled")
+	@Type(type = "yes_no")
+	private boolean enabled = Boolean.TRUE;
 	
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_dep")
 	private SjDep sjDep;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sjUser")
-	List<SjLeave> sjLeave;
+	private List<SjLeave> sjLeave;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sjUser", orphanRemoval = true)
+	private List<SjUserRoleRel> sjUserRoleRels;
+	
+	
 	
 
 	public String getOid() {
@@ -52,12 +62,12 @@ public class SjUser extends GenericEntity{
 		this.name = name;
 	}
 
-	public String getId() {
-		return id;
+	public String getAccount() {
+		return account;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setAccount(String account) {
+		this.account = account;
 	}
 
 	public String getPwd() {
@@ -82,6 +92,22 @@ public class SjUser extends GenericEntity{
 
 	public void setSjLeave(List<SjLeave> sjLeave) {
 		this.sjLeave = sjLeave;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public List<SjUserRoleRel> getSjUserRoleRels() {
+		return sjUserRoleRels;
+	}
+
+	public void setSjUserRoleRels(List<SjUserRoleRel> sjUserRoleRels) {
+		this.sjUserRoleRels = sjUserRoleRels;
 	}
 
 }
