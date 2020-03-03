@@ -1,10 +1,13 @@
 package com.sunjet.common.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -28,60 +31,70 @@ public class SjFlowNode extends GenericEntity {
 	@Column(name = "dec")
 	private String dec;
 
-	@Column(name = "sj_flow")
+	@OneToOne(mappedBy = "sjFlowNode")
 	private SjFlow sjFlow;
 
-	// @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy =
-	// "sjRole", orphanRemoval = true)
-	// private List<SjUserRoleRel> sjUserRoleRels;
-	//
-	// @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy =
-	// "sjRole", orphanRemoval = true)
-	// private List<SjRoleMenuRel> sjRoleMenuRels;
-	//
-	// @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy =
-	// "sjRole", orphanRemoval = true)
-	// private Set<SjAuthority> sjAuthoritys;
-	//
-	//
-	// public String getOid() {
-	// return oid;
-	// }
-	//
-	// public void setOid(String oid) {
-	// this.oid = oid;
-	// }
-	//
-	// public String getRoleCode() {
-	// return roleCode;
-	// }
-	//
-	// public void setRoleCode(String roleCode) {
-	// this.roleCode = roleCode;
-	// }
-	//
-	// public List<SjUserRoleRel> getSjUserRoleRels() {
-	// return sjUserRoleRels;
-	// }
-	//
-	// public void setSjUserRoleRels(List<SjUserRoleRel> sjUserRoleRels) {
-	// this.sjUserRoleRels = sjUserRoleRels;
-	// }
-	//
-	// public List<SjRoleMenuRel> getSjRoleMenuRels() {
-	// return sjRoleMenuRels;
-	// }
-	//
-	// public void setSjRoleMenuRels(List<SjRoleMenuRel> sjRoleMenuRels) {
-	// this.sjRoleMenuRels = sjRoleMenuRels;
-	// }
-	//
-	// public Set<SjAuthority> getSjAuthoritys() {
-	// return sjAuthoritys;
-	// }
-	//
-	// public void setSjAuthoritys(Set<SjAuthority> sjAuthoritys) {
-	// this.sjAuthoritys = sjAuthoritys;
-	// }
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "sjFlowProcess_oid", referencedColumnName = "oid")
+	private SjFlowProcess sjFlowProcess;
+
+	@OneToOne(mappedBy = "sjFlowNode")
+	private SjFlowRule sjFlowRule;
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getDec() {
+		return dec;
+	}
+
+	public void setDec(String dec) {
+		this.dec = dec;
+	}
+
+	public SjFlow getSjFlow() {
+		return sjFlow;
+	}
+
+	public void setSjFlow(SjFlow sjFlow) {
+		this.sjFlow = sjFlow;
+	}
+
+	public SjFlowProcess getSjFlowProcess() {
+		return sjFlowProcess;
+	}
+
+	public void setSjFlowProcess(SjFlowProcess sjFlowProcess) {
+		this.sjFlowProcess = sjFlowProcess;
+	}
+
+	public SjFlowRule getSjFlowRule() {
+		return sjFlowRule;
+	}
+
+	public void setSjFlowRule(SjFlowRule sjFlowRule) {
+		this.sjFlowRule = sjFlowRule;
+	}
 
 }
