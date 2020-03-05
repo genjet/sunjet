@@ -110,7 +110,7 @@ CREATE TABLE SJ_USER (
   account VARCHAR(250) NOT NULL,
   pwd VARCHAR(250) NOT NULL,
   enabled VARCHAR(1) NOT NULL,
-  sj_dep VARCHAR(250),
+  sj_dep VARCHAR(32),
   
   create_id   VARCHAR(10) ,
   create_datetime DATETIME ,
@@ -168,6 +168,7 @@ CREATE TABLE SJ_LEAVE (
   start_dateTime datetime NOT NULL,
   end_dateTime datetime NOT NULL,
   leave_status VARCHAR(1) NOT NULL,
+  sj_flow VARCHAR(32),
 
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,

@@ -29,7 +29,7 @@ public class SjFlowProcess extends GenericEntity {
 	private SjFlowNode sjFlowNode;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sjFlowRule_oid", referencedColumnName = "oid")
+	@JoinColumn(name = "sjFlowRule", referencedColumnName = "oid")
 	private SjFlowRule sjFlowRule;
 
 	public String getOid() {

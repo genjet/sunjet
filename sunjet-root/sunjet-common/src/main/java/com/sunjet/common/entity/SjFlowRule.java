@@ -1,12 +1,10 @@
 package com.sunjet.common.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -25,8 +23,9 @@ public class SjFlowRule extends GenericEntity {
 	@OneToOne(mappedBy = "sjFlowRule")
 	private SjFlowProcess sjFlowProcess;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sjFlowNode_oid", referencedColumnName = "oid")
+	// @OneToOne(cascade = CascadeType.MERGE)
+	// @JoinColumn(name = "sjFlowNode", referencedColumnName = "oid")
+	@OneToOne(mappedBy = "sjFlowRule")
 	private SjFlowNode sjFlowNode;
 
 	public String getOid() {

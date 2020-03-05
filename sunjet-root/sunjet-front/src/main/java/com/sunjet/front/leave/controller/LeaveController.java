@@ -23,7 +23,7 @@ public class LeaveController {
 		SjUser sjUser = sjUserRepository.findByAccount(userInfo.getUsername());
 
 		model.addAttribute("sjLeaves", sjUser.getSjLeave());
-		return "/leave/leave";
+		return "leave/leave";
 	}
 
 }

@@ -3,6 +3,8 @@ package com.sunjet.common.entity;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,11 +36,12 @@ public class SjFlow extends GenericEntity {
 	private String description;
 
 	@Column(name = "flow_status")
+	@Enumerated(EnumType.STRING)
 	private FlowStatusEnum flowStatus;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sjFlowNode_oid", referencedColumnName = "oid")
-	private SjFlowRule sjFlowNode;
+	@JoinColumn(name = "sjFlowNode", referencedColumnName = "oid")
+	private SjFlowNode sjFlowNode;
 
 	public String getOid() {
 		return oid;
@@ -80,11 +83,11 @@ public class SjFlow extends GenericEntity {
 		this.flowStatus = flowStatus;
 	}
 
-	public SjFlowRule getSjFlowNode() {
+	public SjFlowNode getSjFlowNode() {
 		return sjFlowNode;
 	}
 
-	public void setSjFlowNode(SjFlowRule sjFlowNode) {
+	public void setSjFlowNode(SjFlowNode sjFlowNode) {
 		this.sjFlowNode = sjFlowNode;
 	}
 

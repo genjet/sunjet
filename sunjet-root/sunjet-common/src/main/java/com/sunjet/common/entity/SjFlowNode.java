@@ -35,10 +35,12 @@ public class SjFlowNode extends GenericEntity {
 	private SjFlow sjFlow;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "sjFlowProcess_oid", referencedColumnName = "oid")
+	@JoinColumn(name = "sjFlowProcess", referencedColumnName = "oid")
 	private SjFlowProcess sjFlowProcess;
 
-	@OneToOne(mappedBy = "sjFlowNode")
+	// @OneToOne(mappedBy = "sjFlowNode")
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "sjFlowRule", referencedColumnName = "oid")
 	private SjFlowRule sjFlowRule;
 
 	public String getOid() {
