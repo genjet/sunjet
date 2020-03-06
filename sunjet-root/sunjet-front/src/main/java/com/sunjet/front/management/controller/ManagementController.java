@@ -46,6 +46,7 @@ public class ManagementController {
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public String addUser(@Valid UserVO userVO, BindingResult result, Model model) {
 		if (result.hasErrors()) {
+			model.addAttribute("userVOs", getUserVo());
 			return "management/management";
 		}
 		SjUser user = new SjUser();
@@ -53,7 +54,7 @@ public class ManagementController {
 		user.setName(userVO.getName());
 		user.setPwd(userVO.getPsw());
 		sjUserRepository.save(user);
-		model.addAttribute("users", getUserVo());
+//		model.addAttribute("users", getUserVo());
 		return "redirect:management";
 	}
 
