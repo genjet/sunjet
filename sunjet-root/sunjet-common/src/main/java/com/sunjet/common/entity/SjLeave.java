@@ -43,8 +43,8 @@ public class SjLeave extends GenericEntity {
 	private LocalDateTime endDatetime;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
-	@JoinColumn(name = "sj_flow")
-	private SjFlow sjFlow;
+	@JoinColumn(name = "sj_apply")
+	private SjApply sjApply;
 
 	public String getOid() {
 		return oid;
@@ -100,6 +100,14 @@ public class SjLeave extends GenericEntity {
 
 	public void setEndDatetime(LocalDateTime endDatetime) {
 		this.endDatetime = endDatetime;
+	}
+
+	public SjApply getSjApply() {
+		return sjApply;
+	}
+
+	public void setSjApply(SjApply sjApply) {
+		this.sjApply = sjApply;
 	}
 
 }

@@ -37,8 +37,8 @@ public class DefaultUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	private SjUserRepository sjUserRepository;
-//	@Autowired
-//	private HttpServletRequest request;
+	// @Autowired
+	// private HttpServletRequest request;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -50,31 +50,31 @@ public class DefaultUserDetailsService implements UserDetailsService {
 		}
 		List<SjUserRoleRel> userRoleRels = appUser.getSjUserRoleRels();
 		Set<MenuInfo> rtnMenuInfo = new TreeSet<MenuInfo>((o1, o2) -> o1.getOrdinary().compareTo(o2.getOrdinary()));
-		List<SjMenu> mainMenus =  new ArrayList<SjMenu>();
+		List<SjMenu> mainMenus = new ArrayList<SjMenu>();
 		List<SjMenu> sonMenus = new ArrayList<SjMenu>();
-		
-	
-//		  Set<MenuInfo> menus = new TreeSet<MenuInfo>((o1, o2) -> o1.getOrdinary().compareTo(o2.getOrdinary()));
-		 Collection<GrantedAuthority> authorities = new ArrayList<>();
+
+		// Set<MenuInfo> menus = new TreeSet<MenuInfo>((o1, o2) ->
+		// o1.getOrdinary().compareTo(o2.getOrdinary()));
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		for (SjUserRoleRel userRoleRel : userRoleRels) {
 			SjRole sjRole = userRoleRel.getSjRole();
 			List<SjRoleMenuRel> sjRoleMenuRels = sjRole.getSjRoleMenuRels();
 			for (SjRoleMenuRel sjRoleMenuRel : sjRoleMenuRels) {
 				SjMenu sjMenu = sjRoleMenuRel.getSjMenu();
-				
-//				MenuInfo menu = new MenuInfo();
-//				BeanUtils.copyProperties(sjMenu, menu);
-//				
+
+				// MenuInfo menu = new MenuInfo();
+				// BeanUtils.copyProperties(sjMenu, menu);
+				//
 				String parentMenuCode = sjMenu.getParentMenu();
-					if(StringUtils.isBlank(parentMenuCode)){
-						mainMenus.add(sjMenu);
-//						map.put(sjMenu.getOid(), menu);
-					}else{
-						sonMenus.add(sjMenu);
-//							MenuInfo mainMenu = map.get(parentMenuCode);
-//							mainMenu.getSonMenus().add(menu);
-						
-					}
+				if (StringUtils.isBlank(parentMenuCode)) {
+					mainMenus.add(sjMenu);
+					// map.put(sjMenu.getOid(), menu);
+				} else {
+					sonMenus.add(sjMenu);
+					// MenuInfo mainMenu = map.get(parentMenuCode);
+					// mainMenu.getSonMenus().add(menu);
+
+				}
 			}
 			sonMenus = sonMenus.stream().sorted(Comparator.comparing(SjMenu::getOrdinary)).collect(Collectors.toList());
 			mainMenus = mainMenus.stream().sorted(Comparator.comparing(SjMenu::getOrdinary)).collect(Collectors.toList());
@@ -90,33 +90,40 @@ public class DefaultUserDetailsService implements UserDetailsService {
 				}
 				rtnMenuInfo.add(menu);
 			}
-//			roles.add(sjRole.getRoleName());
+			// roles.add(sjRole.getRoleName());
 			System.out.println(sjRole.getRoleCode());
 			authorities.add(new SimpleGrantedAuthority(sjRole.getRoleCode()));
 			for (SjAuthority sjAuthority : sjRole.getSjAuthoritys()) {
 				authorities.add(new SimpleGrantedAuthority(sjAuthority.getAuthorityCode()));
 			}
-//			authorities.add(new SimpleGrantedAuthority("ROLE_"+ sjRole.getRoleName()));
+			// authorities.add(new SimpleGrantedAuthority("ROLE_"+
+			// sjRole.getRoleName()));
 		}
 		// session.setAttribute("sjMenus", menus);
-//		 RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
-//		    if (attribs instanceof NativeWebRequest) {
-//		        HttpServletRequest request = (HttpServletRequest) ((NativeWebRequest) attribs).getNativeRequest();
-//		        request.getSession().setAttribute("sjMenus", menus);
-//		    }
-//		    if (RequestContextHolder.getRequestAttributes() != null) {
-//		        HttpServletRequest request = ((ServletRequestAttributes) attribs).getRequest();
-//		        request.getSession().setAttribute("sjMenus", menus);
-//		    }
-		    
-//		UserDetails userInfo = UserInfo.builder().username(appUser.getAccount()).password("{noop}" + appUser.getPwd())
-//				.roles(roles.stream().toArray(String[]::new)).authorities(authorities).build();
-		UserInfo userInfo = new UserInfo(appUser.getAccount(), "{noop}"+appUser.getPwd(), authorities);
-		
+		// RequestAttributes attribs =
+		// RequestContextHolder.getRequestAttributes();
+		// if (attribs instanceof NativeWebRequest) {
+		// HttpServletRequest request = (HttpServletRequest) ((NativeWebRequest)
+		// attribs).getNativeRequest();
+		// request.getSession().setAttribute("sjMenus", menus);
+		// }
+		// if (RequestContextHolder.getRequestAttributes() != null) {
+		// HttpServletRequest request = ((ServletRequestAttributes)
+		// attribs).getRequest();
+		// request.getSession().setAttribute("sjMenus", menus);
+		// }
+
+		// UserDetails userInfo =
+		// UserInfo.builder().username(appUser.getAccount()).password("{noop}" +
+		// appUser.getPwd())
+		// .roles(roles.stream().toArray(String[]::new)).authorities(authorities).build();
+		UserInfo userInfo = new UserInfo(appUser.getAccount(), "{noop}" + appUser.getPwd(), authorities);
+
 		userInfo.setName(appUser.getName());
 		userInfo.setDep(appUser.getSjDep().getName());
 		userInfo.setMenus(rtnMenuInfo);
-//		UserDetails userInfo = userInfo1.builder().roles(roles.stream().toArray(String[]::new)).build();
+		// UserDetails userInfo =
+		// userInfo1.builder().roles(roles.stream().toArray(String[]::new)).build();
 		return userInfo;
 	}
 

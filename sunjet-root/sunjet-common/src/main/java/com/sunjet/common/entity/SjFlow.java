@@ -35,6 +35,9 @@ public class SjFlow extends GenericEntity {
 	@Column(name = "description")
 	private String description;
 
+	@Column(name = "flow_key")
+	private String flowKey;
+
 	@Column(name = "flow_status")
 	@Enumerated(EnumType.STRING)
 	private FlowStatusEnum flowStatus;
@@ -89,6 +92,14 @@ public class SjFlow extends GenericEntity {
 
 	public void setSjFlowNode(SjFlowNode sjFlowNode) {
 		this.sjFlowNode = sjFlowNode;
+	}
+
+	public String getFlowKey() {
+		return flowKey;
+	}
+
+	public void setFlowKey(String flowKey) {
+		this.flowKey = flowKey;
 	}
 
 }

@@ -1,5 +1,6 @@
 INSERT INTO SJ_FLOW (oid, name, code, description, flow_status, sj_Flow_Node, create_id, create_datetime, update_id, update_datetime) VALUES 
-  ('F1','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', '2020-02-16 00:00:00.00', null, null);
+  ('F1','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('F2','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_FLOW_RULE (oid, sj_Flow_Process, sj_Flow_Node, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('FR1', 'FP1', null, 'super_man', '2020-02-16 00:00:00.00', null, null);
@@ -9,6 +10,9 @@ INSERT INTO SJ_FLOW_PROCESS (oid, handler_User, SJ_FLOW_RULE, sj_Flow_Node, crea
 
 INSERT INTO SJ_FLOW_NODE (oid, name, code, dec, sj_Flow, sj_Flow_Process, sj_Flow_Rule, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('FN1','請假審核節點一', 'LEAVE_NOTE_1', '請假審核一級節點', 'F1', 'FP1', 'FR1', 'super_man', '2020-02-16 00:00:00.00', null, null);
+  
+INSERT INTO SJ_APPLY (oid, name, code, flow_key, ordinary, apply_status, apply_user, create_id, create_datetime, update_id, update_datetime) VALUES 
+  ('A1','申請單一', 'APPLY_1', '20200307001admin', '1', 'A', 'admin', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_CALENDAR (oid, calendar_date, is_holiday, day_of_week, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('1','2020-03-3', 'N', 'SUNDAY', 'super_man', '2020-02-16 00:00:00.00', null, null),
@@ -76,8 +80,8 @@ INSERT INTO SJ_ROLE_MENU_REL (oid, sj_role, sj_menu, create_id, create_datetime,
   ('R1','reviewer','M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('R0','reviewer','P', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
-INSERT INTO SJ_LEAVE (OID, SJ_USER, DEP , LEAVE_TYPE , START_DATETIME, END_DATETIME , LEAVE_STATUS, SJ_FLOW, create_id, create_datetime, update_id, update_datetime) VALUES
-  ('1','1','部門','A', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', 'F1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+INSERT INTO SJ_LEAVE (OID, SJ_USER, DEP , LEAVE_TYPE , START_DATETIME, END_DATETIME , LEAVE_STATUS, SJ_APPLY, create_id, create_datetime, update_id, update_datetime) VALUES
+  ('1','1','部門','A', '2019-09-17 08:30:00.00', '2019-09-20 18:30:00.00','A', 'A1', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('2','1','部門','A', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('3','2','部門','A', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('4','1','部門','A', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, 'super_man', '2020-02-16 00:00:00.00', null, null),

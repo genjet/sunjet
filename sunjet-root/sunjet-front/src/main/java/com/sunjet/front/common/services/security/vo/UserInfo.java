@@ -1,20 +1,21 @@
 package com.sunjet.front.common.services.security.vo;
+
 import java.util.Collection;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-public class UserInfo extends  User{
+public class UserInfo extends User {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7908268797043419113L;
-	private Set<MenuInfo> menus ;
+	private Set<MenuInfo> menus;
 	private String name;
 	private String dep;
-	
+
 	public UserInfo(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
 	}
@@ -42,6 +43,5 @@ public class UserInfo extends  User{
 	public void setDep(String dep) {
 		this.dep = dep;
 	}
-
 
 }

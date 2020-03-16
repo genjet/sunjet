@@ -13,7 +13,7 @@ CREATE TABLE SJ_FLOW_RULE (
 DROP TABLE IF EXISTS SJ_FLOW_PROCESS;
 CREATE TABLE SJ_FLOW_PROCESS (
   oid VARCHAR(32)   PRIMARY KEY,
-  handler_User NVARCHAR(100) NOT NULL,
+  handler_user NVARCHAR(50) NOT NULL,
   sj_flow_node VARCHAR(32),
   sj_Flow_rule VARCHAR(32),
   
@@ -47,6 +47,24 @@ CREATE TABLE SJ_FLOW (
   description NVARCHAR(500),
   flow_status VARCHAR(1),
   sj_Flow_Node VARCHAR(32),
+  flow_key VARCHAR(32),
+  
+  create_id   VARCHAR(10) NOT NULL,
+  create_datetime DATETIME NOT NULL,
+  update_id VARCHAR(10),
+  update_datetime DATETIME,
+  
+);
+
+DROP TABLE IF EXISTS SJ_APPLY;
+CREATE TABLE SJ_APPLY (
+  oid VARCHAR(32)   PRIMARY KEY,
+  name NVARCHAR(200),
+  code VARCHAR(32),
+  flow_key VARCHAR(32) NOT NULL,
+  ordinary INTEGER NOT NULL,
+  apply_status VARCHAR(1),
+  apply_user NVARCHAR(50),
   
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,
@@ -168,7 +186,7 @@ CREATE TABLE SJ_LEAVE (
   start_dateTime datetime NOT NULL,
   end_dateTime datetime NOT NULL,
   leave_status VARCHAR(1) NOT NULL,
-  sj_flow VARCHAR(32),
+  sj_apply VARCHAR(32),
 
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,

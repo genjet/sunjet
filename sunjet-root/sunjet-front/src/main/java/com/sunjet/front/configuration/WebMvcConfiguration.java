@@ -22,13 +22,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		String[] patterns = new String[] { "/login", "/logout" };
+		String[] patterns = new String[] { "/login", "/logout", "/webjars" };
 		registry.addInterceptor(platformInterceptor).addPathPatterns("/**").excludePathPatterns(patterns);
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/static/**", "/webjars/**").addResourceLocations("classpath:/static/", "classpath:/META-INF/resources/webjars/");
 	}
 
 	// @Override
