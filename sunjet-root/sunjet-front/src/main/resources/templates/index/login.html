@@ -1,34 +1,64 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>登入</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <script type="text/javascript" src="/static/js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+<title>登入</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css">
+<link th:href="@{/webjars/bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" />
+<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script th:src="@{/webjars/bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/webjars/bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-TW.js}"></script>
 </head>
 <body>
-<div class="container">
-    <h1>登入</h1>
-    <div th:if="${param.error}" class="alert alert-danger" role="alert">
-        用户名或密码错误
-    </div>
-    <form method="post" th:action="@{/auth/login}">
-        <div class="form-group">
-            <label for="username">用户名</label>
-            <input name="username" type="text" class="form-control" id="username" placeholder="输入用户名" value="admin">
+ <div class="container">
+  <h1>登入</h1>
+  <div th:if="${param.error}" class="alert alert-danger" role="alert">用户名或密码错误</div>
+  <form method="post" th:action="@{/auth/login}">
+   <div class="form-group">
+    <label for="username">用户名</label>
+    <input name="username" type="text" class="form-control" id="username" placeholder="输入用户名" value="admin">
+   </div>
+   <div class="form-group">
+    <label for="password">密码</label>
+    <input name="password" type="password" class="form-control" id="password" placeholder="输入密码" value="admin">
+   </div>
+   <div class="form-group form-check">
+    <input name="remember-me" type="checkbox" class="form-check-input" id="remember">
+    <label class="form-check-label" for="remember">记住密码</label>
+   </div>
+  <div class='col-sm-6'>
+            <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="password">密码</label>
-            <input name="password" type="password" class="form-control" id="password" placeholder="输入密码" value="admin">
-        </div>
-        <div class="form-group form-check">
-            <input name="remember-me" type="checkbox" class="form-check-input" id="remember">
-            <label class="form-check-label" for="remember">记住密码</label>
-        </div>
-        <button type="submit" class="btn btn-primary">登入</button>
-    </form>
-</div>
+   <button type="submit" class="btn btn-primary">登入</button>
+  </form>
+ </div>
 </body>
+<script type="text/javascript">
+	$(function() {
+		$('#datetimepicker1').datetimepicker({
+			format : "yyyy-mm-dd hh:00",
+			autoclose : true,
+			startDate : "today",
+			calendarWeeks : true,
+			todayHighlight : true,
+			language : 'zh-TW',
+			minView: 1
+       });
+		
+
+// 		$('#datetimepicker1').datetimepicker().on("changeDate", function(ev) {
+// 			  $('#datetimepicker1').val(ev.date.format("yyyy-mm-dd HH:mm"));
+//         });
+		
+	});
+</script>
 </html>

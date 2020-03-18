@@ -13,7 +13,14 @@
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
-
+<div class="form-group">
+    <div class="input-group date" id="datetimepicker1">
+        <input type="text" class="form-control" />
+        <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+        </span>
+    </div>
+</div>
           <!-- Content Row -->
           <div class="row">
 
@@ -295,6 +302,14 @@
   <script src="/static/js/demo/chart-area-demo.js"></script>
   <script src="/static/js/demo/chart-pie-demo.js"></script>
   <script src="/static/js/demo/chart-bar-demo.js"></script>
+
+  <script type="text/javascript">
+    $(function () {
+    	 $('#datetimepicker1').datetimepicker({
+    		 language: 'zh-TW',
+      });
+    });
+</script>
 </th:block>
 
 </html>
