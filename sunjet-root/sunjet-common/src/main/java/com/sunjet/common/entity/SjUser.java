@@ -1,5 +1,6 @@
 package com.sunjet.common.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "sj_user")
-public class SjUser extends GenericEntity{
+public class SjUser extends GenericEntity {
 	@Id
 	@Column(name = "oid")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "jpa-uuid")
@@ -32,19 +33,23 @@ public class SjUser extends GenericEntity{
 	@Column(name = "enabled")
 	@Type(type = "yes_no")
 	private boolean enabled = Boolean.TRUE;
-	
+
+	@Column(name = "offdate")
+	private LocalDate offdate;
+
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_dep")
 	private SjDep sjDep;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sjUser")
 	private List<SjLeave> sjLeave;
-	
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sjUser", orphanRemoval = true)
 	private List<SjUserRoleRel> sjUserRoleRels;
-	
-	
-	
+
+	// @OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "sjUserLeaveDetail", referencedColumnName = "oid")
+	// private SjUserLeaveDetail sjUserLeaveDetail;
 
 	public String getOid() {
 		return oid;
@@ -109,5 +114,21 @@ public class SjUser extends GenericEntity{
 	public void setSjUserRoleRels(List<SjUserRoleRel> sjUserRoleRels) {
 		this.sjUserRoleRels = sjUserRoleRels;
 	}
+
+	public LocalDate getOffdate() {
+		return offdate;
+	}
+
+	public void setOffdate(LocalDate offdate) {
+		this.offdate = offdate;
+	}
+
+	// public SjUserLeaveDetail getSjUserLeaveDetail() {
+	// return sjUserLeaveDetail;
+	// }
+	//
+	// public void setSjUserLeaveDetail(SjUserLeaveDetail sjUserLeaveDetail) {
+	// this.sjUserLeaveDetail = sjUserLeaveDetail;
+	// }
 
 }

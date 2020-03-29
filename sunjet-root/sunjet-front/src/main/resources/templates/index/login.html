@@ -3,62 +3,105 @@
 <head>
 <title>登入</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css">
-<link th:href="@{/webjars/bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" />
-<script src="/webjars/jquery/3.4.1/jquery.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script th:src="@{/webjars/bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.min.js}"></script>
-<script th:src="@{/webjars/bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-TW.js}"></script>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css">
+<link
+	th:href="@{/webjars/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}"
+	rel="stylesheet" />
+	
+   <link th:href="@{/webjars/bootstrap-glyphicons/bdd2cbfba0/css/bootstrap-glyphicons.css}" rel="stylesheet" />		
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script
+	th:src="@{/webjars/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<script
+	th:src="@{/webjars/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js}"></script>
+	
 </head>
 <body>
- <div class="container">
-  <h1>登入</h1>
-  <div th:if="${param.error}" class="alert alert-danger" role="alert">用户名或密码错误</div>
-  <form method="post" th:action="@{/auth/login}">
-   <div class="form-group">
-    <label for="username">用户名</label>
-    <input name="username" type="text" class="form-control" id="username" placeholder="输入用户名" value="admin">
-   </div>
-   <div class="form-group">
-    <label for="password">密码</label>
-    <input name="password" type="password" class="form-control" id="password" placeholder="输入密码" value="admin">
-   </div>
-   <div class="form-group form-check">
-    <input name="remember-me" type="checkbox" class="form-check-input" id="remember">
-    <label class="form-check-label" for="remember">记住密码</label>
-   </div>
-  <div class='col-sm-6'>
-            <div class="form-group">
-                <div class='input-group date' id='datetimepicker1'>
-                    <input type='text' class="form-control" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-   <button type="submit" class="btn btn-primary">登入</button>
-  </form>
- </div>
+	<div class="container">
+		<h1>登入</h1>
+		<div th:if="${param.error}" class="alert alert-danger" role="alert">用户名或密码错误</div>
+		<form method="post" th:action="@{/auth/login}">
+			<div class="form-group">
+				<label for="username">用户名</label> <input name="username" type="text"
+					class="form-control" id="username" placeholder="输入用户名"
+					value="admin">
+			</div>
+			<div class="form-group">
+				<label for="password">密码</label> <input name="password"
+					type="password" class="form-control" id="password"
+					placeholder="输入密码" value="admin">
+			</div>
+			<div class="form-group form-check">
+				<input name="remember-me" type="checkbox" class="form-check-input"
+					id="remember"> <label class="form-check-label"
+					for="remember">记住密码</label>
+			</div>
+			<div class='col-sm-6'>
+				<div class="form-group">
+					<div class='input-group date' id='datetimepicker1'>
+						<input type='text' class="form-control" />
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+				</div>
+			</div>
+			<button type="submit" class="btn btn-primary">登入</button>
+		</form>
+
+	
+<input size="16" type="text" id="datetimeStart" readonly class="form_datetime">
+--
+<input size="16" type="text" id="datetimeEnd" readonly class="form_datetime">
+		
+	</div>
 </body>
 <script type="text/javascript">
+//https://www.bootcss.com/p/bootstrap-datetimepicker/
 	$(function() {
 		$('#datetimepicker1').datetimepicker({
-			format : "yyyy-mm-dd hh:00",
-			autoclose : true,
-			startDate : "today",
-			calendarWeeks : true,
-			todayHighlight : true,
+			language : 'zh-TW',//顯示中文
+// 			format : 'yyyy/mm/dd hh:00',//顯示格式
+			minView : "0",//設定只顯示到月份
+			minuteStep: 30,
+			initialDate : new Date(),//初始化當前日期
+			autoclose : true,//選中自動關閉
+			todayBtn : true,
+			forceParse: false
+		//顯示今日按鈕
+		});
+
+		$("#datetimeStart").datetimepicker({
+			format : 'yyyy-mm-dd hh:00',
+			minView : 'day',
 			language : 'zh-TW',
-			minView: 1
-       });
+			autoclose : true,
+			ignoreReadonly : true,
+			startDate : new Date()
+		}).on(
+				"click",
+				function() {
+					$("#datetimeStart").datetimepicker("setEndDate",
+							$("#datetimeEnd").val())
+				});
+		$("#datetimeEnd").datetimepicker({
+			format : 'yyyy-mm-dd hh:00',
+			minView : 'day',
+			language : 'zh-TW',
+			autoclose : true,
+			ignoreReadonly : true,
+			startDate : new Date()
+		}).on(
+				"click",
+				function() {
+					$("#datetimeEnd").datetimepicker("setStartDate",
+							$("#datetimeStart").val())
+				});
 		
 
-// 		$('#datetimepicker1').datetimepicker().on("changeDate", function(ev) {
-// 			  $('#datetimepicker1').val(ev.date.format("yyyy-mm-dd HH:mm"));
-//         });
-		
 	});
 </script>
 </html>

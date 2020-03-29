@@ -5,139 +5,157 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<!-- Search form -->
-		<form id="search-form">
-			<div class="row">
-				<div class="col-sm-4 mb-3">
-					<input class="form-control" id="name" type="text" placeholder="Search" aria-label="Search">
-				</div>
-				<div class="col-sm-4 mb-3">
-					<input class="form-control" id="id" type="text" placeholder="Search" aria-label="Search">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+						<h6 class="m-0 font-weight-bold text-primary">個人假單查詢</h6>
+					</div>
+					<div class="card-body">
+						<!-- Search form -->
+						<form id="search-form" action="#" th:action="@{/addLeave}" th:object="${leaveVO}" method="post">
+							<div class="row">
+								<div class="col-md-4 mb-1">
+									<select class="form-control selectpicker" id="leaveTypeSelect">
+									 	<option value="">Nothing selected</option>
+										<option th:each="enmu : ${T(com.sunjet.common.entity.enumeration.LeaveTypeEnum).values()}" 
+											th:value="${enmu}" th:text="${enmu.name}">
+										</option>
+									</select>
+								</div>
+								<div class="col-md-4 mb-1">
+<!-- 									<input class="form-control" id="id" type="text" placeholder="Search" aria-label="Search"> -->
+									<div id="leaveableDayDiv" th:fragment="leaveableDayDiv">
+										<label class="control-label">
+											天數:
+												<span id="leaveDayId" th:if="${leaveableDay} ne null" th:text="${leaveableDay}"></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 mb-1">
+									<div class='input-group date' id="startDate">
+										<input type='text' readonly class="form-control" placeholder="startDate" aria-label="startDate" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-1">
+									<div class='input-group date' id="endDate">
+										<input type='text' readonly class="form-control" placeholder="endDate" aria-label="endDate" />
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4 mb-1"></div>
+								<div class="col-md-4 mb-1">
+									<button type="submit" id="btn-search" class="btn btn-primary">Search</button>
+								</div>
+							</div>
+						</form>
+					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-sm-4 mb-3">
-					<input class="form-control" id="cc" type="text" placeholder="Search" aria-label="Search">
-				</div>
-				<div class="col-sm-4 mb-3">
-				 <input class="form-control form_date" type="text" id="dateTime" name="dateTime" /> 
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-4 mb-3"></div>
-				<div class="col-sm-4 mb-3">
-					<button type="submit" id="btn-search" class="btn btn-primary">Search</button>
-				</div>
-			</div>
-		</form>
-
+		</div>
 		<div class="container-fluid">
-
-		<!-- /.container-fluid -->
-	</div>
+		 <button id="button">get time</button>
+			<!-- /.container-fluid -->
+		</div>
 </body>
 <th:block layout:fragment="bodyAssets">
 	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#INPUT_ID').datetimepicker();
-			$('#btn1').click(function () {
-		    	alert("ssssqqqqqqqqqqqq");
-// 		        e.preventDefault();
- var account = $("#account").val();
-	                $.ajax({
-	                    url: '/yourMapping1',
-	                    type: 'post',
-	                    dataType: 'json',
-	                    contentType: 'application/json',
-	                    data: JSON.stringify({account : account}),
-	                    async: true,
-	                    success: function(data){
-	                    	alert("iuytrewertyuioiuy");
-	                        if(data != null){
-	                            alert('flag : ' + data.flag + " , hintMessage : " + data.hintMessage);
-	                        }
-	                    },
-	                    error:function(e){
-	                    	console.log(e);
-	                    	alert(e.responseText);
-	                    }
-	                });
+		$(function() {
+			// 			var d = new Date();
+			// 			var month = d.getMonth() + 1;
+			// 			var day = d.getDate();
+
+			// 			var output = d.getFullYear() + '-' + (month < 10 ? '0' : '')
+			// 					+ month + '-' + (day < 10 ? '0' : '') + day;
+
+			$('#startDate').datetimepicker({
+				format : "yyyy-mm-dd hh:00",
+				autoclose : true,
+				ignoreReadonly : true,
+				startDate : new Date(),
+				todayHighlight : true,
+				minView : 'day',
+				language : 'zh-TW'
+			}).on(
+				"click",
+				function() {
+					$("#startDate").datetimepicker("setEndDate",$('#endDate').children('.form-control').val());
+			});
+			// 			$("#startDate_input").val(output + " 08:00");
+
+			$('#endDate').datetimepicker({
+				format : "yyyy-mm-dd hh:00",
+				autoclose : true,
+				ignoreReadonly : true,
+				minView : 'day',
+				startDate : new Date(),
+				todayHighlight : true,
+				language : 'zh-TW'
+			}).on(
+				"click",
+				function() {
+					$("#endDate").datetimepicker("setStartDate", $('#startDate').children('.form-control').val());
+			});
+			$('#endDate,#startDate').change(function(){
+				gettimes();
 			});
 			
-			var $form = $('#userInfo');
-			  $form.on('submit', function(e) {
-				  var account = $("#account").val();
-				  var name = $("#name").val();
-			    e.preventDefault();
-			    alert(6666666);
-			    $.ajax({
-			    	contentType: "application/json; charset=utf-8",
-			    	url: $form.attr('action'),
-			      type: 'post',
-// 			      data: $form.serialize(),
-  				 data: JSON.stringify({account : account,name : name}),
-			      success: function(response) {
-			        // if the response contains any errors, replace the form
-			        console.log(response);
-			         alert(response);
-			        if ($(response).find('.has-error').length) {
-			    	  
-			          $form.replaceWith(response);
-			        } else {
-			        	 alert(1111111111);
-			          // in this case we can actually replace the form
-			          // with the response as well, unless we want to 
-			          // show the success message a different way
-			        }
-			      }, 
-			      error:function(e){
-                  	console.log(e);
-                	alert(e.responseText);
-                }
-			  });
-			  });
-			 $('#btn').click(function () {
-		            var url = '/blog/ajaxTest';
-		            $('#div1').load(url);
+			$('#leaveTypeSelect').change(function() {
+				if ("" != $(this).find(":selected").val()) {
+					var leaveType = $(this).find(":selected").val();
+					$.ajax({
+						url : '/getLeaveableDays',
+						type : 'post',
+						data : {
+							'leaveType' : leaveType
+						},
+						success : function(data) {
+							$('#leaveableDayDiv').html(data);
+						}
+					})
+					// var url = '/ajaxTest';
+					//         $.ajax({
+					//             url: url,
+					//             type: 'post',
+					//             data: {
+					//                 a:'123'
+					//             },
+					//             success: function (data) {
+					//             	alert(data);
+					//                 $('#leaveableDayDiv').html(data);
+					//             }
+					//         })
+				}
+			});
 
-		        });
-			 
-// 			$('#btn1').click(function () {
-				
-// 				alert($('#yourFormId').serialize());
-// 		        var url = '/yourMapping';
-// 		        $.ajax({
-// 		            url: url,
-// 		            type: 'post',
-// 		            data: $('#yourFormId').serialize(),
-// 		            success: function (data) {
-// 		            	alert(data);
-// 		                $('#div1').html(data);
-// 		            }
-// 		        })
-// 		    });
-	
-// 			$("#yourFormId").submit(function (e) {
-// 			        e.preventDefault();
-// 			    	alert("xxxxxxxxx");
-// 			    	$.ajax({
-// 			             url : $form.attr('action'),
-// 			             type : 'post',
-// 			             data : $form.serialize(),
-// 			             success : function(response) {
-// 			                 if ($(response).find('.has-error').length) {
-// 			                     $form.replaceWith(response);
-// 			                 }
-// 			                 else{
-// 			                     $("#ajaxLoadedContent").replaceWith(response);
-// 			                 }
-// 			             }
-// 			         });
-// 			    });
-			
-			
 		});
+	function gettimes() {
+
+		//計算出相差天數  
+		var date01 = $('#startDate').children('.form-control').val();
+		var date02 = $("#endDate").children('.form-control').val();
+		if ("" != date01 && "" != date02) {
+			var date03 = new Date(date02).getTime() - new Date(date01).getTime(); //時間差的毫秒數
+			var days11 = Math.floor(date03 / (24 * 3600 * 1000))//天
+			var time11 = Math.floor(date03 / (3600 * 1000))//小時
+			alert('天:'+ days11 + '時:'+ time11);
+			if(days11 > 8){
+// 				alert(parseInt(days11/8));
+			}else{
+				
+			}
+		}
+		// $("#time").val(days11);
+	};
 	</script>
 </th:block>
-
 </html>

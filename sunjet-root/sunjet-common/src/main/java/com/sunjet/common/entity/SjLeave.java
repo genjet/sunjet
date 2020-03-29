@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.sunjet.common.entity.enumeration.LeaveStatusEnum;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 
@@ -41,6 +43,17 @@ public class SjLeave extends GenericEntity {
 	private LocalDateTime startDatetime;
 	@Column(name = "end_datetime")
 	private LocalDateTime endDatetime;
+	/**
+	 * 原因。
+	 */
+	@Column(name = "reason")
+	private String reason;
+	@Column(name = "leave_hours")
+	private int leaveHours;
+
+	@Column(name = "expire")
+	@Type(type = "yes_no")
+	private boolean expire = Boolean.FALSE;
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_apply")
@@ -108,6 +121,22 @@ public class SjLeave extends GenericEntity {
 
 	public void setSjApply(SjApply sjApply) {
 		this.sjApply = sjApply;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public int getLeaveHours() {
+		return leaveHours;
+	}
+
+	public void setLeaveHours(int leaveHours) {
+		this.leaveHours = leaveHours;
 	}
 
 }

@@ -129,6 +129,7 @@ CREATE TABLE SJ_USER (
   pwd VARCHAR(250) NOT NULL,
   enabled VARCHAR(1) NOT NULL,
   sj_dep VARCHAR(32),
+  offdate DATE NOT NULL,
   
   create_id   VARCHAR(10) ,
   create_datetime DATETIME ,
@@ -182,11 +183,14 @@ CREATE TABLE SJ_LEAVE (
   oid VARCHAR(32)   PRIMARY KEY,
   sj_user VARCHAR(250) NOT NULL,
   dep VARCHAR(250) NOT NULL,
-  leave_type VARCHAR(1) NOT NULL,
+  leave_type VARCHAR(20) NOT NULL,
   start_dateTime datetime NOT NULL,
   end_dateTime datetime NOT NULL,
   leave_status VARCHAR(1) NOT NULL,
   sj_apply VARCHAR(32),
+  reason VARCHAR(500),
+  leave_hours INTEGER NOT NULL,
+  expire VARCHAR(1) NOT NULL,
 
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,
