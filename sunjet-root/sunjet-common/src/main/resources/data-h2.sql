@@ -15,8 +15,8 @@ INSERT INTO SJ_APPLY (oid, name, code, flow_key, ordinary, apply_status, apply_u
   ('A1','申請單一', 'APPLY_1', '20200307001admin', '1', 'A', 'admin', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_CALENDAR (oid, calendar_date, is_holiday, day_of_week, create_id, create_datetime, update_id, update_datetime) VALUES 
-  ('1','2020-03-3', 'N', 'SUNDAY', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('2','2020-03-4', 'Y', 'MONDAY', 'super_man', '2020-02-16 00:00:00.00', null, null);
+  ('1','2019-12-30', 'N', 'SUNDAY', 'super_man', '2020-02-16 00:00:00.00', null, null);
+--  ('2','2020-03-4', 'Y', 'MONDAY', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO sj_dep (oid, name, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('1','經濟部', 'super_man', '2020-02-16 00:00:00.00', null, null),
@@ -64,6 +64,7 @@ INSERT INTO SJ_USER_ROLE_REL (oid, sj_user, sj_role, create_id, create_datetime,
   ('G','/','個人系統', '3', null, 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('G1','/leave','請假管理', '1', 'G', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('G2','/leave2','請假申請', '2', 'G', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('G3','/createCalendar','產一年假日', '3', 'G', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('S','/','工務部門', '4', null, 'super_man', '2020-02-16 00:00:00.00', null, null);
 
 INSERT INTO SJ_ROLE_MENU_REL (oid, sj_role, sj_menu, create_id, create_datetime, update_id, update_datetime) VALUES 
@@ -76,6 +77,7 @@ INSERT INTO SJ_ROLE_MENU_REL (oid, sj_role, sj_menu, create_id, create_datetime,
   ('A6','admin','G', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('A7','admin','G1', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('A7-1','admin','G2', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('A7-2','admin','G3', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('A8','admin','S', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('U1','user','M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('E1','editor','M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
@@ -83,18 +85,18 @@ INSERT INTO SJ_ROLE_MENU_REL (oid, sj_role, sj_menu, create_id, create_datetime,
   ('R0','reviewer','P', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_LEAVE (OID, SJ_USER, DEP , LEAVE_TYPE , START_DATETIME, END_DATETIME , LEAVE_STATUS, SJ_APPLY, REASON, LEAVE_HOURS, expire, create_id, create_datetime, update_id, update_datetime) VALUES
-  ('L11','1','部門','BUSINESS', '2019-09-17 08:30:00.00', '2019-09-20 18:30:00.00','A', 'A1', '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L12','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L13','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L14','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L15','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L16','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L17','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L18','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L19','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L10','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L21','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L22','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L23','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L24','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null);
+  ('L11','1','部門','SPECIAL', '2019-09-17 08:30:00.00', '2019-09-20 18:30:00.00','A', 'A1', '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L12','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L13','2','部門','SPECIAL', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L14','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L15','2','部門','SPECIAL', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L16','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L17','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L18','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L19','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L10','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L21','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L22','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L23','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L24','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null);
   

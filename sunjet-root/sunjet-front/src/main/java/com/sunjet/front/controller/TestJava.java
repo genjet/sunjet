@@ -1,10 +1,6 @@
 package com.sunjet.front.controller;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Map;
-
-import com.sunjet.front.util.LeaveUtil;
+import java.math.BigDecimal;
 
 public class TestJava {
 
@@ -15,12 +11,14 @@ public class TestJava {
 		// System.out.println(string);
 		//
 		// }
-		LocalDate today = LocalDate.now();
-		Duration duration = Duration.between((today.minusYears(1)).atStartOfDay(), today.atStartOfDay());
-		long d = duration.toDays();
-		System.out.println(d);
-		Map<String, Object> map = LeaveUtil.countNewAN(LocalDate.of(2019, 9, 30));
-		System.out.println(map.get("hours"));
+		// LocalDate today = LocalDate.now();
+		// Duration duration =
+		// Duration.between((today.minusYears(1)).atStartOfDay(),
+		// today.atStartOfDay());
+		// long d = duration.toDays();
+		// System.out.println(d);
+		int iii = (new BigDecimal(23).divide(new BigDecimal(8), 0, BigDecimal.ROUND_DOWN)).intValue();
+		System.out.println(iii);
 	}
 
 }

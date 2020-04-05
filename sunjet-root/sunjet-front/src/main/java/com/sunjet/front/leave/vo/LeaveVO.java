@@ -2,6 +2,8 @@ package com.sunjet.front.leave.vo;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.sunjet.common.entity.enumeration.LeaveStatusEnum;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 
@@ -15,8 +17,11 @@ public class LeaveVO {
 	private String dep;
 	private LeaveTypeEnum leaveType;
 	private LeaveStatusEnum leaveStatus;
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime startDate;
+	@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm")
 	private LocalDateTime endDate;
+	private double leaveHours;
 
 	public LeaveVO() {
 	}
@@ -83,6 +88,14 @@ public class LeaveVO {
 
 	public void setEndDate(LocalDateTime endDatetime) {
 		this.endDate = endDatetime;
+	}
+
+	public double getLeaveHours() {
+		return leaveHours;
+	}
+
+	public void setLeaveHours(double leaveHours) {
+		this.leaveHours = leaveHours;
 	}
 
 }

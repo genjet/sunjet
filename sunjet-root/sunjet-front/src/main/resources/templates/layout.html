@@ -18,7 +18,8 @@
     
   <!-- Custom styles for this page -->
   <link th:href="@{/webjars/datatables/css/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
-   <link th:href="@{/webjars/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}" rel="stylesheet"/>
+<!--    <link th:href="@{/webjars/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css}" rel="stylesheet"/> -->
+<link th:href="@{/static/css/bootstrap-datetimepicker.min.css}" rel="stylesheet" />
    <link th:href="@{/webjars/bootstrap-glyphicons/bdd2cbfba0/css/bootstrap-glyphicons.css}" rel="stylesheet" />	
 </head>
 
@@ -284,10 +285,14 @@
     <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
     <script th:src="@{/webjars/datatables/js/dataTables.bootstrap4.min.js}"></script>
     
-   <script th:src="@{/webjars/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script>
+<!--    <script th:src="@{/webjars/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js}"></script> -->
 <!--    <script th:src="@{/webjars/bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-TW.js"></script>     -->
-<script
-	th:src="@{/webjars/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js}"></script>   
+<!-- <script -->
+<!-- 	th:src="@{/webjars/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-TW.js}"></script>    -->
+<script th:src="@{/webjars/momentjs/min/moment.min.js}"></script>		
+<script th:src="@{/webjars/momentjs/min/moment-with-locales.min.js}"></script>
+<script th:src="@{/static/js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/webjars/font-awesome/js/all.js}"></script>
     <th:block layout:fragment = "bodyAssets">
 
    </th:block>

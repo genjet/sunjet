@@ -11,23 +11,28 @@
 					<div class="card-header py-3">
 						<h6 class="m-0 font-weight-bold text-primary">個人假單查詢</h6>
 					</div>
-					<div class="card-body">
 						<!-- Search form -->
 						<form id="search-form" action="#" th:action="@{/addLeave}" th:object="${leaveVO}" method="post">
+					<div class="card-body"><span th:field=" *{userName}"  th:text="${#authentication.getPrincipal().getName()}"></span>
+					<input type="text" class="form-control" th:field=" *{userAccount}" placeholder="userAccount" />
 							<div class="row">
 								<div class="col-md-4 mb-1">
-									<select class="form-control selectpicker" id="leaveTypeSelect">
+									<select class="form-control selectpicker" id="leaveTypeSelect"  th:field="*{leaveType}">
 									 	<option value="">Nothing selected</option>
-										<option th:each="enmu : ${T(com.sunjet.common.entity.enumeration.LeaveTypeEnum).values()}" 
-											th:value="${enmu}" th:text="${enmu.name}">
+										<option th:each="leaveType : ${T(com.sunjet.common.entity.enumeration.LeaveTypeEnum).values()}" 
+											 th:id="${{leaveType}}" th:value="${leaveType}" th:text="${leaveType.name}">
 										</option>
 									</select>
+<!-- <div th:each="leaveType : ${T(com.sunjet.common.entity.enumeration.LeaveTypeEnum).values()}"> -->
+<!--     <input  id="leaveTypeSelect" type="checkbox" th:id="${{leaveType}}" th:value="${{leaveType}}" th:field="*{leaveType}" /> -->
+<!--     <label th:for="${{leaveType}}">Shipping Types</label> -->
+<!-- </div> -->
 								</div>
 								<div class="col-md-4 mb-1">
 <!-- 									<input class="form-control" id="id" type="text" placeholder="Search" aria-label="Search"> -->
 									<div id="leaveableDayDiv" th:fragment="leaveableDayDiv">
 										<label class="control-label">
-											天數:
+											可請時數:
 												<span id="leaveDayId" th:if="${leaveableDay} ne null" th:text="${leaveableDay}"></span>
 										</label>
 									</div>
@@ -36,7 +41,7 @@
 							<div class="row">
 								<div class="col-md-4 mb-1">
 									<div class='input-group date' id="startDate">
-										<input type='text' readonly class="form-control" placeholder="startDate" aria-label="startDate" />
+										<input type='text' class="form-control" name="startDate" th:field=" *{startDate}" placeholder="startDate" aria-label="startDate" />
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
@@ -44,17 +49,26 @@
 								</div>
 								<div class="col-md-4 mb-1">
 									<div class='input-group date' id="endDate">
-										<input type='text' readonly class="form-control" placeholder="endDate" aria-label="endDate" />
+										<input type='text' class="form-control" th:field=" *{endDate}" placeholder="endDate" aria-label="endDate" />
 										<span class="input-group-addon">
 											<span class="glyphicon glyphicon-calendar"></span>
 										</span>
+									</div>
+								</div>
+								<div class="col-md-4 mb-1">
+									<div id="leaveDayHourDiv" th:fragment="leaveDayHourDiv">
+										<label class="control-label">
+										
+<!-- 												<span id="day" th:if="${day} ne null" th:text="${day}"></span>天 -->
+												<span id="leaveHours" th:if="${leaveHours} ne null" th:text="${leaveHours}"></span>小時
+										</label>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-4 mb-1"></div>
 								<div class="col-md-4 mb-1">
-									<button type="submit" id="btn-search" class="btn btn-primary">Search</button>
+									<button type="submit" id="btn-create"  class="btn btn-primary">create</button>
 								</div>
 							</div>
 						</form>
@@ -70,44 +84,37 @@
 <th:block layout:fragment="bodyAssets">
 	<script type="text/javascript">
 		$(function() {
-			// 			var d = new Date();
-			// 			var month = d.getMonth() + 1;
-			// 			var day = d.getDate();
-
-			// 			var output = d.getFullYear() + '-' + (month < 10 ? '0' : '')
-			// 					+ month + '-' + (day < 10 ? '0' : '') + day;
-
 			$('#startDate').datetimepicker({
-				format : "yyyy-mm-dd hh:00",
-				autoclose : true,
-				ignoreReadonly : true,
-				startDate : new Date(),
-				todayHighlight : true,
-				minView : 'day',
-				language : 'zh-TW'
-			}).on(
-				"click",
-				function() {
-					$("#startDate").datetimepicker("setEndDate",$('#endDate').children('.form-control').val());
-			});
-			// 			$("#startDate_input").val(output + " 08:00");
-
-			$('#endDate').datetimepicker({
-				format : "yyyy-mm-dd hh:00",
-				autoclose : true,
-				ignoreReadonly : true,
-				minView : 'day',
-				startDate : new Date(),
-				todayHighlight : true,
-				language : 'zh-TW'
-			}).on(
-				"click",
-				function() {
-					$("#endDate").datetimepicker("setStartDate", $('#startDate').children('.form-control').val());
-			});
-			$('#endDate,#startDate').change(function(){
-				gettimes();
-			});
+	 			disabledTimeIntervals: [
+	 				[moment().hour(0), moment().hour(7).minutes(30)],
+	 				[moment().hour(17).minutes(0), moment().hour(24)]
+	 			],
+	            enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+	            //minDate: new Date(),
+	 	        	stepping: 60,
+		            locale: moment.locale('zh-tw'),
+		        });
+		        $('#endDate').datetimepicker({
+		             disabledTimeIntervals: [
+		  				[moment().hour(0), moment().hour(7).minutes(30)],
+		  				[moment().hour(17).minutes(0), moment().hour(24)]
+		  			],
+		             enabledHours: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+		        	stepping: 60,
+		            locale: moment.locale('zh-tw'),
+		            useCurrent: false //Important! See issue #1075
+		        });
+		        $("#startDate").on("dp.change", function (e) {
+		            $('#endDate').data("DateTimePicker").minDate(e.date);
+		            if(moment(e.date).isBefore(moment())){
+		            	alert("is before today!");
+		            }
+		            ajaxGetTimes();
+		        });
+		        $("#endDate").on("dp.change", function (e) {
+		            $('#startDate').data("DateTimePicker").maxDate(e.date);
+		            ajaxGetTimes();
+		        });
 			
 			$('#leaveTypeSelect').change(function() {
 				if ("" != $(this).find(":selected").val()) {
@@ -120,42 +127,55 @@
 						},
 						success : function(data) {
 							$('#leaveableDayDiv').html(data);
+							checkCreate();
 						}
 					})
-					// var url = '/ajaxTest';
-					//         $.ajax({
-					//             url: url,
-					//             type: 'post',
-					//             data: {
-					//                 a:'123'
-					//             },
-					//             success: function (data) {
-					//             	alert(data);
-					//                 $('#leaveableDayDiv').html(data);
-					//             }
-					//         })
 				}
 			});
-
-		});
-	function gettimes() {
-
-		//計算出相差天數  
-		var date01 = $('#startDate').children('.form-control').val();
-		var date02 = $("#endDate").children('.form-control').val();
-		if ("" != date01 && "" != date02) {
-			var date03 = new Date(date02).getTime() - new Date(date01).getTime(); //時間差的毫秒數
-			var days11 = Math.floor(date03 / (24 * 3600 * 1000))//天
-			var time11 = Math.floor(date03 / (3600 * 1000))//小時
-			alert('天:'+ days11 + '時:'+ time11);
-			if(days11 > 8){
-// 				alert(parseInt(days11/8));
-			}else{
-				
-			}
+			
+	function checkCreate(){
+			var leaveableDays = parseInt($('#leaveDayId').html());
+			var leaveDays = parseInt($('#leaveHours').html());
+		if(leaveableDays >= leaveDays){
+// 			$('#btn-create').attr('disabled', false);
+		}else{
+// 			$('#btn-create').attr('disabled', true);
 		}
-		// $("#time").val(days11);
+	}
+		
+	function ajaxGetTimes() {
+		//計算出相差天數  
+		var dateS = $('#startDate').children('.form-control').val();
+		var dateE = $("#endDate").children('.form-control').val();
+		if ("" != dateS && "" != dateE) {
+			$.ajax({
+				url : '/getLeaveDays',
+				type : 'post',
+				data : {
+					'startDate' : dateS,
+					'endDate' : dateE
+				},
+				success : function(data) {
+					$('#leaveDayHourDiv').html(data);
+					checkCreate();
+				}
+			})
+// 			var date03 = new Date(dateE).getTime() - new Date(dateS).getTime(); //時間差的毫秒數
+// 			var days11 = Math.floor(date03 / (24 * 3600 * 1000))//天
+// 			var time11 = Math.floor(date03 / (3600 * 1000))//小時
+// 			var rtnVal = ('天:'+ days11 + '時:'+ time11);
+// // 			alert( parseInt(days11/8));
+// 			alert(dateE.diff(dateS, 'days'));
+// 			if(days11/8){
+// // 				rtnVal = '天:'+ parseInt(days11/8));
+// 			}else{
+// // 				rtnVal += 
+// 			}
+		}
 	};
+	});
+// 		$("#countDayHours").html(rtnVal);
+	
 	</script>
 </th:block>
 </html>

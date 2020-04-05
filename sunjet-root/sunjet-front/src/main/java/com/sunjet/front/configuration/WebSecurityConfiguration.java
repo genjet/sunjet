@@ -29,7 +29,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.formLogin().loginPage("/login").loginProcessingUrl("/auth/login").failureUrl("/login?error").and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
 				// .and().rememberMe() // 开启记住密码功能
-				.and().authorizeRequests().antMatchers("/h2/**").hasRole("ADMIN").and().authorizeRequests().anyRequest().permitAll().and().headers().frameOptions().disable().and()
+				.and().authorizeRequests().antMatchers("/h2/**").permitAll().and().authorizeRequests().anyRequest().permitAll().and().headers().frameOptions().disable().and()
 				.exceptionHandling().accessDeniedPage("/403").and().csrf().disable();
 	}
 

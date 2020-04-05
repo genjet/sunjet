@@ -189,7 +189,7 @@ CREATE TABLE SJ_LEAVE (
   leave_status VARCHAR(1) NOT NULL,
   sj_apply VARCHAR(32),
   reason VARCHAR(500),
-  leave_hours INTEGER NOT NULL,
+  leave_hours FLOAT NOT NULL,
   expire VARCHAR(1) NOT NULL,
 
   create_id   VARCHAR(10) NOT NULL,

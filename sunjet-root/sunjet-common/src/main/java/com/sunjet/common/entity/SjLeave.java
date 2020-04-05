@@ -49,7 +49,7 @@ public class SjLeave extends GenericEntity {
 	@Column(name = "reason")
 	private String reason;
 	@Column(name = "leave_hours")
-	private int leaveHours;
+	private double leaveHours;
 
 	@Column(name = "expire")
 	@Type(type = "yes_no")
@@ -131,11 +131,11 @@ public class SjLeave extends GenericEntity {
 		this.reason = reason;
 	}
 
-	public int getLeaveHours() {
+	public double getLeaveHours() {
 		return leaveHours;
 	}
 
-	public void setLeaveHours(int leaveHours) {
+	public void setLeaveHours(double leaveHours) {
 		this.leaveHours = leaveHours;
 	}
 

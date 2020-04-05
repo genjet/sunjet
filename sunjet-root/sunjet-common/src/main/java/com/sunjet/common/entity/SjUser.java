@@ -35,7 +35,7 @@ public class SjUser extends GenericEntity {
 	private boolean enabled = Boolean.TRUE;
 
 	@Column(name = "offdate")
-	private LocalDate offdate;
+	private LocalDate offdate = LocalDate.now();
 
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_dep")

@@ -26,7 +26,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		String[] patterns = new String[] { "/login", "/logout", "/webjars" };
+		String[] patterns = new String[] { "/login", "/logout", "/webjars", "/static" };
 		registry.addInterceptor(platformInterceptor).addPathPatterns("/**").excludePathPatterns(patterns);
 	}
 

@@ -2,14 +2,12 @@ package com.sunjet.front.model;
 
 import java.util.List;
 
-import com.sunjet.front.common.services.security.vo.UserInfo;
-
 public class AjaxResponseBody {
 	String msg;
 
 	String code;
 
-	List<UserInfo> result;
+	List<?> result;
 
 	public String getMsg() {
 		return msg;
@@ -27,11 +25,11 @@ public class AjaxResponseBody {
 		this.code = code;
 	}
 
-	public List<UserInfo> getResult() {
+	public List<?> getResult() {
 		return result;
 	}
 
-	public void setResult(List<UserInfo> result) {
+	public void setResult(List<?> result) {
 		this.result = result;
 	}
 

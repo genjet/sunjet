@@ -4,10 +4,14 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +31,12 @@ public class JobServiceImpl implements JobService {
 
 		List<LocalDate> dates = Stream.iterate(start, date -> date.plusDays(1)).limit(ChronoUnit.DAYS.between(start, end)).collect(Collectors.toList());
 		List<SjCalendar> allCalendars = sjCalendarRepository.findAll();
+		Map<LocalDate, SjCalendar> map = new HashMap<LocalDate, SjCalendar>();
+		if (CollectionUtils.isNotEmpty(allCalendars)) {
+			map = allCalendars.stream().collect(Collectors.toMap(SjCalendar::getCalendarDate, Function.identity()));
+		}
 		for (LocalDate localDate : dates) {
-			if (allCalendars.stream().anyMatch(s -> !s.getCalendarDate().equals(localDate))) {
+			if (!map.containsKey(localDate)) {
 				SjCalendar sjCalendar = new SjCalendar();
 				sjCalendar.setCalendarDate(localDate);
 				DayOfWeek dayOfWeek = localDate.getDayOfWeek();
