@@ -10,8 +10,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "sj_role_menu_rel")
+@Data
 public class SjRoleMenuRel extends GenericEntity {
 	@Id
 	@Column(name = "oid")
@@ -25,29 +28,5 @@ public class SjRoleMenuRel extends GenericEntity {
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_role")
 	private SjRole sjRole;// 角色
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public SjMenu getSjMenu() {
-		return sjMenu;
-	}
-
-	public void setSjMenu(SjMenu sjMenu) {
-		this.sjMenu = sjMenu;
-	}
-
-	public SjRole getSjRole() {
-		return sjRole;
-	}
-
-	public void setSjRole(SjRole sjRole) {
-		this.sjRole = sjRole;
-	}
 
 }

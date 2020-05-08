@@ -14,8 +14,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "sj_calendar")
+@Data
 public class SjCalendar extends GenericEntity {
 
 	@Id
@@ -33,42 +36,5 @@ public class SjCalendar extends GenericEntity {
 	@Column(name = "day_of_week")
 	@Enumerated(EnumType.STRING)
 	private DayOfWeek dayOfWeek;
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public LocalDate getCalendarDate() {
-		return calendarDate;
-	}
-
-	public void setCalendarDate(LocalDate calendarDate) {
-		this.calendarDate = calendarDate;
-	}
-
-	public Boolean getIsHoliday() {
-		return isHoliday;
-	}
-
-	public void setIsHoliday(Boolean isHoliday) {
-		this.isHoliday = isHoliday;
-	}
-
-	public DayOfWeek getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(DayOfWeek dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
-
-	@Override
-	public String toString() {
-		return "SjCalendar [oid=" + oid + ", calendarDate=" + calendarDate + ", isHoliday=" + isHoliday + ", dayOfWeek=" + dayOfWeek + "]";
-	}
 
 }

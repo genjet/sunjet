@@ -15,7 +15,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sunjet.front.common.services.TestService;
-import com.sunjet.front.common.services.security.vo.UserInfo;
+import com.sunjet.front.common.services.security.UserDetailsImpl;
 
 @Component
 public class PlatformInterceptor implements HandlerInterceptor {
@@ -50,7 +50,7 @@ public class PlatformInterceptor implements HandlerInterceptor {
 //System.out.println(currentUser);
 		 HttpSession session = request.getSession();
 		 if (session.getAttribute("sjMenus") == null && !"anonymousUser".equals(currentUser)) {
-			 UserInfo userInfo =  (UserInfo)principal;
+			 UserDetailsImpl userInfo =  (UserDetailsImpl)principal;
 			 session.setAttribute("userInfo", userInfo);
 			 session.setAttribute("sjMenus", userInfo.getMenus());
 			System.out.println(count);

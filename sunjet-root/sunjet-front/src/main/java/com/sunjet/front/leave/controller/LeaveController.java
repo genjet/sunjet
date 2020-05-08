@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjUser;
-import com.sunjet.front.common.services.security.vo.UserInfo;
+import com.sunjet.front.common.services.security.UserDetailsImpl;
 import com.sunjet.front.management.vo.UserVO;
 
 @Controller
@@ -22,7 +22,7 @@ public class LeaveController {
 	@RequestMapping("/leave")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public String tables(Model model) {
-		UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetailsImpl userInfo = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		SjUser sjUser = sjUserRepository.findByAccount(userInfo.getUsername());
 
 		model.addAttribute("sjLeaves", sjUser.getSjLeave());

@@ -12,8 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "sj_dep")
+@Data
 public class SjDep extends GenericEntity{
 	// 部門序號
 	@Id
@@ -27,29 +30,5 @@ public class SjDep extends GenericEntity{
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sjDep")
 	List<SjUser> sjUser;
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public List<SjUser> getSjUser() {
-		return sjUser;
-	}
-
-	public void setSjUser(List<SjUser> sjUser) {
-		this.sjUser = sjUser;
-	}
 
 }

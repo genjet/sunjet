@@ -28,7 +28,6 @@ import com.sunjet.common.entity.SjRoleMenuRel;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.SjUserRoleRel;
 import com.sunjet.front.common.services.security.vo.MenuInfo;
-import com.sunjet.front.common.services.security.vo.UserInfo;
 
 @Service
 public class DefaultUserDetailsService implements UserDetailsService {
@@ -117,9 +116,9 @@ public class DefaultUserDetailsService implements UserDetailsService {
 		// UserInfo.builder().username(appUser.getAccount()).password("{noop}" +
 		// appUser.getPwd())
 		// .roles(roles.stream().toArray(String[]::new)).authorities(authorities).build();
-		UserInfo userInfo = new UserInfo(appUser.getAccount(), "{noop}" + appUser.getPwd(), authorities);
-
-		userInfo.setName(appUser.getName());
+		UserDetailsImpl userInfo = new UserDetailsImpl(appUser.getOid(), appUser.getAccount(), "{noop}" + appUser.getPwd(), authorities, appUser.getAvatar());
+		
+//		userInfo.setName(appUser.getName());
 		userInfo.setDep(appUser.getSjDep().getName());
 		userInfo.setMenus(rtnMenuInfo);
 		// UserDetails userInfo =

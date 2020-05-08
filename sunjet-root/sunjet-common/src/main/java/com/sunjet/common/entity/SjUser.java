@@ -16,8 +16,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "sj_user")
+@Data
 public class SjUser extends GenericEntity{
 	@Id
 	@Column(name = "oid")
@@ -32,6 +35,8 @@ public class SjUser extends GenericEntity{
 	@Column(name = "enabled")
 	@Type(type = "yes_no")
 	private boolean enabled = Boolean.TRUE;
+	@Column(name = "avatar")
+	private String avatar;
 	
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_dep")
@@ -43,71 +48,4 @@ public class SjUser extends GenericEntity{
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sjUser", orphanRemoval = true)
 	private List<SjUserRoleRel> sjUserRoleRels;
 	
-	
-	
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getAccount() {
-		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public String getPwd() {
-		return pwd;
-	}
-
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-
-	public SjDep getSjDep() {
-		return sjDep;
-	}
-
-	public void setSjDep(SjDep sjDep) {
-		this.sjDep = sjDep;
-	}
-
-	public List<SjLeave> getSjLeave() {
-		return sjLeave;
-	}
-
-	public void setSjLeave(List<SjLeave> sjLeave) {
-		this.sjLeave = sjLeave;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public List<SjUserRoleRel> getSjUserRoleRels() {
-		return sjUserRoleRels;
-	}
-
-	public void setSjUserRoleRels(List<SjUserRoleRel> sjUserRoleRels) {
-		this.sjUserRoleRels = sjUserRoleRels;
-	}
-
 }

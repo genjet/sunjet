@@ -10,12 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * @author Andy
  *
  */
 @Entity
 @Table(name = "sj_flow_process")
+@Data
 public class SjFlowProcess extends GenericEntity {
 	@Id
 	@Column(name = "oid")
@@ -32,36 +35,5 @@ public class SjFlowProcess extends GenericEntity {
 	@JoinColumn(name = "sjFlowRule", referencedColumnName = "oid")
 	private SjFlowRule sjFlowRule;
 
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public String getHandlerUser() {
-		return handlerUser;
-	}
-
-	public void setHandlerUser(String handlerUser) {
-		this.handlerUser = handlerUser;
-	}
-
-	public SjFlowNode getSjFlowNode() {
-		return sjFlowNode;
-	}
-
-	public void setSjFlowNode(SjFlowNode sjFlowNode) {
-		this.sjFlowNode = sjFlowNode;
-	}
-
-	public SjFlowRule getSjFlowRule() {
-		return sjFlowRule;
-	}
-
-	public void setSjFlowRule(SjFlowRule sjFlowRule) {
-		this.sjFlowRule = sjFlowRule;
-	}
 
 }

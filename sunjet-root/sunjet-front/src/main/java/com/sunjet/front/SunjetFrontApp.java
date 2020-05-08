@@ -4,7 +4,10 @@ package com.sunjet.front;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import com.sunjet.front.common.utils.ApplicationContextUtil;
 
 @SpringBootConfiguration
 @SpringBootApplication
@@ -15,7 +18,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class SunjetFrontApp {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(SunjetFrontApp.class, args);
+		ApplicationContext app = SpringApplication.run(SunjetFrontApp.class, args);
+		ApplicationContextUtil.setApplicationContext(app);
 	}
 //	 @RestController
 //	    class SimpleController {

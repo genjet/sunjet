@@ -7,8 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name = "sj_menu")
+@Data
 public class SjMenu extends GenericEntity{
 	@Id
 	@Column(name = "oid")
@@ -23,50 +26,4 @@ public class SjMenu extends GenericEntity{
 	@Column(name = "parent_menu")
 	private String parentMenu;
 	
-	
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public Integer getOrdinary() {
-		return ordinary;
-	}
-
-	public void setOrdinary(Integer ordinary) {
-		this.ordinary = ordinary;
-	}
-
-	public String getParentMenu() {
-		return parentMenu;
-	}
-
-	public void setParentMenu(String parentMenu) {
-		this.parentMenu = parentMenu;
-	}
-
-
-
-	
-
 }

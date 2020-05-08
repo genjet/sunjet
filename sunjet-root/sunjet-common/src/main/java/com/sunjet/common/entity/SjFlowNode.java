@@ -10,12 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * @author Andy
  *
  */
 @Entity
 @Table(name = "sj_flow_node")
+@Data
 public class SjFlowNode extends GenericEntity {
 	@Id
 	@Column(name = "oid")
@@ -42,61 +45,5 @@ public class SjFlowNode extends GenericEntity {
 	@OneToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "sjFlowRule", referencedColumnName = "oid")
 	private SjFlowRule sjFlowRule;
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getDec() {
-		return dec;
-	}
-
-	public void setDec(String dec) {
-		this.dec = dec;
-	}
-
-	public SjFlow getSjFlow() {
-		return sjFlow;
-	}
-
-	public void setSjFlow(SjFlow sjFlow) {
-		this.sjFlow = sjFlow;
-	}
-
-	public SjFlowProcess getSjFlowProcess() {
-		return sjFlowProcess;
-	}
-
-	public void setSjFlowProcess(SjFlowProcess sjFlowProcess) {
-		this.sjFlowProcess = sjFlowProcess;
-	}
-
-	public SjFlowRule getSjFlowRule() {
-		return sjFlowRule;
-	}
-
-	public void setSjFlowRule(SjFlowRule sjFlowRule) {
-		this.sjFlowRule = sjFlowRule;
-	}
 
 }

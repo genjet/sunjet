@@ -9,9 +9,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import lombok.Data;
 //
 @Entity
 @Table(name = "SJ_AUTHORITY")
+@Data
 public class SjAuthority extends GenericEntity {
 	@Id
 	@Column(name = "oid")
@@ -25,30 +28,4 @@ public class SjAuthority extends GenericEntity {
 	@JoinColumn(name = "sj_role")
 	private SjRole sjRole;// 角色
 	
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
-	public String getAuthorityCode() {
-		return authorityCode;
-	}
-
-	public void setAuthorityCode(String authorityCode) {
-		this.authorityCode = authorityCode;
-	}
-
-	public SjRole getSjRole() {
-		return sjRole;
-	}
-
-	public void setSjRole(SjRole sjRole) {
-		this.sjRole = sjRole;
-	}
-
-
 }

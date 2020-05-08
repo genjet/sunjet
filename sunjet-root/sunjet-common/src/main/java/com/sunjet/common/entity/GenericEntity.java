@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,8 +12,11 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.Data;
+
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Data
 public class GenericEntity {
 	@Column(name = "create_id")
 	@CreatedBy
@@ -32,35 +34,4 @@ public class GenericEntity {
 	@LastModifiedDate
 	protected LocalDateTime updateDate;
 
-	public String getCreateId() {
-		return createId;
-	}
-
-	public void setCreateId(String createId) {
-		this.createId = createId;
-	}
-
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
-	}
-
-	public String getUpdateId() {
-		return updateId;
-	}
-
-	public void setUpdateId(String updateId) {
-		this.updateId = updateId;
-	}
-
-	public LocalDateTime getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(LocalDateTime updateDate) {
-		this.updateDate = updateDate;
-	}
 }

@@ -1,3 +1,17 @@
+DROP TABLE IF EXISTS todos;
+CREATE TABLE todos (
+  oid VARCHAR(32)   PRIMARY KEY,
+  id NUMERIC,
+  title VARCHAR(32),
+  completed VARCHAR(1),
+  editing VARCHAR(1),
+  
+  create_id   VARCHAR(10) NOT NULL,
+  create_datetime DATETIME NOT NULL,
+  update_id VARCHAR(10),
+  update_datetime DATETIME         
+);
+
 DROP TABLE IF EXISTS SJ_FLOW_RULE;
 CREATE TABLE SJ_FLOW_RULE (
   oid VARCHAR(32)   PRIMARY KEY,
@@ -129,6 +143,7 @@ CREATE TABLE SJ_USER (
   pwd VARCHAR(250) NOT NULL,
   enabled VARCHAR(1) NOT NULL,
   sj_dep VARCHAR(32),
+  avatar VARCHAR(32),
   
   create_id   VARCHAR(10) ,
   create_datetime DATETIME ,
