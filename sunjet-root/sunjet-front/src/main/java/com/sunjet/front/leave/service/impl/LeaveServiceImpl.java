@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.sunjet.common.dao.SjCalendarRepository;
 import com.sunjet.common.dao.SjLeaveRepository;
 import com.sunjet.common.dao.SjUserRepository;
+import com.sunjet.common.entity.SjApply;
 import com.sunjet.common.entity.SjCalendar;
 import com.sunjet.common.entity.SjLeave;
 import com.sunjet.common.entity.SjUser;
@@ -37,9 +39,10 @@ public class LeaveServiceImpl implements LeaveService {
 	@Autowired
 	private SjCalendarRepository sjCalendarRepository;
 
-	public LeaveVO createLeave(LeaveVO leaveVO) {
-		SjUser sjUser = sjUserRepository.findByName(leaveVO.getUserName());
+	@Override
+	public SjLeave createLeave(LeaveVO leaveVO) {
 		SjLeave sjLeave = new SjLeave();
+		SjUser sjUser = sjUserRepository.findByName(leaveVO.getUserName());
 		sjLeave.setSjUser(sjUser);
 		sjLeave.setDep(sjUser.getSjDep().getName());
 		sjLeave.setStartDatetime(leaveVO.getStartDate());
@@ -47,7 +50,19 @@ public class LeaveServiceImpl implements LeaveService {
 		sjLeave.setLeaveType(leaveVO.getLeaveType());
 		sjLeave.setLeaveStatus(LeaveStatusEnum.F);
 		sjLeave.setLeaveHours(leaveVO.getLeaveHours());
-		return null;
+
+		SjApply sjApply = new SjApply();
+		sjApply.setName("假單");
+		sjApply.setCode("APPLY_1");
+		sjApply.setOrdinary(1);// TODO
+		String flowKey = LocalDate.now().toString().concat(StringUtils.leftPad("1", 3, "0").concat(sjUser.getAccount()));// TODO
+		sjApply.setFlowKey(flowKey);
+		sjApply.setApplyStatus("F");// TODO
+		sjApply.setApplyUser(sjUser.getName());
+
+		sjLeave.setSjApply(sjApply);
+		sjLeaveRepository.save(sjLeave);
+		return sjLeave;
 	}
 
 	@Override

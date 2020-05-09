@@ -1,6 +1,6 @@
 INSERT INTO SJ_FLOW (oid, name, code, description, flow_status, sj_Flow_Node, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('F1','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('F2','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', '2020-02-16 00:00:00.00', null, null);
+  ('F2','假單流程二', 'LEAVE_2', '假單二級流程', 'F', 'FN1', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_FLOW_RULE (oid, sj_Flow_Process, sj_Flow_Node, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('FR1', 'FP1', null, 'super_man', '2020-02-16 00:00:00.00', null, null);
