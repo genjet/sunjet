@@ -34,14 +34,14 @@ INSERT INTO sj_role (oid, role_code, create_id, create_datetime, update_id, upda
   ('editor','ROLE_EDITOR', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('reviewer','ROLE_REVIEWER', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
-INSERT INTO SJ_AUTHORITY (oid, sj_role, authority_code, create_id, create_datetime, update_id, update_datetime) VALUES 
+--INSERT INTO SJ_AUTHORITY (oid, sj_role, authority_code, create_id, create_datetime, update_id, update_datetime) VALUES 
  -- ('1','admin','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null),
  -- ('2','admin','EDIT', 'super_man', '2020-02-16 00:00:00.00', null, null),
  -- ('3','admin','DELETE', 'super_man', '2020-02-16 00:00:00.00', null, null),
  -- ('4','admin','CREATE', 'super_man', '2020-02-16 00:00:00.00', null, null),
  -- ('5','user','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null),
  -- ('6','editor','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('7','reviewer','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null);
+--  ('7','reviewer','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 
 INSERT INTO SJ_USER (oid, name, account, pwd, sj_dep, enabled, avatar, create_id, create_datetime, update_id, update_datetime) VALUES

@@ -1,6 +1,5 @@
 package com.sunjet.front.websocket.vo;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import lombok.Data;
@@ -31,8 +30,13 @@ public class MsgVO {
 //    @ApiModelProperty(value = "在线人数")
     private int count;
     
-    private Set<Map<String, String>> users = new HashSet<Map<String, String>>();
+    private Set<ChatUser> users = new HashSet<ChatUser>();
     
     private String toId;
+    
+    private String groupKey;
+    
+    private boolean isCheck = false;
+    
 
 }

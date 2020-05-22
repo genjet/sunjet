@@ -1,42 +1,59 @@
 package com.sunjet.front.management.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.front.management.vo.UserVO;
+import com.sunjet.front.payload.response.ResponseObj;
 
-@Controller
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api/management")
 public class ManagementController {
 	@Autowired
 	private SjUserRepository sjUserRepository;
 
-	@GetMapping("/management")
+	@GetMapping("/user")
 	@PreAuthorize("hasAnyRole('ADMIN')")
-	public String management(UserVO userVO, Model model) {
+	public ResponseEntity<?> getUsers() {
 		List<UserVO> rtnVOs = getUserVo();
-		model.addAttribute("userVOs", rtnVOs);
-		return "management/management";
+		ResponseObj rspObj = new ResponseObj();
+		rspObj.setData(rtnVOs);
+		return ResponseEntity.ok(rspObj);
 	}
 
 	private List<UserVO> getUserVo() {
 		List<SjUser> sjUsers = sjUserRepository.findAll();
 		List<UserVO> rtnVOs = new ArrayList<UserVO>();
+		int id = 1;
 		for (SjUser sjUser : sjUsers) {
 			UserVO user = new UserVO();
+			user.setId(id);
 			user.setAccount(sjUser.getAccount());
 			user.setName(sjUser.getName());
+			user.setAvatar("Sorceress-Witch");
+			user.setPsw("df123r");
+			user.setDep("文化部");
+			user.setNickName("ggyy");
+			user.setEnabled(Boolean.TRUE);
+			user.setArrivalDay(LocalDate.now());
+			id++;
 			rtnVOs.add(user);
 		}
 		return rtnVOs;
