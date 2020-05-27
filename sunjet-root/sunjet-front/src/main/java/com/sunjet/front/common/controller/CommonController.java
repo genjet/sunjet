@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjUser;
+import com.sunjet.common.entity.enumeration.LeaveStatusEnum;
+import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
+import com.sunjet.front.common.controller.vo.OptionVO;
 import com.sunjet.front.common.services.security.UserDetailsImpl;
 import com.sunjet.front.common.services.security.jwt.JwtUtils;
 import com.sunjet.front.common.services.security.vo.ActiveUserStore;
@@ -35,6 +39,8 @@ import com.sunjet.front.payload.response.ResponseObj;
 @RestController
 @RequestMapping("/api/auth")
 public class CommonController {
+	private static final Enum FlowStatusEnum = null;
+
 	@Autowired
 	AuthenticationManager authenticationManager;
 
@@ -52,16 +58,15 @@ public class CommonController {
 
 	@Autowired
 	ActiveUserStore activeUserStore;
-	
+
 	@Autowired
 	private SessionRegistry sessionRegistry;
 
 	@GetMapping("/loggedUsers")
-	public ResponseEntity<?>  getLoggedUsers() {
+	public ResponseEntity<?> getLoggedUsers() {
 		return ResponseEntity.ok(sessionRegistry.getAllPrincipals().stream()
-			      .filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty())
-			      .map(Object::toString)
-			      .collect(Collectors.toList()));
+				.filter(u -> !sessionRegistry.getAllSessions(u, false).isEmpty()).map(Object::toString)
+				.collect(Collectors.toList()));
 	}
 
 	@PostMapping("/signin")
@@ -93,8 +98,8 @@ public class CommonController {
 
 	@GetMapping("/info")
 	public ResponseEntity<?> allAccess(String token) {
-		String userName = jwtUtils.getUserNameFromJwtToken(token);
-		SjUser sjUser = userRepository.findByAccount(userName);
+		String account = jwtUtils.getAccountFromJwtToken(token);
+		SjUser sjUser = userRepository.findByAccount(account);
 		if (null != sjUser) {
 			List<String> roles = new ArrayList<>();
 			sjUser.getSjUserRoleRels().stream().forEach(r -> roles.add(r.getSjRole().getRoleCode()));
@@ -105,6 +110,57 @@ public class CommonController {
 		} else {
 			return ResponseEntity.ok(null);
 		}
+	}
+
+	@GetMapping("/getLeaveType")
+	public ResponseEntity<?> getLeaveType() {
+		List<OptionVO> optionList = new ArrayList<OptionVO>();
+
+		for (LeaveTypeEnum type : LeaveTypeEnum.values()) {
+			OptionVO bean = new OptionVO(type.getCode(), type.getValue());
+			optionList.add(bean);
+		}
+		ResponseObj rspObj = new ResponseObj();
+		rspObj.setData(optionList);
+		System.out.println("oooooooooooooooooo");
+		return ResponseEntity.ok(rspObj);
+	}
+	
+	@GetMapping("/getAllOptions")
+	public ResponseEntity<?> getAllOptions() {
+		Map<String, List<OptionVO>> map = new HashMap<>();
+		
+
+//		List<OptionVO> optionList = new ArrayList<OptionVO>();
+//		for (LeaveTypeEnum type : LeaveTypeEnum.values()) {
+//			OptionVO bean = new OptionVO(type.getCode(), type.getValue());
+//			optionList.add(bean);
+//		}
+		List<OptionVO> optionList = Stream.of(LeaveTypeEnum.values()).map(it -> {
+			return new OptionVO(it.getCode(), it.getValue());
+		}).collect(Collectors.toList());
+		map.put("leaveType", optionList);
+		
+		
+//		List<Enum[]> ll =  new ArrayList<>();
+//		ll.add(LeaveStatusEnum.values());
+//		for (Enum object : ll) {
+//			List<OptionVO> leaveStatusList = Stream.of(object).map(it -> {
+//				return new OptionVO(it.name(), it.getValue());
+//			}).collect(Collectors.toList());
+////			map.put(LeaveStatusEnum.class.getSimpleName().replace("Enum", ""), leaveStatusList);
+//		}
+		
+		List<OptionVO> leaveStatusList = Stream.of(LeaveStatusEnum.values()).map(it -> {
+			return new OptionVO(it.name(), it.getValue());
+		}).collect(Collectors.toList());
+		map.put(LeaveStatusEnum.class.getSimpleName().replace("Enum", ""), leaveStatusList);
+
+		
+		ResponseObj rspObj = new ResponseObj();
+		rspObj.setData(map);
+		System.out.println("ttttttttttttt");
+		return ResponseEntity.ok(rspObj);
 	}
 
 }

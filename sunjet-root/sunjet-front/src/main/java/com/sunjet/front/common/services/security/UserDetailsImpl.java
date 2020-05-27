@@ -70,7 +70,8 @@ public class UserDetailsImpl implements UserDetails {
 				user.getAccount(), 
 				user.getName(),
 				user.getPwd(),
-				authorities, user.getAvatar());
+				authorities, 
+				user.getAvatar());
 	}
 
 	@Override

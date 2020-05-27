@@ -1,5 +1,6 @@
 package com.sunjet.common.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,9 +35,14 @@ public class SjUser extends GenericEntity{
 	private String pwd;
 	@Column(name = "enabled")
 	@Type(type = "yes_no")
-	private boolean enabled = Boolean.TRUE;
+	private Boolean enabled = Boolean.TRUE;
 	@Column(name = "avatar")
 	private String avatar;
+	@Column(name = "nick_name")
+	private String nickName;
+	
+	@Column(name = "arrival_day")
+	private LocalDate arrivalDay;
 	
 	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
 	@JoinColumn(name = "sj_dep")

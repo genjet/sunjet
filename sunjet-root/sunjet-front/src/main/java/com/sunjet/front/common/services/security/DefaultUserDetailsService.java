@@ -116,7 +116,7 @@ public class DefaultUserDetailsService implements UserDetailsService {
 		// UserInfo.builder().username(appUser.getAccount()).password("{noop}" +
 		// appUser.getPwd())
 		// .roles(roles.stream().toArray(String[]::new)).authorities(authorities).build();
-		UserDetailsImpl userInfo = new UserDetailsImpl(appUser.getOid(), appUser.getAccount(), "{noop}" + appUser.getPwd(), authorities, appUser.getAvatar());
+		UserDetailsImpl userInfo = new UserDetailsImpl(appUser.getAccount(), appUser.getName(), "{noop}" + appUser.getPwd(), authorities, appUser.getAvatar());
 		
 //		userInfo.setName(appUser.getName());
 		userInfo.setDep(appUser.getSjDep().getName());

@@ -37,7 +37,7 @@ public class JwtUtils {
 //        });
 		return Jwts.builder()
 				  // Subject 设置用户名
-				.setSubject((userPrincipal.getUsername()))
+				.setSubject((userPrincipal.getAccount()))
 				 // 設置可公開傳送加密數據
                 .addClaims(claims)
 				.setIssuedAt(new Date())
@@ -48,7 +48,7 @@ public class JwtUtils {
 				.compact();
 	}
 
-	public String getUserNameFromJwtToken(String token) {
+	public String getAccountFromJwtToken(String token) {
 		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
 	}
 
