@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -11,29 +12,53 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.sunjet.common.dao.SjUserRepository;
-import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 import com.sunjet.front.common.services.security.UserDetailsImpl;
+import com.sunjet.front.common.vo.ApiResponse;
 import com.sunjet.front.job.service.JobService;
 import com.sunjet.front.leave.service.LeaveService;
+import com.sunjet.front.leave.vo.LeaveFormVO;
 import com.sunjet.front.leave.vo.LeaveVO;
 
-@Controller
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api")
 public class LeaveController {
-	@Autowired
-	private SjUserRepository sjUserRepository;
 	@Autowired
 	private LeaveService leaveService;
 	@Autowired
 	private JobService jobService;
+	
+	
+	@PostMapping("/leave")
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	public ApiResponse getLeaves(@RequestBody LeaveFormVO formVO) {
+		UserDetailsImpl userInfo = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		log.info("======================> "+userInfo.getAccount());
+		if(null != formVO){
+			log.info(formVO.toString());
+		}
+		
+		List<LeaveVO> rtnVOs = leaveService.queryLeave(formVO, userInfo.getAccount());
+//		LeaveVO leaveVO = new LeaveVO();
+//		rtnVOs.add(leaveVO);
+//		ApiResponse rspObj = new ApiResponse();
+//		rspObj.setData(rtnVOs);
+		return ApiResponse.ok("", rtnVOs);
+	}
+	
 
 	@RequestMapping("/createCalendar")
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -44,15 +69,15 @@ public class LeaveController {
 		return "leave/leave2";
 	}
 
-	@RequestMapping("/leave")
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	public String tables(Model model) {
-		UserDetailsImpl userInfo = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		SjUser sjUser = sjUserRepository.findByAccount(userInfo.getUsername());
-
-		model.addAttribute("sjLeaves", sjUser.getSjLeave());
-		return "leave/leave";
-	}
+//	@RequestMapping("/leave")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
+//	public String tables(Model model) {
+//		UserDetailsImpl userInfo = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		SjUser sjUser = sjUserRepository.findByAccount(userInfo.getUsername());
+//
+//		model.addAttribute("sjLeaves", sjUser.getSjLeave());
+//		return "leave/leave";
+//	}
 
 	@RequestMapping("/leave2")
 	@PreAuthorize("hasAnyRole('ADMIN')")

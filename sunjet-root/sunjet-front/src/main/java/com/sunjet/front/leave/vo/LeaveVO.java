@@ -12,11 +12,9 @@ import lombok.Data;
 @Data
 public class LeaveVO {
 
-	private long id;
+	private String id;
 
-	private String userName;
-	private String userAccount;
-
+	private String name;
 	private String dep;
 	private LeaveTypeEnum leaveType;
 	private LeaveStatusEnum leaveStatus;

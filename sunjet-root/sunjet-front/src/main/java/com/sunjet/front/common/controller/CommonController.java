@@ -31,10 +31,13 @@ import com.sunjet.front.common.controller.vo.OptionVO;
 import com.sunjet.front.common.services.security.UserDetailsImpl;
 import com.sunjet.front.common.services.security.jwt.JwtUtils;
 import com.sunjet.front.common.services.security.vo.ActiveUserStore;
+import com.sunjet.front.common.vo.ApiResponse;
 import com.sunjet.front.payload.request.LoginRequest;
 import com.sunjet.front.payload.response.JwtResponse;
-import com.sunjet.front.payload.response.ResponseObj;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
@@ -92,8 +95,8 @@ public class CommonController {
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(String token) {
-
-		return ResponseEntity.ok(new ResponseObj());
+		log.info("logout = >>>>>>>>>>>>>>>> {}", token);
+		return ResponseEntity.ok(new ApiResponse());
 	}
 
 	@GetMapping("/info")
@@ -117,12 +120,11 @@ public class CommonController {
 		List<OptionVO> optionList = new ArrayList<OptionVO>();
 
 		for (LeaveTypeEnum type : LeaveTypeEnum.values()) {
-			OptionVO bean = new OptionVO(type.getCode(), type.getValue());
+			OptionVO bean = new OptionVO(type.name(), type.getValue());
 			optionList.add(bean);
 		}
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		rspObj.setData(optionList);
-		System.out.println("oooooooooooooooooo");
 		return ResponseEntity.ok(rspObj);
 	}
 	
@@ -137,7 +139,7 @@ public class CommonController {
 //			optionList.add(bean);
 //		}
 		List<OptionVO> optionList = Stream.of(LeaveTypeEnum.values()).map(it -> {
-			return new OptionVO(it.getCode(), it.getValue());
+			return new OptionVO(it.getValue(), it.name());
 		}).collect(Collectors.toList());
 		map.put("leaveType", optionList);
 		
@@ -157,9 +159,8 @@ public class CommonController {
 		map.put(LeaveStatusEnum.class.getSimpleName().replace("Enum", ""), leaveStatusList);
 
 		
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		rspObj.setData(map);
-		System.out.println("ttttttttttttt");
 		return ResponseEntity.ok(rspObj);
 	}
 

@@ -6,9 +6,20 @@ server:
 
 app:
   jwtSecret: bezKoderSecretKey
-  jwtExpirationMs: 86400000
+  jwtExpirationMs: 60000
     
 scheduler:
   trigger: 
     calendarJob: 
-      cron: 0 0 1 1 1 ?    
+      cron: 0 0 1 1 1 ?   
+      
+
+#logging:
+#  level:
+#   root: info
+#     org.springframework.web: ERROR
+#     com.sunjet: DEBUG
+#   pattern:
+#     console: "%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] [%logger:%line] : %msg%n"
+
+    

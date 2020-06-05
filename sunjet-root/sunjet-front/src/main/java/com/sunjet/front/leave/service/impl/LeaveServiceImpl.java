@@ -1,8 +1,11 @@
 package com.sunjet.front.leave.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +16,11 @@ import com.sunjet.common.dao.SjCalendarRepository;
 import com.sunjet.common.dao.SjLeaveRepository;
 import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjLeave;
+import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 import com.sunjet.front.common.services.security.UserDetailsImpl;
 import com.sunjet.front.leave.service.LeaveService;
+import com.sunjet.front.leave.vo.LeaveFormVO;
 import com.sunjet.front.leave.vo.LeaveVO;
 
 @Service
@@ -149,6 +154,32 @@ public class LeaveServiceImpl implements LeaveService {
 //			break;
 //		}
 		return rtnHours;
+	}
+
+	@Override
+	public List<LeaveVO> queryLeave(LeaveFormVO leaveForm, String account) {
+		SjUser sjUser = sjUserRepository.findByAccount(account);
+		List<LocalDateTime> rangeDate = leaveForm.getRangeDate();
+		LocalDateTime startDate = null == rangeDate ? null : rangeDate.get(0);
+		LocalDateTime endDate = null == rangeDate ? null : rangeDate.get(1);
+		List<SjLeave> sjLeaves =sjLeaveRepository.findBySjUserAndLeaveTypeAndExpire(sjUser, leaveForm.getLeaveType(), Boolean.TRUE);
+		Optional<List<SjLeave>> sjLeaveOpt = sjLeaveRepository.findSjLeaveByFrom(sjUser, leaveForm.getLeaveType(), startDate, endDate);
+		if(sjLeaveOpt.isPresent()){
+			sjLeaves = sjLeaveOpt.get();
+		}
+		List<LeaveVO> rtnList = new ArrayList<LeaveVO>();
+		sjLeaves.forEach(it -> {
+			LeaveVO leaveVO = new LeaveVO();
+			leaveVO.setId(it.getOid());
+//			levaeVO.setUserAccount(it.getSjUser().getAccount());
+			leaveVO.setStartDate(it.getStartDatetime());
+			leaveVO.setDep(it.getDep());
+			leaveVO.setEndDate(it.getEndDatetime());
+			leaveVO.setLeaveType(it.getLeaveType());
+			leaveVO.setLeaveStatus(it.getLeaveStatus());
+			rtnList.add(leaveVO);
+		});
+		return rtnList;
 	}
 
 }

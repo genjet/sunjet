@@ -35,7 +35,6 @@ public class TestServiceImpl implements TestService {
 		sjUser.setName("名");
 		sjUser.setPwd("dddd");
 		sjUserRepository.save(sjUser);
-		System.out.println("OKKKKKKK");
 		return 0;
 	}
 

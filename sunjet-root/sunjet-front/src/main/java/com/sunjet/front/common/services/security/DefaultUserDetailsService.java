@@ -9,8 +9,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,10 +27,12 @@ import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.SjUserRoleRel;
 import com.sunjet.front.common.services.security.vo.MenuInfo;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class DefaultUserDetailsService implements UserDetailsService {
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private SjUserRepository sjUserRepository;
@@ -90,7 +90,7 @@ public class DefaultUserDetailsService implements UserDetailsService {
 				rtnMenuInfo.add(menu);
 			}
 			// roles.add(sjRole.getRoleName());
-			System.out.println(sjRole.getRoleCode());
+			log.info(sjRole.getRoleCode());
 			authorities.add(new SimpleGrantedAuthority(sjRole.getRoleCode()));
 			for (SjAuthority sjAuthority : sjRole.getSjAuthoritys()) {
 				authorities.add(new SimpleGrantedAuthority(sjAuthority.getAuthorityCode()));

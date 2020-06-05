@@ -27,6 +27,8 @@ public class SjUser extends GenericEntity{
 	@Column(name = "oid")
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "jpa-uuid")
 	private String oid;
+	@Column(name = "emp_Id")
+	private String empId;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "account")

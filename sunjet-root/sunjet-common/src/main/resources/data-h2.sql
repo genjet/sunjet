@@ -44,11 +44,11 @@ INSERT INTO sj_role (oid, role_code, create_id, create_datetime, update_id, upda
 --  ('7','reviewer','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 
-INSERT INTO SJ_USER (oid, name, account, pwd, sj_dep, enabled, avatar, create_id, create_datetime, update_id, update_datetime) VALUES
-  ('1','新垣結依', 'admin', '12345678', '1', 'Y', 'Centaur', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('2','山上悠亞', 'user1', '12345678', '2', 'Y', 'Adventure-Map', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('3','黑木瞳', 'user2', '12345678', '3', 'Y', 'Villager', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('4','林志玲', 'user3', '12345678', '4', 'Y', 'Sorceress-Witch', 'super_man', '2020-02-16 00:00:00.00', null, null);
+INSERT INTO SJ_USER (oid, emp_id, name, account, pwd, sj_dep, enabled, avatar, create_id, create_datetime, update_id, update_datetime) VALUES
+  ('1', '001','新垣結依', 'admin', '12345678', '1', 'Y', 'Centaur', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('2', '002','山上悠亞', 'user1', '12345678', '2', 'Y', 'Adventure-Map', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('3', '003','黑木瞳', 'user2', '12345678', '3', 'Y', 'Villager', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('4', '004','林志玲', 'user3', '12345678', '4', 'Y', 'Sorceress-Witch', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_USER_ROLE_REL (oid, sj_user, sj_role, create_id, create_datetime, update_id, update_datetime) VALUES 
   ('1','1','admin', 'super_man', '2020-02-16 00:00:00.00', null, null),
@@ -85,18 +85,18 @@ INSERT INTO SJ_ROLE_MENU_REL (oid, sj_role, sj_menu, create_id, create_datetime,
   ('R0','reviewer','P', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_LEAVE (OID, SJ_USER, DEP , LEAVE_TYPE , START_DATETIME, END_DATETIME , LEAVE_STATUS, SJ_APPLY, REASON, LEAVE_HOURS, expire, create_id, create_datetime, update_id, update_datetime) VALUES
-  ('L11','1','部門','SPECIAL', '2019-09-17 08:30:00.00', '2019-09-20 18:30:00.00','A', 'A1', '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L11','1','部門','SPECIAL', '2019-09-17 08:30:00.00', '2019-09-20 18:30:00.00','A', 'A1', '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('L12','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L13','2','部門','SPECIAL', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L14','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L15','2','部門','SPECIAL', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L16','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L17','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L18','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L19','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L10','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L21','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L22','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L23','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L24','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'N', 'super_man', '2020-02-16 00:00:00.00', null, null);
+  ('L13','1','部門','SPECIAL', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L14','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L15','1','部門','SPECIAL', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L16','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L17','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L18','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L19','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L10','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L21','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L22','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L23','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L24','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null);
   

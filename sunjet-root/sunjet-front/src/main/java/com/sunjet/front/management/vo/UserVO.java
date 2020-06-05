@@ -6,8 +6,9 @@ import lombok.Data;
 
 @Data
 public class UserVO {
+	private String oid;
 
-	private String id;
+	private String empId;
 
 	// @NotBlank(message = "Account is not be blank")
 	// @Size(min = 2, max = 10)

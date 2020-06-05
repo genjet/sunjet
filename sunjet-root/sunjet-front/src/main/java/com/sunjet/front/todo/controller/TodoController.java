@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sunjet.common.dao.TodoRepository;
 import com.sunjet.common.entity.Todo;
-import com.sunjet.front.payload.response.ResponseObj;
+import com.sunjet.front.common.vo.ApiResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
@@ -30,7 +33,7 @@ public class TodoController {
 	@PostMapping("/todo")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> addTodo(String id, String title) {
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		Todo todo = new Todo();
 		todo.setId(Long.valueOf(id));
 		todo.setTitle(title);
@@ -43,7 +46,7 @@ public class TodoController {
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getTodos() {
 		
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		List<Todo> todos = todoRepository.findAll();
 		rspObj.setData(todos);
 		return ResponseEntity.ok(rspObj);
@@ -52,7 +55,7 @@ public class TodoController {
 	@DeleteMapping("/todo/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> deleteTodo(@PathVariable String id) {
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		Optional<Todo> todoOpt = todoRepository.findById(Long.valueOf(id));
 		if(todoOpt.isPresent()){
 			todoRepository.delete(todoOpt.get());
@@ -64,7 +67,7 @@ public class TodoController {
 	@PatchMapping("/todo/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> updateTodo(@PathVariable String id, Todo todo) {
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		Optional<Todo> todoOpt = todoRepository.findById(Long.valueOf(id));
 		if(todoOpt.isPresent()){
 			Todo todoDB = todoOpt.get();
@@ -79,8 +82,8 @@ public class TodoController {
 	@PatchMapping("/todo/checkAll")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> checkAllTodo(boolean completed) {
-		System.out.println(" ----------- completed: "+completed);
-		ResponseObj rspObj = new ResponseObj();
+		log.info(" ----------- completed: "+completed);
+		ApiResponse rspObj = new ApiResponse();
 		List<Todo> todos = todoRepository.findAll();
 		todos.forEach(t -> t.setCompleted(completed));
 		todoRepository.saveAll(todos);
@@ -91,7 +94,7 @@ public class TodoController {
 	@PatchMapping("/todo/deleteCompleted")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> clearCompleted() {
-		ResponseObj rspObj = new ResponseObj();
+		ApiResponse rspObj = new ApiResponse();
 		List<Todo> todos = todoRepository.findAll();
 		List<Todo> filter = todos.stream().filter(t -> t.isCompleted()).collect(Collectors.toList());
 		todoRepository.deleteAll(filter);

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class DepVO {
 	private String key;
-	private String displayName;
+	private String value;
 }

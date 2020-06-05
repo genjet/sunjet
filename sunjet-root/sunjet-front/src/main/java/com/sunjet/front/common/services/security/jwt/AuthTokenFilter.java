@@ -19,6 +19,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.sunjet.front.common.services.security.DefaultUserDetailsService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AuthTokenFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtUtils jwtUtils;

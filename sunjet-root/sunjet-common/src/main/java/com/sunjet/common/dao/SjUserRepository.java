@@ -11,5 +11,6 @@ import com.sunjet.common.entity.SjUser;
 public interface SjUserRepository  extends JpaRepository<SjUser, String> {
 	public SjUser findByAccountAndPwd(String account, String pwd);
 	public SjUser findByAccount(String account);
+	public SjUser findTopByOrderByEmpIdDesc();
 
 }
