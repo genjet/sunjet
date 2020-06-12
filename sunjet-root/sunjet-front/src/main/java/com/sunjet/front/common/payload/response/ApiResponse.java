@@ -1,4 +1,4 @@
-package com.sunjet.front.common.vo;
+package com.sunjet.front.common.payload.response;
 
 public class ApiResponse {
 	private Integer code = 20000;

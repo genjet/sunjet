@@ -18,7 +18,7 @@ import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjLeave;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
-import com.sunjet.front.common.services.security.UserDetailsImpl;
+import com.sunjet.front.common.security.vo.SecurityUserDetails;
 import com.sunjet.front.leave.service.LeaveService;
 import com.sunjet.front.leave.vo.LeaveFormVO;
 import com.sunjet.front.leave.vo.LeaveVO;
@@ -129,7 +129,7 @@ public class LeaveServiceImpl implements LeaveService {
 	}
 
 	@Override
-	public double countLeaveableDays(UserDetailsImpl userInfo, LeaveTypeEnum leaveType) {
+	public double countLeaveableDays(SecurityUserDetails userInfo, LeaveTypeEnum leaveType) {
 		double rtnHours = 0;
 //		int totalHours = 0;
 //		SjUser sjUser = sjUserRepository.findByName(userInfo.getName());

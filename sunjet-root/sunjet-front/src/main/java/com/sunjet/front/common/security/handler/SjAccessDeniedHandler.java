@@ -10,8 +10,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import com.sunjet.front.common.vo.ApiResponse;
-import com.sunjet.front.common.vo.ApiResponse.ResultCode;
+import com.sunjet.front.common.payload.response.ApiResponse;
+import com.sunjet.front.common.payload.response.ApiResponse.ResultCode;
 import com.sunjet.front.util.ResponseUtils;
 
 /**

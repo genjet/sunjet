@@ -1,4 +1,4 @@
-package com.sunjet.front.payload.response;
+package com.sunjet.front.common.payload.response;
 
 import java.util.List;
 

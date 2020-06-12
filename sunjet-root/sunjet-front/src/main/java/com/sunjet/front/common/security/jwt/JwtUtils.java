@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import com.sunjet.front.common.services.security.UserDetailsImpl;
+import com.sunjet.front.common.security.vo.SecurityUserDetails;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -16,7 +17,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@Component
+@Component
 public class JwtUtils {
 
 	@Value("${app.jwtSecret}")
@@ -25,7 +26,7 @@ public class JwtUtils {
 	@Value("${app.jwtExpirationMs}")
 	private int jwtExpirationMs;
 
-	public String generateJwtToken(UserDetailsImpl userPrincipal, Map<String, Object> claims) {
+	public String generateJwtToken(SecurityUserDetails userPrincipal, Map<String, Object> claims) {
 
 		final Date now = new Date();
 		final Date expirationDate = new Date(now.getTime() + jwtExpirationMs);

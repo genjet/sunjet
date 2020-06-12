@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sunjet.front.common.vo.ApiResponse;
+import com.sunjet.front.common.payload.response.ApiResponse;
 import com.sunjet.front.management.service.ManagementService;
 import com.sunjet.front.management.vo.DepVO;
 import com.sunjet.front.management.vo.UserVO;

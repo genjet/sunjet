@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.sunjet.front.common.services.security.UserDetailsImpl;
+import com.sunjet.front.common.security.vo.SecurityUserDetails;
 
 @Component
 public class SecurityAuditorAware implements AuditorAware<String> {
@@ -21,6 +21,6 @@ public class SecurityAuditorAware implements AuditorAware<String> {
 			return Optional.of("system");
 		}
 
-		return Optional.of(((UserDetailsImpl) authentication.getPrincipal()).getUsername());
+		return Optional.of(((SecurityUserDetails) authentication.getPrincipal()).getUsername());
 	}
 }

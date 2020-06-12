@@ -1,4 +1,4 @@
-package com.sunjet.front.payload.request;
+package com.sunjet.front.common.payload.request;
 
 import javax.validation.constraints.NotBlank;
 

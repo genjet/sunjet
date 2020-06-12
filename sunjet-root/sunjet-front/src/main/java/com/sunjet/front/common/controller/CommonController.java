@@ -27,13 +27,12 @@ import com.sunjet.common.dao.SjUserRepository;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.enumeration.LeaveStatusEnum;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
-import com.sunjet.front.common.controller.vo.OptionVO;
-import com.sunjet.front.common.services.security.UserDetailsImpl;
-import com.sunjet.front.common.services.security.jwt.JwtUtils;
-import com.sunjet.front.common.services.security.vo.ActiveUserStore;
-import com.sunjet.front.common.vo.ApiResponse;
-import com.sunjet.front.payload.request.LoginRequest;
-import com.sunjet.front.payload.response.JwtResponse;
+import com.sunjet.front.common.payload.request.LoginRequest;
+import com.sunjet.front.common.payload.response.ApiResponse;
+import com.sunjet.front.common.payload.response.JwtResponse;
+import com.sunjet.front.common.security.jwt.JwtUtils;
+import com.sunjet.front.common.security.vo.SecurityUserDetails;
+import com.sunjet.front.common.vo.OptionVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,8 +58,6 @@ public class CommonController {
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@Autowired
-	ActiveUserStore activeUserStore;
 
 	@Autowired
 	private SessionRegistry sessionRegistry;
@@ -72,7 +69,7 @@ public class CommonController {
 				.collect(Collectors.toList()));
 	}
 
-	@PostMapping("/signin")
+	@PostMapping("/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
@@ -80,7 +77,7 @@ public class CommonController {
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		SecurityUserDetails userDetails = (SecurityUserDetails) authentication.getPrincipal();
 
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
@@ -92,12 +89,18 @@ public class CommonController {
 		return ResponseEntity.ok(
 				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAccount(), roles));
 	}
+	
+//	@PostMapping("/login")
+//	public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
+//		log.info("login = >>>>>>>>>>>>>>---------------------->> {}");
+//		return ResponseEntity.ok(new ApiResponse());
+//	}
 
-	@PostMapping("/logout")
-	public ResponseEntity<?> logout(String token) {
-		log.info("logout = >>>>>>>>>>>>>>>> {}", token);
-		return ResponseEntity.ok(new ApiResponse());
-	}
+//	@PostMapping("/logout")
+//	public ResponseEntity<?> logout(String token) {
+//		log.info("logout = >>>>>>>>>>>>>>>> {}", token);
+//		return ResponseEntity.ok(new ApiResponse());
+//	}
 
 	@GetMapping("/info")
 	public ResponseEntity<?> allAccess(String token) {

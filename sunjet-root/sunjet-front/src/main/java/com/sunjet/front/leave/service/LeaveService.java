@@ -6,14 +6,14 @@ import java.util.Map;
 
 import com.sunjet.common.entity.SjLeave;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
-import com.sunjet.front.common.services.security.UserDetailsImpl;
+import com.sunjet.front.common.security.vo.SecurityUserDetails;
 import com.sunjet.front.leave.vo.LeaveFormVO;
 import com.sunjet.front.leave.vo.LeaveVO;
 
 public interface LeaveService {
 	public List<LeaveVO> queryLeave(LeaveFormVO leaveForm, String account);
 	
-	double countLeaveableDays(UserDetailsImpl userInfo, LeaveTypeEnum leaveType);
+	double countLeaveableDays(SecurityUserDetails userInfo, LeaveTypeEnum leaveType);
 
 	public Map<String, Integer> countLeaveaDays(LocalDateTime startDate, LocalDateTime endDate);
 

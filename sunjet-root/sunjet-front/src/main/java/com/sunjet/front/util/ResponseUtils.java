@@ -7,7 +7,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.sunjet.front.common.vo.ApiResponse;
+import com.sunjet.front.common.payload.response.ApiResponse;
 
 import lombok.extern.slf4j.Slf4j;
 

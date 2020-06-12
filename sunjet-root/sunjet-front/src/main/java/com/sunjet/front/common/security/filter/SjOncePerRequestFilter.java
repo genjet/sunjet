@@ -1,4 +1,4 @@
-package com.sunjet.front.common.services.security.jwt;
+package com.sunjet.front.common.security.filter;
 
 import java.io.IOException;
 
@@ -7,8 +7,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,24 +15,32 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.sunjet.front.common.services.security.DefaultUserDetailsService;
+import com.sunjet.front.common.security.jwt.JwtUtils;
+import com.sunjet.front.common.security.services.SecurityUserDetailsService;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * <p>Title: SjOncePerRequestFilter</p>
+ * <p>Description: </p>
+ * @author Andy-Wang
+ * @Date 2020年6月9日
+ */
 @Slf4j
-public class AuthTokenFilter extends OncePerRequestFilter {
+public class SjOncePerRequestFilter extends OncePerRequestFilter {
+
 	@Autowired
 	private JwtUtils jwtUtils;
 
 	@Autowired
-	private DefaultUserDetailsService userDetailsService;
+	private SecurityUserDetailsService userDetailsService;
 
-	private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		try {
+			log.info(" =============== SjOncePerRequestFilter start ! ====================== " );
 			String jwt = parseJwt(request);
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getAccountFromJwtToken(jwt);
@@ -62,4 +68,5 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 		return null;
 	}
+
 }

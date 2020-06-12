@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sunjet.common.dao.TodoRepository;
 import com.sunjet.common.entity.Todo;
-import com.sunjet.front.common.vo.ApiResponse;
+import com.sunjet.front.common.payload.response.ApiResponse;
 
 import lombok.extern.slf4j.Slf4j;
 

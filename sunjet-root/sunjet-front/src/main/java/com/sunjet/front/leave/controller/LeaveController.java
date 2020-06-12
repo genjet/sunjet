@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
-import com.sunjet.front.common.services.security.UserDetailsImpl;
-import com.sunjet.front.common.vo.ApiResponse;
+import com.sunjet.front.common.payload.response.ApiResponse;
+import com.sunjet.front.common.security.vo.SecurityUserDetails;
 import com.sunjet.front.job.service.JobService;
 import com.sunjet.front.leave.service.LeaveService;
 import com.sunjet.front.leave.vo.LeaveFormVO;
@@ -45,7 +45,7 @@ public class LeaveController {
 	@PostMapping("/leave")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ApiResponse getLeaves(@RequestBody LeaveFormVO formVO) {
-		UserDetailsImpl userInfo = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		SecurityUserDetails userInfo = (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		log.info("======================> "+userInfo.getAccount());
 		if(null != formVO){
 			log.info(formVO.toString());
@@ -94,7 +94,7 @@ public class LeaveController {
 	@PostMapping("/getLeaveableDays")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	public String getLeaveableDays(Model model, @RequestParam Map<String, String> data) {
-		UserDetailsImpl userInfo = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		SecurityUserDetails userInfo = (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		LeaveTypeEnum leaveType = LeaveTypeEnum.valueOf(data.get("leaveType"));
 		double count = leaveService.countLeaveableDays(userInfo, leaveType);
 		model.addAttribute("leaveableDay", count);

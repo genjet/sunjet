@@ -4,8 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
-import com.sunjet.front.common.services.security.vo.ActiveUserStore;
-
 /**
  * <p> WebSocket 配置 </p>
  *
@@ -18,10 +16,10 @@ public class WebSocketConfig {
         return new ServerEndpointExporter();
     }
     
-    @Bean
-    public ActiveUserStore activeUserStore(){
-        return new ActiveUserStore();
-    }
+//    @Bean
+//    public ActiveUserStore activeUserStore(){
+//        return new ActiveUserStore();
+//    }
     
   
 

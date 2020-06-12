@@ -1,4 +1,4 @@
-package com.sunjet.front.common.controller.vo;
+package com.sunjet.front.common.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

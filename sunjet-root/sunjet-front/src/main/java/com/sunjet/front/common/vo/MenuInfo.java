@@ -1,4 +1,4 @@
-package com.sunjet.front.common.services.security.vo;
+package com.sunjet.front.common.vo;
 
 import java.util.ArrayList;
 import java.util.List;
