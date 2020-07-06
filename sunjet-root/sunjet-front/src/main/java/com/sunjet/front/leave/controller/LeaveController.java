@@ -43,7 +43,7 @@ public class LeaveController {
 	
 	
 	@PostMapping("/leave")
-	@PreAuthorize("hasAnyRole('ADMIN')")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ApiResponse getLeaves(@RequestBody LeaveFormVO formVO) {
 		SecurityUserDetails userInfo = (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		log.info("======================> "+userInfo.getAccount());

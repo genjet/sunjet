@@ -6,7 +6,7 @@ server:
 
 app:
   jwtSecret: bezKoderSecretKey
-  jwtExpirationMs: 60000
+  jwtExpirationMs: 600000000
     
 scheduler:
   trigger: 

@@ -1,11 +1,12 @@
 package com.sunjet.front.management.vo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class UserVO {
+public class UserVo {
 	private String oid;
 
 	private String empId;
@@ -32,6 +33,8 @@ public class UserVO {
 	private String dep;
 
 	private LocalDate arrivalDay;
+	
+	private List<String> roles;
 	// private long phoneNo;
 
 	

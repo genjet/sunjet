@@ -14,6 +14,8 @@ import com.sunjet.front.common.payload.response.ApiResponse;
 import com.sunjet.front.common.payload.response.ApiResponse.ResultCode;
 import com.sunjet.front.util.ResponseUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * <p>
  * Title: SjAccessDeniedHandler
@@ -26,11 +28,13 @@ import com.sunjet.front.util.ResponseUtils;
  * @Date 2020年6月5日
  */
 @Component
+@Slf4j
 public class SjAccessDeniedHandler implements AccessDeniedHandler {
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+		log.info("================================== SjAccessDeniedHandler ===============================================");
 		ResponseUtils.out(response,
 				ApiResponse.fail(ResultCode.UNAUTHORIZED.getCode(), accessDeniedException.getMessage()));
 

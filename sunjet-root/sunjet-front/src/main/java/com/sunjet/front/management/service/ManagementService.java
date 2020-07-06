@@ -2,17 +2,30 @@ package com.sunjet.front.management.service;
 
 import java.util.List;
 
-import com.sunjet.front.management.vo.DepVO;
-import com.sunjet.front.management.vo.UserVO;
+import com.sunjet.front.common.vo.OptionVo;
+import com.sunjet.front.management.vo.DepVo;
+import com.sunjet.front.management.vo.RoleVo;
+import com.sunjet.front.management.vo.UserVo;
 
 public interface ManagementService {
-	public List<UserVO> getAllUserVo();
+	public List<UserVo> getAllUserVo();
 
-	public List<DepVO> getAllDepVO();
+	public List<DepVo> getAllDepVO();
+	
+	public List<OptionVo> getDepOptionVos();
 
-	public UserVO addUser(UserVO userVO);
+	public UserVo addUser(UserVo userVO);
 
-	public UserVO updateUser(UserVO userVO);
+	public UserVo updateUser(UserVo userVO);
 
-	public UserVO deleteUser(String id);
+	public UserVo deleteUser(String id);
+	
+	public List<RoleVo> getAllRoleVo();
+	
+	public RoleVo addRole(RoleVo roleVO);
+	
+	public RoleVo updateRole(RoleVo roleVO);
+
+	public List<OptionVo> getRoleOptionVos();
+	
 }

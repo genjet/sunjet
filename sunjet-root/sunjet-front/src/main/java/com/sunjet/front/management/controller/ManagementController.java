@@ -3,7 +3,9 @@ package com.sunjet.front.management.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sunjet.front.common.payload.response.ApiResponse;
+import com.sunjet.front.common.vo.OptionVo;
 import com.sunjet.front.management.service.ManagementService;
-import com.sunjet.front.management.vo.DepVO;
-import com.sunjet.front.management.vo.UserVO;
+import com.sunjet.front.management.vo.RoleVo;
+import com.sunjet.front.management.vo.UserVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,12 +34,9 @@ public class ManagementController {
 	private ManagementService managementService;
 
 	@GetMapping("/user")
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ApiResponse getUsers() {
-		// UserDetailsImpl userInfo = (UserDetailsImpl)
-		// SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			List<UserVO> rtnVOs = managementService.getAllUserVo();
+			List<UserVo> rtnVOs = managementService.getAllUserVo();
 			return ApiResponse.ok("", rtnVOs);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -48,7 +48,7 @@ public class ManagementController {
 //	@PreAuthorize("hasAnyRole('ADMIN')")
 	public ApiResponse getDeps() {
 		try {
-			List<DepVO> rtnVOs = managementService.getAllDepVO();
+			List<OptionVo> rtnVOs = managementService.getDepOptionVos();
 			return ApiResponse.ok("", rtnVOs);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -57,10 +57,9 @@ public class ManagementController {
 	}
 
 	@PostMapping("/user")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ApiResponse addUser(@RequestBody UserVO userVO) {
+	public ApiResponse addUser(@RequestBody UserVo userVO) {
 		try {
-			UserVO rtnVO = managementService.addUser(userVO);
+			UserVo rtnVO = managementService.addUser(userVO);
 			return ApiResponse.ok("", rtnVO);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -69,10 +68,9 @@ public class ManagementController {
 	}
 
 	@PatchMapping("/user")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ApiResponse updateUser(@RequestBody UserVO userVO) {
+	public ApiResponse updateUser(@RequestBody UserVo userVO) {
 		try {
-			UserVO rtnVO = managementService.updateUser(userVO);
+			UserVo rtnVO = managementService.updateUser(userVO);
 			return ApiResponse.ok("", rtnVO);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -81,17 +79,68 @@ public class ManagementController {
 	}
 
 	@DeleteMapping("/user/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
+//	@PreAuthorize("hasRole('ADMIN')")
 	public ApiResponse deleteUser(@PathVariable String id) {
 		try {
-			UserVO rtnVO = managementService.deleteUser(id);
+			UserVo rtnVO = managementService.deleteUser(id);
 			return ApiResponse.ok(rtnVO.getName() + " delete sucess! ");
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
-		
+	}
 	
+	@GetMapping("/role")
+	public ApiResponse getRoles() {
+		try {
+			List<RoleVo> rtnVOs = managementService.getAllRoleVo();
+			return ApiResponse.ok("", rtnVOs);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
+		}
+	}
+	
+	@PostMapping("/role")
+	public ApiResponse addRole(@RequestBody RoleVo RoleVo) {
+		try {
+			RoleVo rtnVO = managementService.addRole(RoleVo);
+			return ApiResponse.ok("", rtnVO);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
+		}
+	}
+	
+	@PatchMapping("/role")
+	public ApiResponse updateRole(@RequestBody @Validated RoleVo roleVo, BindingResult result) {
+		try {
+			if(result.hasErrors()){
+				StringBuffer sb = new StringBuffer();;
+				for (FieldError fieldError : result.getFieldErrors()) {
+					sb.append(fieldError.getDefaultMessage());
+	            }
+				return ApiResponse.fail(sb.toString());
+			}
+
+			RoleVo rtnVO = managementService.updateRole(roleVo);
+			return ApiResponse.ok("", rtnVO);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
+		}
+	}
+	
+	@GetMapping("/roleOptions")
+	public ApiResponse getRoleOptions() {
+		try {
+			List<OptionVo> rtnVos = managementService.getRoleOptionVos();
+			return ApiResponse.ok("", rtnVos);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
+		}
 	}
 
+	
 }

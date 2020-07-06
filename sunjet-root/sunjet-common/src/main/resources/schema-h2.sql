@@ -114,7 +114,8 @@ CREATE TABLE SJ_DEP (
 DROP TABLE IF EXISTS SJ_ROLE;
 CREATE TABLE SJ_ROLE (
   oid VARCHAR(32)   PRIMARY KEY,
-  role_code VARCHAR(250) NOT NULL,
+  role_code VARCHAR(50) NOT NULL,
+  role_name VARCHAR(150) ,
 
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,
@@ -125,8 +126,21 @@ CREATE TABLE SJ_ROLE (
 DROP TABLE IF EXISTS SJ_AUTHORITY;
 CREATE TABLE SJ_AUTHORITY (
   oid VARCHAR(32)   PRIMARY KEY,
-  sj_role VARCHAR(250) NOT NULL,
+  --sj_role VARCHAR(250) NOT NULL,
   authority_code VARCHAR(250) NOT NULL,
+  authority_name VARCHAR(250) ,
+
+  create_id   VARCHAR(10) NOT NULL,
+  create_datetime DATETIME NOT NULL,
+  update_id VARCHAR(10),
+  update_datetime DATETIME  
+);
+
+DROP TABLE IF EXISTS SJ_ROLE_AUTHORITY_REL;
+CREATE TABLE SJ_ROLE_AUTHORITY_REL (
+  oid VARCHAR(32)   PRIMARY KEY,
+  sj_authority VARCHAR(250) NOT NULL,
+  sj_role VARCHAR(250) NOT NULL,
 
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,
@@ -176,6 +190,7 @@ CREATE TABLE SJ_MENU (
   url VARCHAR(250) NOT NULL,
   ordinary INTEGER NOT NULL,
   parent_menu VARCHAR(32),
+  sj_authority VARCHAR(32),
   
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,
@@ -183,17 +198,17 @@ CREATE TABLE SJ_MENU (
   update_datetime DATETIME  
 );
 
-DROP TABLE IF EXISTS SJ_ROLE_MENU_REL;
-CREATE TABLE SJ_ROLE_MENU_REL (
-  oid VARCHAR(32)   PRIMARY KEY,
-  sj_menu VARCHAR(250) NOT NULL,
-  sj_role VARCHAR(250) NOT NULL,
+--DROP TABLE IF EXISTS SJ_AUTHORITY_MENU_REL;
+--CREATE TABLE SJ_AUTHORITY_MENU_REL (
+--  oid VARCHAR(32)   PRIMARY KEY,
+--  sj_menu VARCHAR(250) NOT NULL,
+--  sj_authority VARCHAR(250) NOT NULL,
 
-  create_id   VARCHAR(10) NOT NULL,
-  create_datetime DATETIME NOT NULL,
-  update_id VARCHAR(10),
-  update_datetime DATETIME  
-);
+--  create_id   VARCHAR(10) NOT NULL,
+--  create_datetime DATETIME NOT NULL,
+--  update_id VARCHAR(10),
+--  update_datetime DATETIME  
+--);
 
 DROP TABLE IF EXISTS SJ_LEAVE;
 CREATE TABLE SJ_LEAVE (

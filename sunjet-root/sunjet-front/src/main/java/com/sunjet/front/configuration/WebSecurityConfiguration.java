@@ -6,20 +6,26 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.sunjet.front.common.security.filter.SjOncePerRequestFilter;
+import com.sunjet.front.common.security.handler.SjAccessDecisionManager;
+import com.sunjet.front.common.security.handler.SjAccessDeniedHandler;
 import com.sunjet.front.common.security.handler.SjAuthenticationEntryPoint;
 import com.sunjet.front.common.security.handler.SjLogoutSuccessHandler;
+import com.sunjet.front.common.security.handler.SjSecurityMetadataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -30,9 +36,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private SjAuthenticationEntryPoint authenticationEntryPoint;
+	
+	@Autowired
+	private SjAccessDeniedHandler accessDeniedHandler; 
 
 	@Autowired
 	private SjLogoutSuccessHandler sjLogoutSuccessHandler;
+	
+	@Autowired
+	private SjAccessDecisionManager accessDecisionManager;
+	
+	@Autowired
+	private SjSecurityMetadataSource filterInvocationSecurityMetadataSource;
 
 	@Bean
 	public SjOncePerRequestFilter authenticationJwtTokenFilter() {
@@ -59,10 +74,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry
-		// registry = http.antMatcher("/**").authorizeRequests();
 
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).and()
+		.exceptionHandling().accessDeniedHandler(accessDeniedHandler).and()
 				//// 配置取消session管理,又Jwt来获取用户状态,否则即使token无效,也会有session信息,依旧判断用户为登录状态
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
 				.antMatchers("/api/auth/**", "/h2/**", "/groupChat/**").permitAll().anyRequest().authenticated()
@@ -70,6 +84,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.and().headers().frameOptions().disable()
 				// 配置登出,登出放行
 				.and().logout().logoutUrl("/api/auth/logout").logoutSuccessHandler(sjLogoutSuccessHandler);
+		 ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry
+		 registry = http.antMatcher("/**").authorizeRequests();
+		 
+		 // url权限认证处理
+	        registry.withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
+	            @Override
+	            public <O extends FilterSecurityInterceptor> O postProcess(O o) {
+	                o.setSecurityMetadataSource(filterInvocationSecurityMetadataSource);
+	                o.setAccessDecisionManager(accessDecisionManager);
+	                return o;
+	            }
+	        });
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class OptionVO {
+public class OptionVo {
 
 	private String label;
-    private String value;
+	private String value;
 }

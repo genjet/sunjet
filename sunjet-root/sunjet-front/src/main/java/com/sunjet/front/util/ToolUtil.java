@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sunjet.front.leave.vo.LeaveVO;
+import com.sunjet.front.management.vo.RoleVo;
 
 public class ToolUtil {
 
@@ -43,20 +43,22 @@ public class ToolUtil {
 	private static final char UNDERLINE = '_';
 
 	public static void main(String[] args) throws Exception {
-		LeaveVO data = new LeaveVO(); // or List<SomeClass> data; etc.
+		RoleVo data = new RoleVo(); // or List<SomeClass> data; etc.
 		Class cs = data.getClass();
 		String className = cs.getSimpleName();
 
 		List<String> fieldNames = getFieldNamesForClass(cs);
 
 		StringBuffer sb = new StringBuffer();
+		System.out.println(" columns: [");
 		fieldNames.forEach(it -> {
-			System.out.println("{");
-			System.out.println("  prop: \"" + it + "\",");
-			System.out.println("  label: this.$I18N(`" + it + "`),");
-			System.out.println("  operate: {}");
-			System.out.println("},");
+			System.out.println("  {");
+			System.out.println("    prop: \"" + it + "\",");
+			System.out.println("    label: this.$I18N(`" + it + "`),");
+			System.out.println("    operate: {}");
+			System.out.println("  },");
 		});
+		System.out.println(" ]");
 
 	}
 

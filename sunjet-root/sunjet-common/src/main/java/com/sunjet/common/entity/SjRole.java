@@ -1,7 +1,6 @@
 package com.sunjet.common.entity;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,14 +29,16 @@ public class SjRole extends GenericEntity {
 
 	@Column(name = "role_code")
 	private String roleCode;
+	
+	@Column(name = "role_name")
+	private String roleName;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sjRole", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "sjRole")
 	private List<SjUserRoleRel> sjUserRoleRels;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sjRole", orphanRemoval = true)
-	private List<SjRoleMenuRel> sjRoleMenuRels;
-	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sjRole", orphanRemoval = true)
-	private Set<SjAuthority> sjAuthoritys;
+	private List<SjRoleAuthorityRel> sjRoleAuthorityRels;
+//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "sjRole", orphanRemoval = true)
+//	private Set<SjAuthority> sjAuthoritys;
 
 }
