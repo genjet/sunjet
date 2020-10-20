@@ -1,0 +1,3 @@
+[submodule "web-vue"]
+	path = web-vue
+	url = git@github.com:genjet/vue-4.0.git
