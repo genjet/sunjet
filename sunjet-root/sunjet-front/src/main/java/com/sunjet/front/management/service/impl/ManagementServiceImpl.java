@@ -2,7 +2,9 @@ package com.sunjet.front.management.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,6 +24,9 @@ import com.sunjet.common.entity.SjRole;
 import com.sunjet.common.entity.SjRoleAuthorityRel;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.SjUserRoleRel;
+import com.sunjet.front.common.exception.ValidateErrorException;
+import com.sunjet.front.common.services.CommonService;
+import com.sunjet.front.common.vo.FailureVo;
 import com.sunjet.front.common.vo.OptionVo;
 import com.sunjet.front.management.service.ManagementService;
 import com.sunjet.front.management.vo.AuthorityVo;
@@ -46,15 +51,18 @@ public class ManagementServiceImpl implements ManagementService {
 	@Autowired
 	private SjAuthorityRepository sjAuthorityRepository;
 
+	@Autowired
+	CommonService CommonService;
+
 	public static String ROLE = "ROLE_";
 
 	@Override
 	public List<UserVo> getAllUserVo() {
-		List<SjUser> sjUsers = sjUserRepository.findAll();
-		List<UserVo> rtnVOs = new ArrayList<UserVo>();
+		final List<SjUser> sjUsers = sjUserRepository.findAll();
+		final List<UserVo> rtnVOs = new ArrayList<UserVo>();
 		// String id = 1;
-		for (SjUser sjUser : sjUsers) {
-			UserVo user = new UserVo();
+		for (final SjUser sjUser : sjUsers) {
+			final UserVo user = new UserVo();
 			user.setOid(sjUser.getOid());
 			user.setEmpId(sjUser.getEmpId());
 			user.setAccount(sjUser.getAccount());
@@ -76,11 +84,11 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public List<DepVo> getAllDepVO() {
-		List<DepVo> rtnVOs = new ArrayList<DepVo>();
-		List<SjDep> deps = sjDepRepository.findAll();
+		final List<DepVo> rtnVOs = new ArrayList<DepVo>();
+		final List<SjDep> deps = sjDepRepository.findAll();
 		if (CollectionUtils.isNotEmpty(deps)) {
-			for (SjDep sjDep : deps) {
-				DepVo depVO = new DepVo();
+			for (final SjDep sjDep : deps) {
+				final DepVo depVO = new DepVo();
 				depVO.setKey(sjDep.getOid());
 				depVO.setValue(sjDep.getName());
 				rtnVOs.add(depVO);
@@ -91,30 +99,33 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public UserVo addUser(UserVo userVO) {
-		UserVo rtnUserVO = userVO;
-		SjUser topSjUser = sjUserRepository.findTopByOrderByEmpIdDesc();
-		String empId = ToolUtil.addOne4Str(topSjUser.getEmpId());
+		final UserVo rtnUserVO = userVO;
+		final SjUser topSjUser = sjUserRepository.findTopByOrderByEmpIdDesc();
+		final String empId = ToolUtil.addOne4Str(topSjUser.getEmpId());
 		userVO.setEmpId(empId);
 		log.info("new empId is {}", empId);
 
-		SjUser user = new SjUser();
+		final SjUser user = new SjUser();
 		user.setEmpId(userVO.getEmpId());
 		user.setAccount(userVO.getAccount());
 		user.setName(userVO.getName());
 		user.setPwd(userVO.getPwd());
 		user.setEnabled(Boolean.TRUE);
 		user.setNickName(userVO.getNickName());
-		Optional<SjDep> sjDep = sjDepRepository.findById(userVO.getDep());
+		final Optional<SjDep> sjDep = sjDepRepository.findById(userVO.getDep());
 		if (sjDep.isPresent()) {
 			user.setSjDep(sjDep.get());
 			rtnUserVO.setDep(sjDep.get().getName());
 		}
 		user.setArrivalDay(userVO.getArrivalDay());
-		List<SjUserRoleRel> sjUserRoleRels = new ArrayList<>();
-		for (String roleCode : userVO.getRoles()) {
-			SjUserRoleRel addSjUserRoleRel = new SjUserRoleRel();
+		final List<SjUserRoleRel> sjUserRoleRels = new ArrayList<>();
+		for (final String roleCode : userVO.getRoles()) {
+			final SjUserRoleRel addSjUserRoleRel = new SjUserRoleRel();
 			addSjUserRoleRel.setSjUser(user);
-			addSjUserRoleRel.setSjRole(sjRoleRepository.findByRoleCode(roleCode));
+			final Optional<SjRole> sjRoleOpt = sjRoleRepository.findByRoleCode(roleCode);
+			if(sjRoleOpt.isPresent()){
+				addSjUserRoleRel.setSjRole(sjRoleOpt.get());
+			}
 			sjUserRoleRels.add(addSjUserRoleRel);
 		}
 		user.getSjUserRoleRels().addAll(sjUserRoleRels);
@@ -124,26 +135,29 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public UserVo updateUser(UserVo userVO) {
-		UserVo rtnUserVO = userVO;
-		Optional<SjUser> sjUserOpt = sjUserRepository.findByEmpId(userVO.getEmpId());
+		final UserVo rtnUserVO = userVO;
+		final Optional<SjUser> sjUserOpt = sjUserRepository.findByEmpId(userVO.getEmpId());
 		if (sjUserOpt.isPresent()) {
-			SjUser user = sjUserOpt.get();
+			final SjUser user = sjUserOpt.get();
 			user.setAccount(userVO.getAccount());
 			user.setName(userVO.getName());
 			user.setPwd(userVO.getPwd());
 			user.setEnabled(userVO.getEnabled());
 			user.setNickName(userVO.getNickName());
-			Optional<SjDep> sjDep = sjDepRepository.findById(userVO.getDep());
+			final Optional<SjDep> sjDep = sjDepRepository.findById(userVO.getDep());
 			if (sjDep.isPresent()) {
 				user.setSjDep(sjDep.get());
 				rtnUserVO.setDep(sjDep.get().getName());
 			}
 			user.setArrivalDay(userVO.getArrivalDay());
-			List<SjUserRoleRel> sjUserRoleRels = new ArrayList<>();
-			for (String roleCode : userVO.getRoles()) {
-				SjUserRoleRel addSjUserRoleRel = new SjUserRoleRel();
+			final List<SjUserRoleRel> sjUserRoleRels = new ArrayList<>();
+			for (final String roleCode : userVO.getRoles()) {
+				final SjUserRoleRel addSjUserRoleRel = new SjUserRoleRel();
 				addSjUserRoleRel.setSjUser(user);
-				addSjUserRoleRel.setSjRole(sjRoleRepository.findByRoleCode(roleCode));
+				final Optional<SjRole> sjRoleOpt = sjRoleRepository.findByRoleCode(roleCode);
+				if(sjRoleOpt.isPresent()){
+					addSjUserRoleRel.setSjRole(sjRoleOpt.get());
+				}
 				sjUserRoleRels.add(addSjUserRoleRel);
 			}
 			user.getSjUserRoleRels().clear();
@@ -157,10 +171,10 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public UserVo deleteUser(String oid) {
-		UserVo rtnUserVO = new UserVo();
-		Optional<SjUser> userOpt = sjUserRepository.findById(oid);
+		final UserVo rtnUserVO = new UserVo();
+		final Optional<SjUser> userOpt = sjUserRepository.findById(oid);
 		if (userOpt.isPresent()) {
-			SjUser sjUser = userOpt.get();
+			final SjUser sjUser = userOpt.get();
 			rtnUserVO.setName(sjUser.getName());
 			sjUserRepository.delete(sjUser);
 		}
@@ -169,18 +183,18 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public List<RoleVo> getAllRoleVo() {
-		List<RoleVo> rtnVOs = new ArrayList<RoleVo>();
-		List<SjRole> sjRoles = sjRoleRepository.findAll();
-		for (SjRole sjRole : sjRoles) {
-			RoleVo roleVO = new RoleVo();
+		final List<RoleVo> rtnVOs = new ArrayList<RoleVo>();
+		final List<SjRole> sjRoles = sjRoleRepository.findAll();
+		for (final SjRole sjRole : sjRoles) {
+			final RoleVo roleVO = new RoleVo();
 			roleVO.setOid(sjRole.getOid());
 			roleVO.setRoleCode(sjRole.getRoleCode().substring(5));
 			roleVO.setRoleName(sjRole.getRoleName());
-			List<SjRoleAuthorityRel> SjRoleAuthorityRels = sjRole.getSjRoleAuthorityRels();
+			final List<SjRoleAuthorityRel> SjRoleAuthorityRels = sjRole.getSjRoleAuthorityRels();
 
-			List<AuthorityVo> authorityVos = SjRoleAuthorityRels.stream().map(it -> {
-				SjAuthority sjAuthority = it.getSjAuthority();
-				AuthorityVo authorityVo = new AuthorityVo();
+			final List<AuthorityVo> authorityVos = SjRoleAuthorityRels.stream().map(it -> {
+				final SjAuthority sjAuthority = it.getSjAuthority();
+				final AuthorityVo authorityVo = new AuthorityVo();
 				BeanUtils.copyProperties(sjAuthority, authorityVo);
 				return authorityVo;
 			}).collect(Collectors.toList());
@@ -194,8 +208,8 @@ public class ManagementServiceImpl implements ManagementService {
 	public List<OptionVo> getRoleOptionVos() {
 		final List<OptionVo> rtnVos = new ArrayList<OptionVo>();
 		final List<SjRole> sjRoles = sjRoleRepository.findAll();
-		for (SjRole sjRole : sjRoles) {
-			OptionVo vo = new OptionVo(sjRole.getRoleName(), sjRole.getRoleCode());
+		for (final SjRole sjRole : sjRoles) {
+			final OptionVo vo = new OptionVo(sjRole.getRoleName(), sjRole.getRoleCode());
 			rtnVos.add(vo);
 		}
 		return rtnVos;
@@ -203,19 +217,19 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public RoleVo addRole(RoleVo roleVo) {
-		SjRole sjRole = new SjRole();
-		String realCode = ROLE.concat(roleVo.getRoleCode());
+		final SjRole sjRole = new SjRole();
+		final String realCode = ROLE.concat(roleVo.getRoleCode());
 		sjRole.setRoleCode(realCode.toUpperCase());
 		sjRole.setRoleName(roleVo.getRoleName());
-		List<SjRoleAuthorityRel> sjRoleAuthorityRels = new ArrayList<>();
-		List<SjAuthority> sjAuthorities = sjAuthorityRepository.findByAuthorityCodeIn(roleVo.getAuthority());
-		for (SjAuthority sjAuthority : sjAuthorities) {
-			SjRoleAuthorityRel sjRoleAuthorityRel = new SjRoleAuthorityRel();
-			sjRoleAuthorityRel.setSjRole(sjRole);
-			sjRoleAuthorityRel.setSjAuthority(sjAuthority);
-			sjRoleAuthorityRels.add(sjRoleAuthorityRel);
-		}
-		sjRole.setSjRoleAuthorityRels(sjRoleAuthorityRels);
+		final List<SjRoleAuthorityRel> sjRoleAuthorityRels = new ArrayList<>();
+//		List<SjAuthority> sjAuthorities = sjAuthorityRepository.findByAuthorityCodeIn(roleVo.getAuthority());
+//		for (SjAuthority sjAuthority : sjAuthorities) {
+//			SjRoleAuthorityRel sjRoleAuthorityRel = new SjRoleAuthorityRel();
+//			sjRoleAuthorityRel.setSjRole(sjRole);
+//			sjRoleAuthorityRel.setSjAuthority(sjAuthority);
+//			sjRoleAuthorityRels.add(sjRoleAuthorityRel);
+//		}
+//		sjRole.setSjRoleAuthorityRels(sjRoleAuthorityRels);
 		sjRoleRepository.save(sjRole);
 		this.bindAuthorityVoByDB(roleVo, sjRole);
 		roleVo.setRoleCode(roleVo.getRoleCode().toUpperCase());
@@ -224,53 +238,87 @@ public class ManagementServiceImpl implements ManagementService {
 
 	@Override
 	public RoleVo updateRole(RoleVo roleVo) {
-		Optional<SjRole> sjRoleOpt = sjRoleRepository.findById(roleVo.getOid());
+		final Optional<SjRole> sjRoleOpt = sjRoleRepository.findById(roleVo.getOid());
 		if (sjRoleOpt.isPresent()) {
+			final Map<SjAuthority, List<SjAuthority>> parentOptions = CommonService.getAllAuthoritys();
 			final SjRole sjRole = sjRoleOpt.get();
 			sjRole.setRoleCode(ROLE.concat(roleVo.getRoleCode()).toUpperCase());
 			sjRole.setRoleName(roleVo.getRoleName());
-			List<SjRoleAuthorityRel> sjRoleAuthorityRels = sjRole.getSjRoleAuthorityRels();
+			final List<SjRoleAuthorityRel> sjRoleAuthorityRels = sjRole.getSjRoleAuthorityRels();
+			final List<List<String>> authorityList = roleVo.getAuthority();
+			final Map<String, List<String>> map = new HashMap<String, List<String>>();
+			if(CollectionUtils.isNotEmpty(authorityList)){
+				authorityList.stream().forEach(it -> {
+					final Object[] array =  it.toArray();
 
-			List<SjAuthority> sjAuthorities = sjAuthorityRepository.findByAuthorityCodeIn(roleVo.getAuthority());
-			if (CollectionUtils.isNotEmpty(roleVo.getAuthority())) {
-				if (CollectionUtils.isEmpty(sjRoleAuthorityRels)) {
-					for (SjAuthority sjAuthority : sjAuthorities) {
-						SjRoleAuthorityRel sjRoleAuthorityRel = new SjRoleAuthorityRel();
-						sjRoleAuthorityRel.setSjRole(sjRole);
-						sjRoleAuthorityRel.setSjAuthority(sjAuthority);
-						sjRoleAuthorityRels.add(sjRoleAuthorityRel);
+//					it.stream().forEach(a -> {System.out.println(a);});
+//					System.out.println((String)it.toArray()[0]);
+					String s = null;
+					if(array.length > 1){
+						s =(String)array[1];
 					}
-				} else {
-					List<String> removeCode = new ArrayList<String>();
-					for (int i = 0; i < sjRoleAuthorityRels.size(); i++) {
-						SjRoleAuthorityRel sjRoleAuthorityRel = sjRoleAuthorityRels.get(i);
-						String code = sjRoleAuthorityRel.getSjAuthority().getAuthorityCode();
-						if (!roleVo.getAuthority().contains(code)) {
-							removeCode.add(code);
-							sjRoleAuthorityRels.remove(i);
-						}
+					if (map.containsKey(array[0])) {
+						map.get(array[0]).add(s);
+					}else{
+						final List<String> ll = new ArrayList<>();
+						ll.add(s);
+						map.put((String)array[0], ll);
 					}
-					for (SjAuthority sjAuthority : sjAuthorities) {
-						boolean isAdd = Boolean.TRUE;
-						for (SjRoleAuthorityRel sjRoleAuthorityRel : sjRoleAuthorityRels) {
-							String code = sjRoleAuthorityRel.getSjAuthority().getAuthorityCode();
-							if (sjAuthority.getAuthorityCode().equals(code)) {
-								isAdd = Boolean.FALSE;
-								break;
-							}
-						}
-						if (isAdd) {
-							SjRoleAuthorityRel sjRoleAuthorityRel = new SjRoleAuthorityRel();
-							sjRoleAuthorityRel.setSjRole(sjRole);
-							sjRoleAuthorityRel.setSjAuthority(sjAuthority);
-							sjRoleAuthorityRels.add(sjRoleAuthorityRel);
-						}
+//					 it.stream().collect(Collectors.groupingBy(a -> a[0], Collectors.mapping(a -> a[1], Collectors.toList())));
+				});
+//				final Map<String, List<String>> bindAuthorityOptionVoMap = authorityList.stream().map(list -> list.stream().collect(
+//						Collectors.groupingBy(a -> a[0], Collectors.mapping(a -> a[1], Collectors.toList()))));
+				for (final String key : map.keySet()) {
+					for (final String string : map.get(key)) {
+//						if(list.size() == 1){
+							System.out.println("A: "+string);
+//						}else{
+//							System.out.println("B: "+string);
+//						}
 					}
-					sjRole.setSjRoleAuthorityRels(sjRoleAuthorityRels);
 				}
-			} else {
-				sjRoleAuthorityRels.clear();
 			}
+
+//			List<SjAuthority> sjAuthorities = sjAuthorityRepository.findByAuthorityCodeIn(roleVo.getAuthority());
+//			if (CollectionUtils.isNotEmpty(roleVo.getAuthority())) {
+//				if (CollectionUtils.isEmpty(sjRoleAuthorityRels)) {
+//					for (SjAuthority sjAuthority : sjAuthorities) {
+//						SjRoleAuthorityRel sjRoleAuthorityRel = new SjRoleAuthorityRel();
+//						sjRoleAuthorityRel.setSjRole(sjRole);
+//						sjRoleAuthorityRel.setSjAuthority(sjAuthority);
+//						sjRoleAuthorityRels.add(sjRoleAuthorityRel);
+//					}
+//				} else {
+//					List<String> removeCode = new ArrayList<String>();
+//					for (int i = 0; i < sjRoleAuthorityRels.size(); i++) {
+//						SjRoleAuthorityRel sjRoleAuthorityRel = sjRoleAuthorityRels.get(i);
+//						String code = sjRoleAuthorityRel.getSjAuthority().getAuthorityCode();
+//						if (!roleVo.getAuthority().contains(code)) {
+//							removeCode.add(code);
+//							sjRoleAuthorityRels.remove(i);
+//						}
+//					}
+//					for (SjAuthority sjAuthority : sjAuthorities) {
+//						boolean isAdd = Boolean.TRUE;
+//						for (SjRoleAuthorityRel sjRoleAuthorityRel : sjRoleAuthorityRels) {
+//							String code = sjRoleAuthorityRel.getSjAuthority().getAuthorityCode();
+//							if (sjAuthority.getAuthorityCode().equals(code)) {
+//								isAdd = Boolean.FALSE;
+//								break;
+//							}
+//						}
+//						if (isAdd) {
+//							SjRoleAuthorityRel sjRoleAuthorityRel = new SjRoleAuthorityRel();
+//							sjRoleAuthorityRel.setSjRole(sjRole);
+//							sjRoleAuthorityRel.setSjAuthority(sjAuthority);
+//							sjRoleAuthorityRels.add(sjRoleAuthorityRel);
+//						}
+//					}
+//					sjRole.setSjRoleAuthorityRels(sjRoleAuthorityRels);
+//				}
+//			} else {
+//				sjRoleAuthorityRels.clear();
+//			}
 			sjRoleRepository.save(sjRole);
 			if (CollectionUtils.isEmpty(sjRole.getSjRoleAuthorityRels())) {
 				roleVo.getAuthorityVo().clear();
@@ -284,8 +332,8 @@ public class ManagementServiceImpl implements ManagementService {
 
 	private void bindAuthorityVoByDB(RoleVo roleVo, final SjRole sjRole) {
 		roleVo.setAuthorityVo(sjRole.getSjRoleAuthorityRels().stream().map(it -> {
-			SjAuthority sjAuthority = it.getSjAuthority();
-			AuthorityVo vo = new AuthorityVo();
+			final SjAuthority sjAuthority = it.getSjAuthority();
+			final AuthorityVo vo = new AuthorityVo();
 			vo.setOid(sjAuthority.getOid());
 			vo.setAuthorityCode(sjAuthority.getAuthorityCode());
 			vo.setAuthorityName(sjAuthority.getAuthorityName());
@@ -297,11 +345,28 @@ public class ManagementServiceImpl implements ManagementService {
 	public List<OptionVo> getDepOptionVos() {
 		final List<OptionVo> rtnVos = new ArrayList<OptionVo>();
 		final List<SjDep> deps = sjDepRepository.findAll();
-		for (SjDep dep : deps) {
-			OptionVo vo = new OptionVo(dep.getName(), dep.getOid());
+		for (final SjDep dep : deps) {
+			final OptionVo vo = new OptionVo(dep.getName(), dep.getOid());
 			rtnVos.add(vo);
 		}
 		return rtnVos;
 	}
 
+	@Override
+	public RoleVo deleteRole(String roleCode) {
+		final RoleVo rtnVO = new RoleVo();
+		final Optional<SjRole> roleOpt = sjRoleRepository.findById(roleCode);
+		if (roleOpt.isPresent()) {
+			final SjRole sjRole = roleOpt.get();
+			if(CollectionUtils.isNotEmpty(sjRole.getSjUserRoleRels())){
+				throw new ValidateErrorException(new FailureVo("尚有使用者,不可刪除"));
+			}else{
+				rtnVO.setRoleName(sjRole.getRoleName());
+				sjRoleRepository.delete(sjRole);
+			}
+		}else{
+			throw new ValidateErrorException(new FailureVo(" Data Not Found ! "));
+		}
+		return rtnVO;
+	}
 }

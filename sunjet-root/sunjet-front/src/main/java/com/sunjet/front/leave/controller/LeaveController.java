@@ -7,13 +7,10 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,8 +23,8 @@ import com.sunjet.front.common.payload.response.ApiResponse;
 import com.sunjet.front.common.security.vo.SecurityUserDetails;
 import com.sunjet.front.job.service.JobService;
 import com.sunjet.front.leave.service.LeaveService;
-import com.sunjet.front.leave.vo.LeaveFormVO;
-import com.sunjet.front.leave.vo.LeaveVO;
+import com.sunjet.front.leave.vo.LeaveFormVo;
+import com.sunjet.front.leave.vo.LeaveVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,19 +40,13 @@ public class LeaveController {
 	
 	
 	@PostMapping("/leave")
-//	@PreAuthorize("hasAnyRole('ADMIN')")
-	public ApiResponse getLeaves(@RequestBody LeaveFormVO formVO) {
+	public ApiResponse getLeaves(@RequestBody LeaveFormVo formVo) {
 		SecurityUserDetails userInfo = (SecurityUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		log.info("======================> "+userInfo.getAccount());
-		if(null != formVO){
-			log.info(formVO.toString());
+		if(null != formVo){
+			log.info(formVo.toString());
 		}
-		
-		List<LeaveVO> rtnVOs = leaveService.queryLeave(formVO, userInfo.getAccount());
-//		LeaveVO leaveVO = new LeaveVO();
-//		rtnVOs.add(leaveVO);
-//		ApiResponse rspObj = new ApiResponse();
-//		rspObj.setData(rtnVOs);
+		List<LeaveVo> rtnVOs = leaveService.queryLeave(formVo, userInfo.getAccount());
 		return ApiResponse.ok("", rtnVOs);
 	}
 	
@@ -79,17 +70,17 @@ public class LeaveController {
 //		return "leave/leave";
 //	}
 
-	@RequestMapping("/leave2")
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	public String tables2(Model model) {
-		// UserInfo userInfo = (UserInfo)
-		// SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		// SjUser sjUser =
-		// sjUserRepository.findByAccount(userInfo.getUsername());
-
-		model.addAttribute("leaveVO", new LeaveVO());
-		return "leave/leave2";
-	}
+//	@RequestMapping("/leave2")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
+//	public String tables2(Model model) {
+//		// UserInfo userInfo = (UserInfo)
+//		// SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		// SjUser sjUser =
+//		// sjUserRepository.findByAccount(userInfo.getUsername());
+//
+//		model.addAttribute("leaveVO", new LeaveVO());
+//		return "leave/leave2";
+//	}
 
 	@PostMapping("/getLeaveableDays")
 	@PreAuthorize("hasAnyRole('ADMIN')")
@@ -116,27 +107,38 @@ public class LeaveController {
 	}
 
 	@PostMapping("/addLeave")
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	public String addLeave(@Valid LeaveVO leaveVO, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return "leave/leave";
+	public ApiResponse addLeave(@RequestBody LeaveVo leaveVo) {
+		try {
+			LeaveVo rtnVO = leaveService.addLeave(leaveVo);
+			return ApiResponse.ok("", rtnVO);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
 		}
-
-		return "redirect:leave2";
 	}
+	
+//	@PostMapping("/addLeave")
+//	@PreAuthorize("hasAnyRole('ADMIN')")
+//	public String addLeave(@Valid LeaveVo leaveVO, BindingResult result, Model model) {
+//		if (result.hasErrors()) {
+//			return "leave/leave";
+//		}
+//
+//		return "redirect:leave2";
+//	}
 
-	public String addUser(@Valid LeaveVO userVO, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			// model.addAttribute("userVOs", getUserVo());
-			return "management/management";
-		}
-		// SjUser user = new SjUser();
-		// user.setAccount(userVO.getAccount());
-		// user.setName(userVO.getName());
-		// user.setPwd(userVO.getPsw());
-		// sjUserRepository.save(user);
-		// model.addAttribute("users", getUserVo());
-		return "redirect:leave";
-	}
+//	public String addUser(@Valid LeaveVO userVO, BindingResult result, Model model) {
+//		if (result.hasErrors()) {
+//			// model.addAttribute("userVOs", getUserVo());
+//			return "management/management";
+//		}
+//		// SjUser user = new SjUser();
+//		// user.setAccount(userVO.getAccount());
+//		// user.setName(userVO.getName());
+//		// user.setPwd(userVO.getPsw());
+//		// sjUserRepository.save(user);
+//		// model.addAttribute("users", getUserVo());
+//		return "redirect:leave";
+//	}
 
 }

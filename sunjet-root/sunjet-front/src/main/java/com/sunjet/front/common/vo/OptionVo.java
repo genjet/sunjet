@@ -1,12 +1,16 @@
 package com.sunjet.front.common.vo;
 
-import lombok.AllArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class OptionVo {
+public class OptionVo extends BaseOptionVo{
 
-	private String label;
-	private String value;
+	private List<BaseOptionVo> children = new ArrayList<BaseOptionVo>();
+	
+	public OptionVo(String label, String value) {
+		super(label, value);
+	}
 }

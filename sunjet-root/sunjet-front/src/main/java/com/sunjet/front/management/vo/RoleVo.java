@@ -14,7 +14,7 @@ public class RoleVo {
 	@NotBlank(message="角色代號不可為空值!")
 	private String roleCode;
 	private String roleName;
-	private List<String> authority = new ArrayList<>();
+	private List<List<String>> authority = new ArrayList<>();
 	private List<AuthorityVo> authorityVo = new ArrayList<>();
 
 }

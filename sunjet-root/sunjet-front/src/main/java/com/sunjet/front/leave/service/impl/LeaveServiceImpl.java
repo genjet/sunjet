@@ -20,8 +20,8 @@ import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 import com.sunjet.front.common.security.vo.SecurityUserDetails;
 import com.sunjet.front.leave.service.LeaveService;
-import com.sunjet.front.leave.vo.LeaveFormVO;
-import com.sunjet.front.leave.vo.LeaveVO;
+import com.sunjet.front.leave.vo.LeaveFormVo;
+import com.sunjet.front.leave.vo.LeaveVo;
 
 @Service
 public class LeaveServiceImpl implements LeaveService {
@@ -34,7 +34,7 @@ public class LeaveServiceImpl implements LeaveService {
 	private SjCalendarRepository sjCalendarRepository;
 
 	@Override
-	public SjLeave createLeave(LeaveVO leaveVO) {
+	public LeaveVo addLeave(LeaveVo leaveVo) {
 		SjLeave sjLeave = new SjLeave();
 //		SjUser sjUser = sjUserRepository.findByName(leaveVO.getUserName());
 //		sjLeave.setSjUser(sjUser);
@@ -56,7 +56,7 @@ public class LeaveServiceImpl implements LeaveService {
 //
 //		sjLeave.setSjApply(sjApply);
 //		sjLeaveRepository.save(sjLeave);
-		return sjLeave;
+		return leaveVo;
 	}
 
 	@Override
@@ -157,7 +157,7 @@ public class LeaveServiceImpl implements LeaveService {
 	}
 
 	@Override
-	public List<LeaveVO> queryLeave(LeaveFormVO leaveForm, String account) {
+	public List<LeaveVo> queryLeave(LeaveFormVo leaveForm, String account) {
 		SjUser sjUser = sjUserRepository.findByAccount(account);
 		List<LocalDateTime> rangeDate = leaveForm.getRangeDate();
 		LocalDateTime startDate = null == rangeDate ? null : rangeDate.get(0);
@@ -167,9 +167,9 @@ public class LeaveServiceImpl implements LeaveService {
 		if(sjLeaveOpt.isPresent()){
 			sjLeaves = sjLeaveOpt.get();
 		}
-		List<LeaveVO> rtnList = new ArrayList<LeaveVO>();
+		List<LeaveVo> rtnList = new ArrayList<LeaveVo>();
 		sjLeaves.forEach(it -> {
-			LeaveVO leaveVO = new LeaveVO();
+			LeaveVo leaveVO = new LeaveVo();
 			leaveVO.setId(it.getOid());
 //			levaeVO.setUserAccount(it.getSjUser().getAccount());
 			leaveVO.setStartDate(it.getStartDatetime());

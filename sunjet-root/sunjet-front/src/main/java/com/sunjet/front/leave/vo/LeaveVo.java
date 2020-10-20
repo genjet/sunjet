@@ -10,7 +10,7 @@ import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 import lombok.Data;
 
 @Data
-public class LeaveVO {
+public class LeaveVo {
 
 	private String id;
 

@@ -128,7 +128,9 @@ CREATE TABLE SJ_AUTHORITY (
   oid VARCHAR(32)   PRIMARY KEY,
   --sj_role VARCHAR(250) NOT NULL,
   authority_code VARCHAR(250) NOT NULL,
-  authority_name VARCHAR(250) ,
+  authority_name VARCHAR(250) , 
+  ordinary VARCHAR(32),
+  parent VARCHAR(32),
 
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,
@@ -182,6 +184,21 @@ CREATE TABLE SJ_USER_ROLE_REL (
   update_datetime DATETIME  
 );
 
+DROP TABLE IF EXISTS SJ_API;
+CREATE TABLE SJ_API (
+  oid VARCHAR(32)   PRIMARY KEY,
+  url VARCHAR(250) NOT NULL,
+  api_name VARCHAR(250) ,
+  method  VARCHAR(32),
+  sj_Authority VARCHAR(32),
+  sj_menu VARCHAR(32),
+  
+  create_id   VARCHAR(10) NOT NULL,
+  create_datetime DATETIME NOT NULL,
+  update_id VARCHAR(10),
+  update_datetime DATETIME  
+);
+
 
 DROP TABLE IF EXISTS SJ_MENU;
 CREATE TABLE SJ_MENU (
@@ -190,7 +207,7 @@ CREATE TABLE SJ_MENU (
   url VARCHAR(250) NOT NULL,
   ordinary INTEGER NOT NULL,
   parent_menu VARCHAR(32),
-  sj_authority VARCHAR(32),
+  sj_api VARCHAR(32),
   
   create_id   VARCHAR(10) NOT NULL,
   create_datetime DATETIME NOT NULL,

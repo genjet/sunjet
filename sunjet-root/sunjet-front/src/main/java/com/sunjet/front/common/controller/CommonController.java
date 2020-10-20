@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,9 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sunjet.common.dao.SjAuthorityRepository;
 import com.sunjet.common.dao.SjUserRepository;
-import com.sunjet.common.entity.SjAuthority;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.enumeration.LeaveStatusEnum;
 import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
@@ -35,6 +32,7 @@ import com.sunjet.front.common.payload.response.ApiResponse;
 import com.sunjet.front.common.payload.response.JwtResponse;
 import com.sunjet.front.common.security.jwt.JwtUtils;
 import com.sunjet.front.common.security.vo.SecurityUserDetails;
+import com.sunjet.front.common.services.CommonService;
 import com.sunjet.front.common.vo.OptionVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +51,7 @@ public class CommonController {
 	SjUserRepository userRepository;
 	
 	@Autowired
-	SjAuthorityRepository sjAuthorityRepository;
+	CommonService CommonService;
 
 	// @Autowired
 	// RoleRepository roleRepository;
@@ -137,27 +135,15 @@ public class CommonController {
 		rspObj.setData(optionList);
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@GetMapping("/getAllAuthoritys")
 	public ResponseEntity<?> getAllAuthoritys() {
-//		List<OptionVo> optionList = new ArrayList<OptionVo>();
 		ApiResponse rspObj = new ApiResponse();
-		
-		List<SjAuthority> sjAuthoritys = sjAuthorityRepository.findAll();
-		if(CollectionUtils.isNotEmpty(sjAuthoritys)){
-//			for (SjAuthority sjAuthority : sjAuthoritys) {
-//				OptionVo vo = new OptionVo(sjAuthority.getAuthorityName(), sjAuthority.getAuthorityCode());
-//				
-//			}
-			List<OptionVo> optionList = sjAuthoritys.stream().map(it -> {
-				return new OptionVo(it.getAuthorityCode(), it.getAuthorityName());
-			}).collect(Collectors.toList());
-			
-			rspObj.setData(optionList);
-		}
+		List<OptionVo> parentOptions = CommonService.getAllAuthorityOptionVos();
+		rspObj.setData(parentOptions);
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@GetMapping("/getAllOptions")
 	public ResponseEntity<?> getAllOptions() {
 		Map<String, List<OptionVo>> map = new HashMap<>();

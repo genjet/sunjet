@@ -19,10 +19,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.sunjet.common.dao.SjUserRepository;
+import com.sunjet.common.entity.SjApi;
 import com.sunjet.common.entity.SjAuthority;
 import com.sunjet.common.entity.SjMenu;
 import com.sunjet.common.entity.SjRole;
-import com.sunjet.common.entity.SjRoleAuthorityRel;
 import com.sunjet.common.entity.SjUser;
 import com.sunjet.common.entity.SjUserRoleRel;
 import com.sunjet.front.common.security.vo.SecurityUserDetails;
@@ -49,7 +49,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		log.debug(
+		log.info(
 				"=============================================    SecurityUserDetailsService   ======================================================");
 
 		SjUser appUser = sjUserRepository.findByAccount(username);
@@ -67,12 +67,15 @@ public class SecurityUserDetailsService implements UserDetailsService {
 		Collection<GrantedAuthority> authorities = new ArrayList<>();
 		for (SjUserRoleRel userRoleRel : userRoleRels) {
 			SjRole sjRole = userRoleRel.getSjRole();
-			List<SjAuthority> sjAuthorities = sjRole.getSjRoleAuthorityRels().stream().map(it -> it.getSjAuthority()).collect(Collectors.toList());
+			List<SjAuthority> sjAuthorities = sjRole.getSjRoleAuthorityRels().stream().map(it -> it.getSjAuthority())
+					.collect(Collectors.toList());
+			authorities.add(new SimpleGrantedAuthority(sjRole.getRoleCode()));
 			for (SjAuthority sjAuthority : sjAuthorities) {
-				
-				List<SjMenu> sjMenus = sjAuthority.getSjMenu();
-				for (SjMenu sjMenu : sjMenus) {
-					
+				SjApi sjApi = sjAuthority.getSjApi();
+				// for (SjApi sjApi : sjApis) {
+				if (null != sjApi) {
+					SjMenu sjMenu = sjApi.getSjMenu();
+
 					// MenuInfo menu = new MenuInfo();
 					// BeanUtils.copyProperties(sjMenu, menu);
 					//
@@ -84,29 +87,32 @@ public class SecurityUserDetailsService implements UserDetailsService {
 						sonMenus.add(sjMenu);
 						// MenuInfo mainMenu = map.get(parentMenuCode);
 						// mainMenu.getSonMenus().add(menu);
-						
+
 					}
+
+					// }
 				}
-			}
-			sonMenus = sonMenus.stream().sorted(Comparator.comparing(SjMenu::getOrdinary)).collect(Collectors.toList());
-			mainMenus = mainMenus.stream().sorted(Comparator.comparing(SjMenu::getOrdinary))
-					.collect(Collectors.toList());
-			for (SjMenu mainMenu : mainMenus) {
-				MenuInfo menu = new MenuInfo();
-				BeanUtils.copyProperties(mainMenu, menu);
-				for (SjMenu sonMenu : sonMenus) {
-					if (mainMenu.getOid().equals(sonMenu.getParentMenu())) {
-						MenuInfo sMenu = new MenuInfo();
-						BeanUtils.copyProperties(sonMenu, sMenu);
-						menu.getSonMenus().add(sMenu);
+				sonMenus = sonMenus.stream().sorted(Comparator.comparing(SjMenu::getOrdinary))
+						.collect(Collectors.toList());
+				mainMenus = mainMenus.stream().sorted(Comparator.comparing(SjMenu::getOrdinary))
+						.collect(Collectors.toList());
+				for (SjMenu mainMenu : mainMenus) {
+					MenuInfo menu = new MenuInfo();
+					BeanUtils.copyProperties(mainMenu, menu);
+					for (SjMenu sonMenu : sonMenus) {
+						if (mainMenu.getOid().equals(sonMenu.getParentMenu())) {
+							MenuInfo sMenu = new MenuInfo();
+							BeanUtils.copyProperties(sonMenu, sMenu);
+							menu.getSonMenus().add(sMenu);
+						}
 					}
+					rtnMenuInfo.add(menu);
 				}
-				rtnMenuInfo.add(menu);
-			}
-			// roles.add(sjRole.getRoleName());
-			authorities.add(new SimpleGrantedAuthority(sjRole.getRoleCode()));
-			for (SjRoleAuthorityRel sjRoleAuthorityRel : sjRole.getSjRoleAuthorityRels()) {
-				authorities.add(new SimpleGrantedAuthority(sjRoleAuthorityRel.getSjAuthority().getAuthorityCode()));
+				// roles.add(sjRole.getRoleName());
+				
+//				for (SjRoleAuthorityRel sjRoleAuthorityRel : sjRole.getSjRoleAuthorityRels()) {
+					authorities.add(new SimpleGrantedAuthority(sjAuthority.getAuthorityCode()));
+//				}
 			}
 			// authorities.add(new SimpleGrantedAuthority("ROLE_"+
 			// sjRole.getRoleName()));
@@ -129,7 +135,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 		// UserInfo.builder().username(appUser.getAccount()).password("{noop}" +
 		// appUser.getPwd())
 		// .roles(roles.stream().toArray(String[]::new)).authorities(authorities).build();
-		log.info(" authorities ============>>> {}",authorities);
+		log.info(" authorities ============>>> {}", authorities);
 		SecurityUserDetails userInfo = new SecurityUserDetails(appUser.getAccount(), appUser.getName(),
 				"{noop}" + appUser.getPwd(), authorities, appUser.getAvatar());
 

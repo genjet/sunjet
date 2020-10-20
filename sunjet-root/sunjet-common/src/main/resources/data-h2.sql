@@ -34,21 +34,27 @@ INSERT INTO sj_role (oid, role_code, role_name, create_id, create_datetime, upda
   ('editor','ROLE_EDITOR', '編輯者', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('reviewer','ROLE_REVIEWER', '查看者', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
-INSERT INTO SJ_AUTHORITY (oid, authority_code, authority_name, create_id, create_datetime, update_id, update_datetime) VALUES 
- -- ('1','admin','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null),
- -- ('2','admin','EDIT', 'super_man', '2020-02-16 00:00:00.00', null, null),
- -- ('3','admin','DELETE', 'super_man', '2020-02-16 00:00:00.00', null, null),
- -- ('4','admin','CREATE', 'super_man', '2020-02-16 00:00:00.00', null, null),
- -- ('5','user','QUERY', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('rDep','rDep','查詢部門權限', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('crudRole','crudRole','角色權限', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('crudUser','crudUser','使用者權限', 'super_man', '2020-02-16 00:00:00.00', null, null);
+INSERT INTO SJ_AUTHORITY (oid, authority_code, authority_name, ordinary, parent, create_id, create_datetime, update_id, update_datetime) VALUES 
+  --('login','login','登入', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('crudUser','crudUser','使用者權限', '1', null, 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('getUser','getUser','查詢使用者', '1', 'crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('postUser','postUser','新增使用者', '2', 'crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('deleteUser','deleteUser','刪除使用者', '3', 'crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('patchUser','patchUser','更新使用者', '4', 'crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('crudRole','crudRole','角色權限', '2', null, 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('getRole','getRole','查詢角色權限', '1', 'crudRole', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('rDep','rDep','查詢部門權限', '3', null, 'super_man', '2020-02-16 00:00:00.00', null, null);
   
 INSERT INTO SJ_ROLE_AUTHORITY_REL (oid, sj_role, sj_authority, create_id, create_datetime, update_id, update_datetime) VALUES
- ('ra10','admin','crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
- ('ra11','admin','crudRole', 'super_man', '2020-02-17 00:00:00.00', null, null),
- ('ra12','user','crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
- ('ra13','user','crudRole', 'super_man', '2020-02-17 00:00:00.00', null, null);
+-- ('ra10','admin','crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
+ ('ra101','admin','crudRole', 'super_man', '2020-02-17 00:00:00.00', null, null),
+  ('ra111','admin','getUser', 'super_man', '2020-02-17 00:00:00.00', null, null),
+   ('ra112','admin','postUser', 'super_man', '2020-02-17 00:00:00.00', null, null),
+    ('ra113','admin','deleteUser', 'super_man', '2020-02-17 00:00:00.00', null, null),
+     ('ra114','admin','patchUser', 'super_man', '2020-02-17 00:00:00.00', null, null);
+ --     ('ra115','admin','login', 'super_man', '2020-02-17 00:00:00.00', null, null);
+ --('ra12','user','crudUser', 'super_man', '2020-02-16 00:00:00.00', null, null),
+ --('ra13','user','crudRole', 'super_man', '2020-02-17 00:00:00.00', null, null);
 
 INSERT INTO SJ_USER (oid, emp_id, name, account, pwd, sj_dep, enabled, avatar, create_id, create_datetime, update_id, update_datetime) VALUES
   ('1', '001','新垣結依', 'admin', '12345678', '1', 'Y', 'Centaur', 'super_man', '2020-02-16 00:00:00.00', null, null),
@@ -64,10 +70,19 @@ INSERT INTO SJ_USER_ROLE_REL (oid, sj_user, sj_role, create_id, create_datetime,
   ('5','3','editor', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('6','4','reviewer', 'super_man', '2020-02-16 00:00:00.00', null, null);
   
- INSERT INTO SJ_MENU (oid, url, name, sj_authority, ordinary, parent_menu, create_id, create_datetime, update_id, update_datetime) VALUES 
-  ('D1','api/management/deps','部門列表', 'rDep', '1', 'M', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('M1','/api/management/user','使用者管理', 'crudUser', '1', 'M', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('R1','/api/management/role','角色管理', 'crudRole', '1', 'P', 'super_man', '2020-02-16 00:00:00.00', null, null);
+ INSERT INTO SJ_API (oid, url, api_name, method, sj_authority, sj_menu,  create_id, create_datetime, update_id, update_datetime) VALUES 
+ -- ('a01','/api/auth/login','登入', 'POST', 'login', 'M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('a11','/api/management/user','查詢使用者', 'GET', 'getUser', 'M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('a12','/api/management/user','新增使用者', 'POST', 'postUser', 'M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('a13','/api/management/user','刪除使用者', 'DELETE', 'deleteUser', 'M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('a14','/api/management/user','更新使用者', 'PATCH', 'patchUser', 'M1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('a2','/api/management/role','使用者管理', null, 'crudRole', 'R1', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('a3','/api/management/role','查詢角色管理', 'GET', 'getRole', 'R1',  'super_man', '2020-02-16 00:00:00.00', null, null);
+  
+ INSERT INTO SJ_MENU (oid, url, name, ordinary, parent_menu, create_id, create_datetime, update_id, update_datetime) VALUES 
+  ('D1','api/management/deps','部門列表', '1', '', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('M1','/api/management/user','使用者管理', '1', 'M', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('R1','/api/management/role','角色管理', '1', 'P', 'super_man', '2020-02-16 00:00:00.00', null, null);
 
 --INSERT INTO SJ_AUTHORITY_MENU_REL (oid, sj_authority, sj_menu, create_id, create_datetime, update_id, update_datetime) VALUES 
  -- ('A0','admin','M', 'super_man', '2020-02-16 00:00:00.00', null, null),
@@ -96,7 +111,7 @@ INSERT INTO SJ_LEAVE (OID, SJ_USER, DEP , LEAVE_TYPE , START_DATETIME, END_DATET
   ('L19','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('L10','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('L21','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
-  ('L22','1','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
+  ('L22','2','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('L23','3','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null),
   ('L24','4','部門','BUSINESS', '2019-09-17 18:47:52.69', '2019-09-20 18:47:52.69','A', null, '', 3.0, 'Y', 'super_man', '2020-02-16 00:00:00.00', null, null);
   

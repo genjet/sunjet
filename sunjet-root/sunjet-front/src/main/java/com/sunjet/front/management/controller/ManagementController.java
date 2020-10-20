@@ -1,10 +1,10 @@
 package com.sunjet.front.management.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sunjet.front.common.exception.ValidateErrorException;
 import com.sunjet.front.common.payload.response.ApiResponse;
+import com.sunjet.front.common.vo.FailureVo;
 import com.sunjet.front.common.vo.OptionVo;
 import com.sunjet.front.management.service.ManagementService;
 import com.sunjet.front.management.vo.RoleVo;
@@ -45,7 +47,7 @@ public class ManagementController {
 	}
 
 	@GetMapping("/deps")
-//	@PreAuthorize("hasAnyRole('ADMIN')")
+	// @PreAuthorize("hasAnyRole('ADMIN')")
 	public ApiResponse getDeps() {
 		try {
 			List<OptionVo> rtnVOs = managementService.getDepOptionVos();
@@ -79,7 +81,6 @@ public class ManagementController {
 	}
 
 	@DeleteMapping("/user/{id}")
-//	@PreAuthorize("hasRole('ADMIN')")
 	public ApiResponse deleteUser(@PathVariable String id) {
 		try {
 			UserVo rtnVO = managementService.deleteUser(id);
@@ -89,7 +90,7 @@ public class ManagementController {
 			return ApiResponse.fail(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/role")
 	public ApiResponse getRoles() {
 		try {
@@ -100,37 +101,46 @@ public class ManagementController {
 			return ApiResponse.fail(e.getMessage());
 		}
 	}
-	
+
 	@PostMapping("/role")
-	public ApiResponse addRole(@RequestBody RoleVo RoleVo) {
+	public ApiResponse addRole(@RequestBody RoleVo RoleVo, BindingResult result) {
 		try {
+			if (result.hasErrors()) {
+				final String errStr = result.getFieldErrors().stream().map(it -> it.getDefaultMessage())
+						.collect(Collectors.joining(","));
+				throw new ValidateErrorException(new FailureVo(errStr));
+			}
 			RoleVo rtnVO = managementService.addRole(RoleVo);
 			return ApiResponse.ok("", rtnVO);
+		} catch (ValidateErrorException e) {
+			log.error(e.getFailure().getMessage());
+			return ApiResponse.fail(e.getFailure().getMessage());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
 	}
-	
+
 	@PatchMapping("/role")
 	public ApiResponse updateRole(@RequestBody @Validated RoleVo roleVo, BindingResult result) {
 		try {
-			if(result.hasErrors()){
-				StringBuffer sb = new StringBuffer();;
-				for (FieldError fieldError : result.getFieldErrors()) {
-					sb.append(fieldError.getDefaultMessage());
-	            }
-				return ApiResponse.fail(sb.toString());
+			if (result.hasErrors()) {
+				final String errStr = result.getFieldErrors().stream().map(it -> it.getDefaultMessage())
+						.collect(Collectors.joining(","));
+				throw new ValidateErrorException(new FailureVo(errStr));
 			}
 
 			RoleVo rtnVO = managementService.updateRole(roleVo);
 			return ApiResponse.ok("", rtnVO);
+		} catch (ValidateErrorException e) {
+			log.error(e.getFailure().getMessage());
+			return ApiResponse.fail(e.getFailure().getMessage());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/roleOptions")
 	public ApiResponse getRoleOptions() {
 		try {
@@ -142,5 +152,18 @@ public class ManagementController {
 		}
 	}
 
-	
+	@DeleteMapping("/role/{id}")
+	public ApiResponse deleteRole(@PathVariable String id) {
+		try {
+			RoleVo rtnVO = managementService.deleteRole(id);
+			return ApiResponse.ok(rtnVO.getRoleName() + " delete sucess! ");
+		} catch (ValidateErrorException e) {
+			log.error(e.getFailure().getMessage());
+			return ApiResponse.fail(e.getFailure().getMessage());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
+		}
+	}
+
 }

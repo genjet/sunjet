@@ -9,7 +9,7 @@ import com.sunjet.common.entity.enumeration.LeaveTypeEnum;
 import lombok.Data;
 
 @Data
-public class LeaveFormVO {
+public class LeaveFormVo {
 
 
 	private List<LocalDateTime> rangeDate = new ArrayList<LocalDateTime>();

@@ -28,4 +28,6 @@ public interface ManagementService {
 
 	public List<OptionVo> getRoleOptionVos();
 	
+	public RoleVo deleteRole(String id);
+	
 }
