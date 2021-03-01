@@ -1,0 +1,34 @@
+.view-btn {
+    font-size: 30px;
+    color: green;
+}
+
+.edit-btn {
+    font-size: 30px;
+    color: blue;
+}
+
+.del-btn {
+    font-size: 30px;
+    color: red;
+}
+
+.el-dropdown-link {
+    cursor: pointer;
+}
+
+.xrequired > label::before {
+    content: '* ';
+}
+
+.redItem {
+    color: red;
+}
+
+.blueItem {
+    color: blue;
+}
+
+.redLabel .el-form-item__label {
+    color: red;
+}

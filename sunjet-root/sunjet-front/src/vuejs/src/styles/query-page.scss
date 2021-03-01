@@ -1,0 +1,143 @@
+// icon content ref => node_modules\element-ui\lib\theme-chalk
+
+.query-page {
+    position: relative;
+    display: flex;
+    overflow-x: auto;
+    padding: 20px;
+    min-width: 0;
+    background: #efefef;
+    background-clip: border-box;
+    border: 1px solid #e3e6f0;
+    border-radius: 0.35rem;
+    flex-direction: column;
+    word-wrap: break-word;
+
+    p {
+        margin: 0;
+        text-align: left;
+    }
+
+    .title {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 20px;
+        font-weight: 700 !important;
+        color: #fbd95a !important;
+        background-size: cover;
+        border-radius: calc(0.35rem - 1px) calc(0.35rem - 1px) 0 0;
+        background-image: linear-gradient(180deg, #3cb1d4 10%, #21aaaa);
+    }
+
+    .query-area {
+        .second-title {
+            padding-top: 5px;
+            padding-left: 30px;
+            height: 40px;
+            font-size: 20px;
+            background-color: tan;
+        }
+
+        .third-title {
+            padding-top: 3px;
+            padding-left: 30px;
+            height: 30px;
+            font-size: 15px;
+            background-color: #88fb5a;
+        }
+
+        .content {
+            padding: 40px 30px 30px;
+            background: white;
+            margin-bottom: 30px;
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+        }
+
+        .title::before {
+            margin: 10px;
+            font-family: 'element-icons' !important;
+            content: '\e778';
+        }
+    }
+
+
+    .result-area {
+        // .title {
+        // max-width: 150%;
+        // width: 150%;
+        // }
+
+        .title::before {
+            margin: 10px;
+            font-family: 'element-icons' !important;
+            content: '\e78b';
+        }
+
+        .el-table {
+            .gutter {
+                display: unset !important;
+            }
+
+            // max-width: 150%;
+            // width: 150%;
+
+            .cell {
+                white-space: nowrap;
+            }
+
+        }
+
+        th {
+            text-align: center;
+            color: black;
+            background-color: #d2b48c;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        td.num {
+            text-align: right;
+        }
+
+        .noData {
+            .font {
+                margin: 0;
+                padding: 10px 0;
+                font-size: 30px;
+                text-align: center;
+                color: peru;
+                background: white;
+            }
+
+            .font::before {
+                margin: 10px;
+                font-family: 'element-icons' !important;
+                content: '\e6c9';
+            }
+
+            // .title {
+            //   max-width: 100%;
+            //   width: 100%;
+            // }
+
+            .title::before {
+                margin: 10px;
+                font-family: 'element-icons' !important;
+                content: '\e78b';
+            }
+        }
+
+    }
+
+
+}
+
+
+// .el-table__body,
+// .el-table__footer,
+// .el-table__header {
+//   table-layout: auto;
+// }
