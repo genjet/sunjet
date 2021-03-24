@@ -3,7 +3,7 @@ const resolve = dir => require("path").join(__dirname, dir);
 const port = process.env.VUE_APP_PORT;
 
 module.exports = {
-  publicPath: "/",
+  publicPath: "/sunject-front/",
   outputDir: "dist",
   productionSourceMap: false,
   // 构建时开启多进程处理 babel 编译
@@ -116,7 +116,7 @@ module.exports = {
     public: '0.0.0.0:9478',
     proxy: {
       "/api": {
-        target: "http://localhost:8078",
+        target: "http://localhost:8002/sunjet-front",
         changeOrigin: true
       }
     }

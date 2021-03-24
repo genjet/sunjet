@@ -1,5 +1,11 @@
 package com.sunjet.front.management.controller;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,24 +41,68 @@ public class ManagementController {
 	@Autowired
 	private ManagementService managementService;
 
-	@GetMapping("/user")
-	public ApiResponse getUsers() {
+	@GetMapping("/test")
+	public ApiResponse getTest(@RequestBody UserVo userVO) {
 		try {
-			List<UserVo> rtnVOs = managementService.getAllUserVo();
-			return ApiResponse.ok("", rtnVOs);
-		} catch (Exception e) {
+			log.info("===============  開始執行　test　　測試中文　================== {} ", userVO.getName());
+//			final List<UserVo> rtnVOs = managementService.getAllUserVo();
+			log.info("===============  結束執行　test　　測試中文　==================");
+			return ApiResponse.ok("好好好");
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
 	}
 
+	@GetMapping("/user")
+	public ApiResponse getUsers() {
+		try {
+			log.info("===============  開始執行　ｕｓｅｒ　　測試中文　==================");
+			log.info("我file.encoding is : " + System.getProperty("file.encoding"));
+		        final String defaultCharacterEncoding = System.getProperty("file.encoding");
+		        System.out.println("要defaultCharacterEncoding by property: " + defaultCharacterEncoding);
+		        System.out.println("測defaultCharacterEncoding by code: " + getDefaultCharEncoding());
+		        System.out.println("是defaultCharacterEncoding by charSet: " + Charset.defaultCharset());
+
+//		        System.setProperty("file.encoding", "UTF-16");
+
+		        System.out.println("文defaultCharacterEncoding by property after updating file.encoding : " + System.getProperty("file.encoding"));
+
+		        System.out.println("自defaultCharacterEncoding by code after updating file.encoding : " + getDefaultCharEncoding());
+
+		        System.out.println("拉defaultCharacterEncoding by java.nio.Charset after updating file.encoding : " + Charset.defaultCharset());
+			final List<UserVo> rtnVOs = managementService.getAllUserVo();
+			log.info("===============  結束執行　ｕｓｅｒ　　測試中文　================== {}", rtnVOs.stream().map(UserVo::getName).collect(Collectors.joining(", ")).toString());
+			return ApiResponse.ok("", rtnVOs);
+		} catch (final Exception e) {
+			log.error(e.getMessage());
+			return ApiResponse.fail(e.getMessage());
+		}
+	}
+	public String getDefaultCharEncoding() throws IOException{
+//         Charset charset = Charset.forName("UTF-8");
+		final String str = "王八蛋";
+        final InputStream is = new ByteArrayInputStream(str.getBytes(Charset.forName("UTF-8")));
+        final InputStreamReader reader = new InputStreamReader(is, "utf-8");
+    	final BufferedReader br = new BufferedReader(reader);
+    	final StringBuffer content = new StringBuffer();
+		int i;
+		while ((i = br.read()) != -1) {
+			content.append((char) i);
+		}
+		log.info("HttpEntiyInfo:\n{}", content.toString());
+        final String defaultCharacterEncoding = reader.getEncoding();
+        return defaultCharacterEncoding;
+    }
+
+
 	@GetMapping("/deps")
 	// @PreAuthorize("hasAnyRole('ADMIN')")
 	public ApiResponse getDeps() {
 		try {
-			List<OptionVo> rtnVOs = managementService.getDepOptionVos();
+			final List<OptionVo> rtnVOs = managementService.getDepOptionVos();
 			return ApiResponse.ok("", rtnVOs);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -61,9 +111,9 @@ public class ManagementController {
 	@PostMapping("/user")
 	public ApiResponse addUser(@RequestBody UserVo userVO) {
 		try {
-			UserVo rtnVO = managementService.addUser(userVO);
+			final UserVo rtnVO = managementService.addUser(userVO);
 			return ApiResponse.ok("", rtnVO);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -72,9 +122,9 @@ public class ManagementController {
 	@PatchMapping("/user")
 	public ApiResponse updateUser(@RequestBody UserVo userVO) {
 		try {
-			UserVo rtnVO = managementService.updateUser(userVO);
+			final UserVo rtnVO = managementService.updateUser(userVO);
 			return ApiResponse.ok("", rtnVO);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -83,9 +133,9 @@ public class ManagementController {
 	@DeleteMapping("/user/{id}")
 	public ApiResponse deleteUser(@PathVariable String id) {
 		try {
-			UserVo rtnVO = managementService.deleteUser(id);
+			final UserVo rtnVO = managementService.deleteUser(id);
 			return ApiResponse.ok(rtnVO.getName() + " delete sucess! ");
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -94,9 +144,9 @@ public class ManagementController {
 	@GetMapping("/role")
 	public ApiResponse getRoles() {
 		try {
-			List<RoleVo> rtnVOs = managementService.getAllRoleVo();
+			final List<RoleVo> rtnVOs = managementService.getAllRoleVo();
 			return ApiResponse.ok("", rtnVOs);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -110,12 +160,12 @@ public class ManagementController {
 						.collect(Collectors.joining(","));
 				throw new ValidateErrorException(new FailureVo(errStr));
 			}
-			RoleVo rtnVO = managementService.addRole(RoleVo);
+			final RoleVo rtnVO = managementService.addRole(RoleVo);
 			return ApiResponse.ok("", rtnVO);
-		} catch (ValidateErrorException e) {
+		} catch (final ValidateErrorException e) {
 			log.error(e.getFailure().getMessage());
 			return ApiResponse.fail(e.getFailure().getMessage());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -130,12 +180,12 @@ public class ManagementController {
 				throw new ValidateErrorException(new FailureVo(errStr));
 			}
 
-			RoleVo rtnVO = managementService.updateRole(roleVo);
+			final RoleVo rtnVO = managementService.updateRole(roleVo);
 			return ApiResponse.ok("", rtnVO);
-		} catch (ValidateErrorException e) {
+		} catch (final ValidateErrorException e) {
 			log.error(e.getFailure().getMessage());
 			return ApiResponse.fail(e.getFailure().getMessage());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -144,9 +194,9 @@ public class ManagementController {
 	@GetMapping("/roleOptions")
 	public ApiResponse getRoleOptions() {
 		try {
-			List<OptionVo> rtnVos = managementService.getRoleOptionVos();
+			final List<OptionVo> rtnVos = managementService.getRoleOptionVos();
 			return ApiResponse.ok("", rtnVos);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}
@@ -155,12 +205,12 @@ public class ManagementController {
 	@DeleteMapping("/role/{id}")
 	public ApiResponse deleteRole(@PathVariable String id) {
 		try {
-			RoleVo rtnVO = managementService.deleteRole(id);
+			final RoleVo rtnVO = managementService.deleteRole(id);
 			return ApiResponse.ok(rtnVO.getRoleName() + " delete sucess! ");
-		} catch (ValidateErrorException e) {
+		} catch (final ValidateErrorException e) {
 			log.error(e.getFailure().getMessage());
 			return ApiResponse.fail(e.getFailure().getMessage());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			log.error(e.getMessage());
 			return ApiResponse.fail(e.getMessage());
 		}

@@ -1,3 +1,7 @@
+log:
+  basic:
+    path: log/sunjet-front
+    
 server: 
   port : 8078
 #  servlet:
@@ -11,15 +15,17 @@ app:
 scheduler:
   trigger: 
     calendarJob: 
-      cron: 0 0 1 1 1 ?   
+      cron: 0 0 1 1 1 ?        
       
-
 #logging:
+#  file: logs/application-debug.log
+#  pattern:
+#    console: "%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] [%logger:%line] : %msg%n"
+#    file: "%d %-5level [%thread] %logger : %msg%n"
 #  level:
-#   root: info
-#     org.springframework.web: ERROR
-#     com.sunjet: DEBUG
-#   pattern:
-#     console: "%d{yyyy/MM/dd HH:mm:ss.SSS} [%thread] [%logger:%line] : %msg%n"
+#    root: info
+#    org.springframework.web: ERROR
+#    com.sunjet: DEBUG
+ 
 
     

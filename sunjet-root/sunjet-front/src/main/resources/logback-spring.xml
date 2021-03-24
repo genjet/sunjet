@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
+	<springProperty scope="context" name="basic.path" source="log.basic.path" />
+	
+	<appender name="ROLLING-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<file>${basic.path}/front-web.log</file>
+		<encoder>
+			<pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} [%t] [%35.35c\(%4L\)]) %clr(%X{PLATFORM} %X{SERIES_ID} %X{USER} %X{PRG_ID}) %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${basic.path}/front-web-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+			<maxHistory>60</maxHistory>
+			<totalSizeCap>10GB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="ROLLING-ERROR-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+		<file>${basic.path}/LogFile-Web.txt</file>
+		<encoder>
+			<pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} [%t] [%35.35c\(%4L\)]) %clr(%X{PLATFORM} %X{SERIES_ID} %X{USER} %X{PRG_ID}) %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${basic.path}/LogFile-Web%d{yyyyMMdd}.txt</fileNamePattern>
+			<maxHistory>60</maxHistory>
+			<totalSizeCap>10GB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%clr(%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} [%t] [%35.35c\(%4L\)]) %clr(%X{PLATFORM} %X{SERIES_ID} %X{USER} %X{PRG_ID}) %m%n</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+	
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ROLLING-FILE" />
+		<appender-ref ref="ROLLING-ERROR-FILE" />
+	</root>
+	
+</configuration>
