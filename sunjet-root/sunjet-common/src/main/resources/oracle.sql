@@ -1,57 +1,53 @@
-GRANT CREATE SESSION,CREATE TABLE,CREATE USER TO sunjet;
-
- select * from user_sys_privs;
-
-alter user sunjet quota unlimited on users;
-
-SELECT * FROM all_users;
-SELECT * FROM dba_users;
-SELECT * FROM user_users;
-
-SELECT * FROM DBA_ROLES;
- 
-GRANT CREATE ANY TABLE TO sunjet;
-SELECT * FROM SUNJET.todos;
-
-GRANT CONNECT TO sunjet;
-
+DROP TABLE  SJ_LEAVE;
+DROP TABLE  SJ_MENU;
+DROP TABLE  SJ_API;
+DROP TABLE  SJ_USER_ROLE_REL;
+DROP TABLE  SJ_USER;
+DROP TABLE  SJ_ROLE_AUTHORITY_REL;
+DROP TABLE  SJ_AUTHORITY;
+DROP TABLE  SJ_ROLE;
+DROP TABLE  SJ_DEP;
+DROP TABLE  SJ_CALENDAR;
+DROP TABLE  SJ_APPLY;
+DROP TABLE  SJ_FLOW;
+DROP TABLE  SJ_FLOW_NODE;
+DROP TABLE  SJ_FLOW_PROCESS;
+DROP TABLE  SJ_FLOW_RULE;
 DROP TABLE todos;
+
 CREATE TABLE todos (
   oid VARCHAR(32)   PRIMARY KEY,
   id NUMERIC,
   title VARCHAR(32),
   completed VARCHAR(1),
   editing VARCHAR(1),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP         
 );
 
-DROP TABLE  SJ_FLOW_RULE;
 CREATE TABLE SJ_FLOW_RULE (
   oid VARCHAR(32)   PRIMARY KEY,
   sj_flow_node VARCHAR(32),
   sj_flow_process VARCHAR(32),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP         
 );
 
-DROP TABLE  SJ_FLOW_PROCESS;
 CREATE TABLE SJ_FLOW_PROCESS (
   oid VARCHAR(32)   PRIMARY KEY,
   handler_user VARCHAR(50) NOT NULL,
   sj_flow_node VARCHAR(32),
   sj_Flow_rule VARCHAR(32),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP         
 );
 
-DROP TABLE  SJ_FLOW_NODE;
 CREATE TABLE SJ_FLOW_NODE (
   oid VARCHAR(32)   PRIMARY KEY,
   name VARCHAR(200) NOT NULL,
@@ -60,13 +56,13 @@ CREATE TABLE SJ_FLOW_NODE (
   sj_Flow VARCHAR(32),
   sj_flow_process VARCHAR(32),
   sj_Flow_rule VARCHAR(32),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP         
 );
 
-DROP TABLE  SJ_FLOW;
+
 CREATE TABLE SJ_FLOW (
   oid VARCHAR(32)   PRIMARY KEY,
   name VARCHAR(200) NOT NULL,
@@ -75,13 +71,12 @@ CREATE TABLE SJ_FLOW (
   flow_status VARCHAR(1),
   sj_Flow_Node VARCHAR(32),
   flow_key VARCHAR(32),
- create_id   VARCHAR(10) NOT NULL,
+ create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP   
 );
 
-DROP TABLE  SJ_APPLY;
 CREATE TABLE SJ_APPLY (
   oid VARCHAR(32)   PRIMARY KEY,
   name VARCHAR(200),
@@ -90,46 +85,42 @@ CREATE TABLE SJ_APPLY (
   ordinary INTEGER NOT NULL,
   apply_status VARCHAR(1),
   apply_user VARCHAR(50),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP
 );
 
-DROP TABLE  SJ_CALENDAR;
 CREATE TABLE SJ_CALENDAR (
   oid VARCHAR(32)   PRIMARY KEY,
   is_holiday VARCHAR(1) NOT NULL,
   calendar_date DATE NOT NULL,
   day_of_week VARCHAR(15) NOT NULL,
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP         
 );
 
-DROP TABLE  SJ_DEP;
 CREATE TABLE SJ_DEP (
   oid VARCHAR(32)   PRIMARY KEY,
   name VARCHAR(250) NOT NULL,
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP         
 );
 
-DROP TABLE  SJ_ROLE;
 CREATE TABLE SJ_ROLE (
   oid VARCHAR(32)   PRIMARY KEY,
   role_code VARCHAR(50) NOT NULL,
   role_name VARCHAR(150) ,
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP  
 );
 
-DROP TABLE  SJ_AUTHORITY;
 CREATE TABLE SJ_AUTHORITY (
   oid VARCHAR(32)   PRIMARY KEY,
   --sj_role VARCHAR(250) NOT NULL,
@@ -137,28 +128,26 @@ CREATE TABLE SJ_AUTHORITY (
   authority_name VARCHAR(250) , 
   ordinary VARCHAR(32),
   parent VARCHAR(32),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP  
 );
 
-DROP TABLE  SJ_ROLE_AUTHORITY_REL;
+
 CREATE TABLE SJ_ROLE_AUTHORITY_REL (
   oid VARCHAR(32)   PRIMARY KEY,
   sj_authority VARCHAR(250) NOT NULL,
   sj_role VARCHAR(250) NOT NULL,
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP  
 );
 
-
-DROP TABLE  SJ_USER;
 CREATE TABLE SJ_USER (
   oid VARCHAR(32)   PRIMARY KEY,
-  emp_id VARCHAR(10),
+  emp_id VARCHAR(32),
   name VARCHAR(50) NOT NULL,
   nick_name VARCHAR(50),
   account VARCHAR(50) NOT NULL,
@@ -167,25 +156,23 @@ CREATE TABLE SJ_USER (
   sj_dep VARCHAR(32),
   avatar VARCHAR(200),
   arrival_day DATE,
-  create_id   VARCHAR(10) ,
+  create_id   VARCHAR(32) ,
   create_datetime TIMESTAMP ,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP,  
   CONSTRAINT sj_user_fk1 FOREIGN KEY (sj_dep) REFERENCES sj_dep(oid)
 );
 
-DROP TABLE  SJ_USER_ROLE_REL;
 CREATE TABLE SJ_USER_ROLE_REL (
   oid VARCHAR(32)   PRIMARY KEY,
   sj_user VARCHAR(250) NOT NULL,
   sj_role VARCHAR(250) NOT NULL,
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP  
 );
 
-DROP TABLE  SJ_API;
 CREATE TABLE SJ_API (
   oid VARCHAR(32)   PRIMARY KEY,
   url VARCHAR(250) NOT NULL,
@@ -193,14 +180,12 @@ CREATE TABLE SJ_API (
   method  VARCHAR(32),
   sj_Authority VARCHAR(32),
   sj_menu VARCHAR(32),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP  
 );
 
-
-DROP TABLE  SJ_MENU;
 CREATE TABLE SJ_MENU (
   oid VARCHAR(32)   PRIMARY KEY,
   name VARCHAR(250) NOT NULL,
@@ -208,9 +193,9 @@ CREATE TABLE SJ_MENU (
   ordinary INTEGER NOT NULL,
   parent_menu VARCHAR(32),
   sj_api VARCHAR(32),
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP  
 );
 
@@ -220,13 +205,12 @@ CREATE TABLE SJ_MENU (
 --  sj_menu VARCHAR(250) NOT NULL,
 --  sj_authority VARCHAR(250) NOT NULL,
 
---  create_id   VARCHAR(10) NOT NULL,
+--  create_id   VARCHAR(32) NOT NULL,
 --  create_TIMESTAMP TIMESTAMP NOT NULL,
---  update_id VARCHAR(10),
+--  update_id VARCHAR(32),
 --  update_TIMESTAMP TIMESTAMP  
 --);
 
-DROP TABLE  SJ_LEAVE;
 CREATE TABLE SJ_LEAVE (
   oid VARCHAR(32)   PRIMARY KEY,
   sj_user VARCHAR(250) NOT NULL,
@@ -239,19 +223,15 @@ CREATE TABLE SJ_LEAVE (
   reason VARCHAR(500),
   leave_hours FLOAT NOT NULL,
   expire VARCHAR(1) NOT NULL,
-  create_id   VARCHAR(10) NOT NULL,
+  create_id   VARCHAR(32) NOT NULL,
   create_datetime TIMESTAMP NOT NULL,
-  update_id VARCHAR(10),
+  update_id VARCHAR(32),
   update_datetime TIMESTAMP,
   CONSTRAINT sj_leave_fk1 FOREIGN KEY (sj_user) REFERENCES sj_user(oid)
 );
 
-
-
-
-
 INSERT INTO TODOS (OID, id, title, completed, editing, create_id, create_datetime, update_id, update_datetime) VALUES ('todo3', 3, 'go go go', 'N', 'N', 'super_man', sysdate, null, null);
-INSERT INTO TODOS (OID, id, title, completed, editing, create_id, create_datetime, update_id, update_datetime) VALUES ('todo4', 4, 'go go go', 'N', 'N', 'super_man', sysdate, null, null);
+INSERT INTO TODOS (OID, id, title, completed, editing, create_id, create_datetime, update_id, update_datetime) VALUES ('todo4', 4, 'go go go1', 'N', 'N', 'super_man', sysdate, null, null);
 
 INSERT INTO SJ_FLOW (oid, name, code, description, flow_status, sj_Flow_Node, create_id, create_datetime, update_id, update_datetime) VALUES ('F1','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', sysdate, null, null);
 INSERT INTO SJ_FLOW (oid, name, code, description, flow_status, sj_Flow_Node, create_id, create_datetime, update_id, update_datetime) VALUES ('F2','假單流程一', 'LEAVE_1', '假單一級流程', 'F', 'FN1', 'super_man', sysdate, null, null);

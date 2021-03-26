@@ -1,11 +1,15 @@
+#spring:
+#  dsopen:
+#    jndi-name: java:/OracleDS
+    
 log:
   basic:
     path: log/sunjet-front
     
 server: 
   port : 8078
-#  servlet:
-#    context-path : /sunjet
+  servlet:
+    context-path : /sunjet
 
 
 app:

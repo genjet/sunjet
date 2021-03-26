@@ -3,8 +3,8 @@ const resolve = dir => require("path").join(__dirname, dir);
 const port = process.env.VUE_APP_PORT;
 
 module.exports = {
-  publicPath: "/sunject-front/",
-  outputDir: "dist",
+  publicPath: "/sunjet/",
+  outputDir: "../main/resources/static/",
   productionSourceMap: false,
   // 构建时开启多进程处理 babel 编译
   parallel: require("os").cpus().length > 1,
@@ -116,8 +116,11 @@ module.exports = {
     public: '0.0.0.0:9478',
     proxy: {
       "/api": {
-        target: "http://localhost:8002/sunjet-front",
-        changeOrigin: true
+        target: "http://127.0.0.1:8080/sunjet",
+        changeOrigin: true,
+        pathRewrite: {
+          [`^${process.env.VUE_APP_BASE_API}`]: ''
+        }
       }
     }
     //before: require("./mock/mock-server.js"),
