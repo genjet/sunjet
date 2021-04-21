@@ -83,5 +83,54 @@
 	<!-- </configuration> -->
 
 	<!-- </plugin> -->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<active.profile>dev</active.profile>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<active.profile>prod</active.profile>
+			</properties>
+		</profile>
+	</profiles>
+	
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>application*.properties</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>application.properties</include>
+					<include>application.yml</include>
+					<include>application-${active.profile}.properties</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<fork>true</fork>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>			
+		</plugins>
+	</build>
 
 </project>

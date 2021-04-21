@@ -28,49 +28,49 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class TodoController {
 	@Autowired
-	private TodoRepository todoRepository; 
-	
+	private TodoRepository todoRepository;
+
 	@PostMapping("/todo")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> addTodo(String id, String title) {
-		ApiResponse rspObj = new ApiResponse();
-		Todo todo = new Todo();
+		final ApiResponse rspObj = new ApiResponse();
+		final Todo todo = new Todo();
 		todo.setId(Long.valueOf(id));
 		todo.setTitle(title);
 		todoRepository.save(todo);
 		rspObj.setData(todo);
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@GetMapping("/todo")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getTodos() {
-		
-		ApiResponse rspObj = new ApiResponse();
-		List<Todo> todos = todoRepository.findAll();
+
+		final ApiResponse rspObj = new ApiResponse();
+		final List<Todo> todos = todoRepository.findAll();
 		rspObj.setData(todos);
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@DeleteMapping("/todo/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> deleteTodo(@PathVariable String id) {
-		ApiResponse rspObj = new ApiResponse();
-		Optional<Todo> todoOpt = todoRepository.findById(Long.valueOf(id));
+		final ApiResponse rspObj = new ApiResponse();
+		final Optional<Todo> todoOpt = todoRepository.findById(Long.valueOf(id));
 		if(todoOpt.isPresent()){
 			todoRepository.delete(todoOpt.get());
 		}
 
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@PatchMapping("/todo/{id}")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> updateTodo(@PathVariable String id, Todo todo) {
-		ApiResponse rspObj = new ApiResponse();
-		Optional<Todo> todoOpt = todoRepository.findById(Long.valueOf(id));
+		final ApiResponse rspObj = new ApiResponse();
+		final Optional<Todo> todoOpt = todoRepository.findById(Long.valueOf(id));
 		if(todoOpt.isPresent()){
-			Todo todoDB = todoOpt.get();
+			final Todo todoDB = todoOpt.get();
 			todoDB.setTitle(todo.getTitle());
 			todoDB.setCompleted(todo.isCompleted());
 			rspObj.setData(todoDB);
@@ -78,25 +78,25 @@ public class TodoController {
 		}
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@PatchMapping("/todo/checkAll")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> checkAllTodo(boolean completed) {
 		log.info(" ----------- completed: "+completed);
-		ApiResponse rspObj = new ApiResponse();
-		List<Todo> todos = todoRepository.findAll();
+		final ApiResponse rspObj = new ApiResponse();
+		final List<Todo> todos = todoRepository.findAll();
 		todos.forEach(t -> t.setCompleted(completed));
 		todoRepository.saveAll(todos);
 		rspObj.setData(todos);
 		return ResponseEntity.ok(rspObj);
 	}
-	
+
 	@PatchMapping("/todo/deleteCompleted")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> clearCompleted() {
-		ApiResponse rspObj = new ApiResponse();
-		List<Todo> todos = todoRepository.findAll();
-		List<Todo> filter = todos.stream().filter(t -> t.isCompleted()).collect(Collectors.toList());
+		final ApiResponse rspObj = new ApiResponse();
+		final List<Todo> todos = todoRepository.findAll();
+		final List<Todo> filter = todos.stream().filter(t -> t.isCompleted()).collect(Collectors.toList());
 		todoRepository.deleteAll(filter);
 		rspObj.setData(todos);
 		return ResponseEntity.ok(rspObj);

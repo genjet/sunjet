@@ -17,7 +17,7 @@ DROP TABLE todos;
 
 CREATE TABLE todos (
   oid VARCHAR(32)   PRIMARY KEY,
-  id NUMERIC,
+  id INTEGER,
   title VARCHAR(32),
   completed VARCHAR(1),
   editing VARCHAR(1),

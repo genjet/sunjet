@@ -1,7 +1,10 @@
 #spring:
 #  dsopen:
 #    jndi-name: java:/OracleDS
-    
+spring:
+  profiles:
+    active: '@active.profile@'
+ 
 log:
   basic:
     path: log/sunjet-front

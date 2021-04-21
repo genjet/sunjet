@@ -116,11 +116,11 @@ module.exports = {
     public: '0.0.0.0:9478',
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8080/sunjet",
+        target: "http://127.0.0.1:8078/sunjet",
         changeOrigin: true,
-        pathRewrite: {
-          [`^${process.env.VUE_APP_BASE_API}`]: ''
-        }
+        // pathRewrite: {
+        //   [`^${process.env.VUE_APP_BASE_API}`]: ''
+        // }
       }
     }
     //before: require("./mock/mock-server.js"),
